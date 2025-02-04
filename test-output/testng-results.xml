@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2025-02-05T05:42:49 GMT+08:00" name="Default suite" finished-at="2025-02-05T05:42:59 GMT+08:00" duration-ms="9700">
+    <groups>
+    </groups>
+    <test started-at="2025-02-05T05:42:49 GMT+08:00" name="Default test" finished-at="2025-02-05T05:42:59 GMT+08:00" duration-ms="9700">
+      <class name="testcase.LoginTest">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:testcase.LoginTest@fa4c865]" started-at="2025-02-05T05:42:49 GMT+08:00" name="setUp" finished-at="2025-02-05T05:42:56 GMT+08:00" duration-ms="7018" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="TC006_toCancel()[pri:7, instance:testcase.LoginTest@fa4c865]" started-at="2025-02-05T05:42:56 GMT+08:00" name="TC006_toCancel" description="Verify Cancel Reset Button" finished-at="2025-02-05T05:42:59 GMT+08:00" duration-ms="2419" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- TC006_toCancel -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:testcase.LoginTest@fa4c865]" started-at="2025-02-05T05:42:59 GMT+08:00" name="tearDown" finished-at="2025-02-05T05:42:59 GMT+08:00" duration-ms="208" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+      </class> <!-- testcase.LoginTest -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>
