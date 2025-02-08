@@ -42,6 +42,13 @@ public class LoginPage extends BasePage {
 	@FindBy(xpath = "//h5[normalize-space()='Login']")
 	WebElement loginLabel;
 	
+	@FindBy(xpath = "//img[@alt='client brand banner']")
+	WebElement orangeHrmBanner;
+	
+	@FindBy(xpath = "//span[normalize-space()='My Info']")
+	WebElement myInfo;
+	
+	
 	
 
 	public LoginPage(WebDriver driver) {
@@ -104,6 +111,11 @@ public class LoginPage extends BasePage {
 	public boolean isLoginPage() {
 		return loginLabel.isDisplayed()
 				&& loginLabel.getText().equals("Login");
+	}
+	
+	public boolean isLoginSuccesful() {
+		return orangeHrmBanner.isDisplayed()
+				&& myInfo.isDisplayed();
 	}
 
 }

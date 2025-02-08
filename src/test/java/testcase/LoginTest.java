@@ -13,16 +13,18 @@ public class LoginTest extends BaseTest {
 	public void TC001_toLogin(String username, String password) {
 		LoginPage login = new LoginPage(driver);
 		login.toLogin(username, password);
+		Assert.assertTrue(login.isLoginSuccesful());
 	}
 
 	@Test(priority = 2, description = "Verify invalid login error message")
 	public void TC002_verifyErrorMessage() {
-		this.username = "Invalid_user";
-		this.password = "Invalid_pass";
+		String errorMessage;
+		String username = "invalid";
+		String password = "1234";
 		TC001_toLogin(username, password);
 		LoginPage loginPage = new LoginPage(driver);
-		this.errorMessage = loginPage.getTxtErrorMessage();
-		Assert.assertTrue(this.errorMessage.contains("Invalid credentials"));
+		errorMessage = loginPage.getTxtErrorMessage();
+		Assert.assertTrue(errorMessage.contains("Invalid credentials"));
 	}
 
 	@Test(priority = 3, description = "Required Field Validation")
@@ -62,21 +64,21 @@ public class LoginTest extends BaseTest {
 		loginPage.clickforgotPass();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
 		loginPage.toResetPass(username);
-		
+
 		Assert.assertTrue(loginPage.isResetSuccess());
-		
+
 	}
-	
+
 	@Test(priority = 7, description = "Verify Cancel Reset Button")
-	public void TC006_toCancel() throws InterruptedException {
-		String username = "Admin";
+	public void TC007_toCancel() throws InterruptedException {
+
 		LoginPage loginPage = new LoginPage(driver);
 		loginPage.clickforgotPass();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
 		loginPage.clickCancelBtn();
-		
+
 		Assert.assertTrue(loginPage.isLoginPage());
-		
+
 	}
 
 }
