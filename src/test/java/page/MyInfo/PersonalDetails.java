@@ -1,11 +1,12 @@
-package page;
+package page.MyInfo;
 
-import org.jspecify.annotations.Nullable;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class MyInfo extends BasePage {
+import page.BasePage;
+
+public class PersonalDetails extends BasePage {
 
 	@FindBy(xpath = "//span[normalize-space()='My Info']")
 	WebElement myInfo;
@@ -28,10 +29,21 @@ public class MyInfo extends BasePage {
 	@FindBy(xpath = "//form[@class='oxd-form']/div[2]/div[1]/div[2]/div[1]/div[2]/input")
 	WebElement pd_otherID;
 
-	@FindBy(xpath = "//input[@class='oxd-input oxd-input--active'])[4]")
+	@FindBy(xpath = "//form[@class='oxd-form']/div[2]/div[2]/div[1]/div[1]/div[2]/input")
 	WebElement pd_DLN;
+	
+	@FindBy(xpath = "//form[@class='oxd-form']/div[2]/div[2]/div[2]/div[1]/div[2]/div[1]/div[1]/input")
+	WebElement pd_licenseExpiryDate;
+	
+	@FindBy(xpath = "//div[3]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]")
+	WebElement pd_nationality;
+	
+	@FindBy(xpath = "//div[3]/div[1]/div[2]/div[1]/div[2]/div[1]/div[1]/div[1]")
+	WebElement pd_maritalStatus;
+	
+	
 
-	public MyInfo(WebDriver driver) {
+	public PersonalDetails(WebDriver driver) {
 		super(driver);
 	}
 
@@ -86,10 +98,22 @@ public class MyInfo extends BasePage {
 	public String getDLNValue() {
 		return pd_DLN.getAttribute("value");
 	}
+	
+	public String getLicenseExpiryDateValue() {
+		return pd_licenseExpiryDate.getAttribute("value");
+	}
+	
+	public String getNationalityTxt() {
+		return pd_nationality.getText();
+	}
+	
+	public String getMaritalStatusTxt() {
+		return pd_maritalStatus.getText();
+	}
 
 	public WebElement getMyInfo() {
 		return myInfo;
 	}
-
+	
 	 
 }
