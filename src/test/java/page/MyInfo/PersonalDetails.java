@@ -8,9 +8,6 @@ import page.BasePage;
 
 public class PersonalDetails extends BasePage {
 
-	@FindBy(xpath = "//span[normalize-space()='My Info']")
-	WebElement myInfo;
-
 	@FindBy(xpath = "///a[normalize-space()='Personal Details']")
 	WebElement personalDetails;
 
@@ -31,17 +28,15 @@ public class PersonalDetails extends BasePage {
 
 	@FindBy(xpath = "//form[@class='oxd-form']/div[2]/div[2]/div[1]/div[1]/div[2]/input")
 	WebElement pd_DLN;
-	
+
 	@FindBy(xpath = "//form[@class='oxd-form']/div[2]/div[2]/div[2]/div[1]/div[2]/div[1]/div[1]/input")
 	WebElement pd_licenseExpiryDate;
-	
+
 	@FindBy(xpath = "//div[3]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]")
 	WebElement pd_nationality;
-	
+
 	@FindBy(xpath = "//div[3]/div[1]/div[2]/div[1]/div[2]/div[1]/div[1]/div[1]")
 	WebElement pd_maritalStatus;
-	
-	
 
 	public PersonalDetails(WebDriver driver) {
 		super(driver);
@@ -74,11 +69,11 @@ public class PersonalDetails extends BasePage {
 	public WebElement getDLN() {
 		return pd_DLN;
 	}
-	
+
 	public String getFirstnameValue() {
 		return pd_firstname.getAttribute("value");
 	}
-	
+
 	public String getMiddlenameValue() {
 		return pd_middlename.getAttribute("value");
 	}
@@ -98,22 +93,17 @@ public class PersonalDetails extends BasePage {
 	public String getDLNValue() {
 		return pd_DLN.getAttribute("value");
 	}
-	
+
 	public String getLicenseExpiryDateValue() {
 		return pd_licenseExpiryDate.getAttribute("value");
 	}
-	
+
 	public String getNationalityTxt() {
 		return pd_nationality.getText();
 	}
-	
+
 	public String getMaritalStatusTxt() {
 		return pd_maritalStatus.getText();
 	}
 
-	public WebElement getMyInfo() {
-		return myInfo;
-	}
-	
-	 
 }

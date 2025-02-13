@@ -18,7 +18,7 @@ public class BaseTest {
 	public static WebDriver driver;
 	public static Properties prop = new Properties();
 	public static FileReader fr;
-	WebDriverWait wait;
+	public WebDriverWait wait;
 	
 	@BeforeMethod
 	public void setUp() throws IOException {

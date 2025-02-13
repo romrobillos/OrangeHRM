@@ -2,16 +2,16 @@
 <testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2025-02-11T00:12:51 GMT+08:00" name="Default suite" finished-at="2025-02-11T00:13:03 GMT+08:00" duration-ms="11595">
+  <suite started-at="2025-02-14T03:51:02 GMT+08:00" name="Default suite" finished-at="2025-02-14T03:51:16 GMT+08:00" duration-ms="13430">
     <groups>
     </groups>
-    <test started-at="2025-02-11T00:12:51 GMT+08:00" name="Default test" finished-at="2025-02-11T00:13:03 GMT+08:00" duration-ms="11595">
-      <class name="testcase.MyInfoTest">
-        <test-method is-config="true" signature="setUp()[pri:0, instance:testcase.MyInfoTest@710f4dc7]" started-at="2025-02-11T00:12:51 GMT+08:00" name="setUp" finished-at="2025-02-11T00:12:57 GMT+08:00" duration-ms="5811" status="PASS">
+    <test started-at="2025-02-14T03:51:02 GMT+08:00" name="Default test" finished-at="2025-02-14T03:51:16 GMT+08:00" duration-ms="13430">
+      <class name="testcase.MyInfo.ContactDetailsTest">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:testcase.MyInfo.ContactDetailsTest@710f4dc7]" started-at="2025-02-14T03:51:02 GMT+08:00" name="setUp" finished-at="2025-02-14T03:51:08 GMT+08:00" duration-ms="5897" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="TC019_MyInfo_PersonalDetails(java.lang.String,java.lang.String)[pri:0, instance:testcase.MyInfoTest@710f4dc7]" started-at="2025-02-11T00:12:57 GMT+08:00" name="TC019_MyInfo_PersonalDetails" description="Verify MyInfo_PersonalDetails" data-provider="validCredential" finished-at="2025-02-11T00:13:03 GMT+08:00" duration-ms="5424" status="PASS">
+        <test-method signature="TC020_MyInfo_ContactDetails(java.lang.String,java.lang.String)[pri:0, instance:testcase.MyInfo.ContactDetailsTest@710f4dc7]" started-at="2025-02-14T03:51:08 GMT+08:00" name="TC020_MyInfo_ContactDetails" description="Verify MyInfo_ContactDetails" data-provider="validCredential" finished-at="2025-02-14T03:51:16 GMT+08:00" duration-ms="7238" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -26,12 +26,12 @@
           </params>
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- TC019_MyInfo_PersonalDetails -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:testcase.MyInfoTest@710f4dc7]" started-at="2025-02-11T00:13:03 GMT+08:00" name="tearDown" finished-at="2025-02-11T00:13:03 GMT+08:00" duration-ms="275" status="PASS">
+        </test-method> <!-- TC020_MyInfo_ContactDetails -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:testcase.MyInfo.ContactDetailsTest@710f4dc7]" started-at="2025-02-14T03:51:16 GMT+08:00" name="tearDown" finished-at="2025-02-14T03:51:16 GMT+08:00" duration-ms="226" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-      </class> <!-- testcase.MyInfoTest -->
+      </class> <!-- testcase.MyInfo.ContactDetailsTest -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>
