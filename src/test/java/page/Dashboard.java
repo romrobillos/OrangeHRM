@@ -6,8 +6,7 @@ import org.openqa.selenium.support.FindBy;
 
 public class Dashboard extends BasePage {
 
-	@FindBy (xpath = "//span[@class='oxd-text oxd-text--span oxd-main-menu-item--name'][normalize-space()='Dashboard']")
-	WebElement dashboard;
+	
 	
 	@FindBy (xpath = "//i[@class='oxd-icon bi-stopwatch']")
 	WebElement db_timeAtWork_stopwatch;
@@ -54,10 +53,6 @@ public class Dashboard extends BasePage {
 	
 	public Dashboard(WebDriver driver) {
 		super(driver); 
-	}
-	
-	public WebElement getDashboard() {
-		return dashboard;
 	}
 	
 	public WebElement getDb_timeAtWork_stopwatch() {

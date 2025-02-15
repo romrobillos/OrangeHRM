@@ -9,6 +9,11 @@ public class SideBar extends BasePage{
 	@FindBy(xpath = "//span[normalize-space()='My Info']")
 	WebElement myInfo;
 	
+	@FindBy (xpath = "//*[@id=\"oxd-toaster_1\"]")
+	WebElement toastNotif;
+	
+	@FindBy (xpath = "//span[@class='oxd-text oxd-text--span oxd-main-menu-item--name'][normalize-space()='Dashboard']")
+	WebElement dashboard;
 	
 	public SideBar(WebDriver driver) {
 		super(driver);
@@ -18,4 +23,10 @@ public class SideBar extends BasePage{
 		return myInfo;
 	}
 
+	public WebElement getToastNotif() {
+		return toastNotif;
+	}
+	public WebElement getDashboard() {
+		return dashboard;
+	}
 }

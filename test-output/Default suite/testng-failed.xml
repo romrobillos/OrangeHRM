@@ -7,7 +7,7 @@
         <methods>
           <include name="tearDown"/>
           <include name="setUp"/>
-          <include name="TC020_MyInfo_ContactDetails" invocation-numbers="0"/>
+          <include name="TC019_MyInfo_PersonalDetails_Edit" invocation-numbers="0"/>
         </methods>
       </class> <!-- testcase.MyInfo.ContactDetailsTest -->
     </classes>

@@ -10,14 +10,15 @@ import org.testng.annotations.Test;
 
 import page.Dashboard;
 import page.LoginPage;
+import page.SideBar;
 
 public class DashboardTest extends BaseTest {
 
 	@Test(dataProvider = "validCredential", description = "Verify timeAtWork_stopwatch")
 	public void TC008_timeAtWork_stopwatch(String username, String password) {
 		new LoginPage(driver).toLogin(username, password);
+		new SideBar(driver).getDashboard().click();
 		Dashboard db = new Dashboard(driver);
-		db.getDashboard().click();
 		db.getDb_timeAtWork_stopwatch().click();
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		String actualTimeUrl = driver.getCurrentUrl();
@@ -29,8 +30,8 @@ public class DashboardTest extends BaseTest {
 	@Test(dataProvider = "validCredential", description = "Verify QuickLaunch_AssignLeave")
 	public void TC009_quickLaunch_assignLeave(String username, String password) {
 		new LoginPage(driver).toLogin(username, password);
+		new SideBar(driver).getDashboard().click();
 		Dashboard db = new Dashboard(driver);
-		db.getDashboard().click();
 		db.getDb_quickLaunch_assignLeave().click();
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		String actualAssignLeaveUrl = driver.getCurrentUrl();
@@ -42,8 +43,8 @@ public class DashboardTest extends BaseTest {
 	@Test(dataProvider = "validCredential", description = "Verify QuickLaunch_LeaveList")
 	public void TC010_quickLaunch_leaveList(String username, String password) {
 		new LoginPage(driver).toLogin(username, password);
+		new SideBar(driver).getDashboard().click();
 		Dashboard db = new Dashboard(driver);
-		db.getDashboard().click();
 		db.getDb_quickLaunch_leavelist().click();
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		String actualLeavelistUrl = driver.getCurrentUrl();
@@ -55,8 +56,8 @@ public class DashboardTest extends BaseTest {
 	@Test(dataProvider = "validCredential", description = "Verify QuickLaunch_Timesheets")
 	public void TC011_quickLaunch_timesheets(String username, String password) {
 		new LoginPage(driver).toLogin(username, password);
+		new SideBar(driver).getDashboard().click();
 		Dashboard db = new Dashboard(driver);
-		db.getDashboard().click();
 		db.getDb_quickLaunch_timesheets().click();
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		String actualTimesheetsUrl = driver.getCurrentUrl();
@@ -68,8 +69,8 @@ public class DashboardTest extends BaseTest {
 	@Test(dataProvider = "validCredential", description = "Verify QuickLaunch_ApplyLeave")
 	public void TC012_quickLaunch_applyLeave(String username, String password) {
 		new LoginPage(driver).toLogin(username, password);
+		new SideBar(driver).getDashboard().click();
 		Dashboard db = new Dashboard(driver);
-		db.getDashboard().click();
 		db.getDb_quickLaunch_applyLeave().click();
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		String actualApplyLeaveUrl = driver.getCurrentUrl();
@@ -81,8 +82,8 @@ public class DashboardTest extends BaseTest {
 	@Test(dataProvider = "validCredential", description = "Verify QuickLaunch_myLeave")
 	public void TC013_quickLaunch_myLeave(String username, String password) {
 		new LoginPage(driver).toLogin(username, password);
+		new SideBar(driver).getDashboard().click();
 		Dashboard db = new Dashboard(driver);
-		db.getDashboard().click();
 		db.getDb_quickLaunch_myLeave().click();
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		String actualmyLeaveUrl = driver.getCurrentUrl();
@@ -94,8 +95,8 @@ public class DashboardTest extends BaseTest {
 	@Test(dataProvider = "validCredential", description = "Verify QuickLaunch_myTimesheet")
 	public void TC014_quickLaunch_myTimesheet(String username, String password) {
 		new LoginPage(driver).toLogin(username, password);
+		new SideBar(driver).getDashboard().click();
 		Dashboard db = new Dashboard(driver);
-		db.getDashboard().click();
 		db.getDb_quickLaunch_myTimesheet().click();
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		String actualmyTimesheetUrl = driver.getCurrentUrl();
@@ -107,8 +108,8 @@ public class DashboardTest extends BaseTest {
 	@Test(dataProvider = "validCredential", description = "Verify employeesOnLeaveToday_Settings")
 	public void TC015_employeesOnLeaveToday_Settings(String username, String password) {
 		new LoginPage(driver).toLogin(username, password);
+		new SideBar(driver).getDashboard().click();
 		Dashboard db = new Dashboard(driver);
-		db.getDashboard().click();
 		db.getDb_employeesOnLeaveToday_Settings().click();
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
@@ -118,8 +119,8 @@ public class DashboardTest extends BaseTest {
 	@Test(dataProvider = "validCredential", description = "Verify employeesOnLeaveToday_Settings_Toggle")
 	public void TC016_employeesOnLeaveToday_Settings_Toggle(String username, String password) {
 		new LoginPage(driver).toLogin(username, password);
+		new SideBar(driver).getDashboard().click();
 		Dashboard db = new Dashboard(driver);
-		db.getDashboard().click();
 		db.getDb_employeesOnLeaveToday_Settings().click();
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		boolean beforeToggle = db.getDb_employeesOnLeaveToday_Settings_Popup_Toggle().getDomProperty("className")
@@ -133,8 +134,8 @@ public class DashboardTest extends BaseTest {
 	@Test(dataProvider = "validCredential", description = "Verify employeesOnLeaveToday_Settings_Save Button")
 	public void TC017_employeesOnLeaveToday_Settings_Save(String username, String password) {
 		new LoginPage(driver).toLogin(username, password);
+		new SideBar(driver).getDashboard().click();
 		Dashboard db = new Dashboard(driver);
-		db.getDashboard().click();
 		db.getDb_employeesOnLeaveToday_Settings().click();
 		db.getDb_employeesOnLeaveToday_Settings_Popup_Save().click();
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
@@ -146,8 +147,8 @@ public class DashboardTest extends BaseTest {
 	@Test(dataProvider = "validCredential", description = "Verify employeesOnLeaveToday_Settings_Cancel Button")
 	public void TC018_employeesOnLeaveToday_Settings_Cancel(String username, String password) {
 		new LoginPage(driver).toLogin(username, password);
+		new SideBar(driver).getDashboard().click();
 		Dashboard db = new Dashboard(driver);
-		db.getDashboard().click();
 		db.getDb_employeesOnLeaveToday_Settings().click();
 		db.getDb_employeesOnLeaveToday_Settings_Popup_Cancel().click();
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));

@@ -1,5 +1,7 @@
 package page.MyInfo;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -29,7 +31,7 @@ public class PersonalDetails extends BasePage {
 	@FindBy(xpath = "//form[@class='oxd-form']/div[2]/div[2]/div[1]/div[1]/div[2]/input")
 	WebElement pd_DLN;
 
-	@FindBy(xpath = "//form[@class='oxd-form']/div[2]/div[2]/div[2]/div[1]/div[2]/div[1]/div[1]/input")
+	@FindBy(xpath = "//div[@class='oxd-form-row']/div[2]/div[2]/div[1]/div[2]/div[1]/div[1]/input")
 	WebElement pd_licenseExpiryDate;
 
 	@FindBy(xpath = "//div[3]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]")
@@ -37,6 +39,15 @@ public class PersonalDetails extends BasePage {
 
 	@FindBy(xpath = "//div[3]/div[1]/div[2]/div[1]/div[2]/div[1]/div[1]/div[1]")
 	WebElement pd_maritalStatus;
+
+	@FindBy(xpath = "//div[@class='oxd-form-row']/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/input")
+	WebElement pd_DOB;
+
+	@FindBy(xpath = "//label[normalize-space()='Male']")
+	WebElement pd_Gender;
+
+	@FindBy(xpath = "//div[contains(@class,'horizontal')]//button[@type='submit'][normalize-space()='Save']")
+	WebElement pd_saveBtn;
 
 	public PersonalDetails(WebDriver driver) {
 		super(driver);
@@ -68,6 +79,26 @@ public class PersonalDetails extends BasePage {
 
 	public WebElement getDLN() {
 		return pd_DLN;
+	}
+
+	public WebElement getLicenseExpiryDate() {
+		return pd_licenseExpiryDate;
+	}
+
+	public WebElement getNationality() {
+		return pd_nationality;
+	}
+
+	public WebElement getMaritalStatus() {
+		return pd_maritalStatus;
+	}
+
+	public WebElement getDOB() {
+		return pd_DOB;
+	}
+
+	public WebElement getSaveBtn() {
+		return pd_saveBtn;
 	}
 
 	public String getFirstnameValue() {
@@ -102,8 +133,65 @@ public class PersonalDetails extends BasePage {
 		return pd_nationality.getText();
 	}
 
+	public void selectNationality(String nationality) {
+		pd_nationality.click();
+		int maxTries = 100;
+		boolean found = true;
+
+		for (int i = 0; i < maxTries; i++) {
+			String highlightedText = getNationalityTxt();
+
+			if (highlightedText.equals(nationality)) {
+				pd_nationality.sendKeys(Keys.ENTER);
+				break;
+			}
+			pd_nationality.sendKeys(Keys.ARROW_DOWN);
+		}
+
+		if (!found) {
+			throw new RuntimeException("Nationality not found: " + nationality);
+		}
+	}
+
 	public String getMaritalStatusTxt() {
 		return pd_maritalStatus.getText();
 	}
 
+	public void selectMaritalStatus(String maritalStatus) {
+		pd_maritalStatus.click();
+		int maxTries = 10;
+		boolean found = true;
+
+		for (int i = 0; i < maxTries; i++) {
+			String highlightedText = getMaritalStatusTxt();
+
+			if (highlightedText.equals(maritalStatus)) {
+				pd_maritalStatus.sendKeys(Keys.ENTER);
+				break;
+			}
+			pd_maritalStatus.sendKeys(Keys.ARROW_DOWN);
+		}
+
+		if (!found) {
+			throw new RuntimeException("Marital Status not found: " + maritalStatus);
+		}
+	}
+
+	public String getDOBValue() {
+		return pd_DOB.getAttribute("value");
+	}
+
+	public void selectGender(String gender) {
+		String xpath = "//label[normalize-space()='" + gender + "']";
+		WebElement genderRadioButton = driver.findElement(By.xpath(xpath));
+
+		if (!genderRadioButton.isSelected()) {
+			genderRadioButton.click();
+		}
+	}
+	public boolean isGenderSelected(String gender) {
+	    String xpath = "//label[normalize-space()='" + gender + "']";
+	    WebElement genderRadioButton = driver.findElement(By.xpath(xpath));
+	    return genderRadioButton.isSelected();
+	}
 }
