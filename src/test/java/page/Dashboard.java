@@ -8,27 +8,27 @@ public class Dashboard extends BasePage {
 
 	
 	
-	@FindBy (xpath = "//i[@class='oxd-icon bi-stopwatch']")
+	@FindBy (xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[1]/div/div[2]/div[1]/div[2]/button")
 	WebElement db_timeAtWork_stopwatch;
 
 	
 	// Quick Launch
-	@FindBy (xpath = "//button[@title='Assign Leave']//*[name()='svg']//*[name()='g' and contains(@fill,'currentCol')]//*[name()='path' and contains(@class,'cls-1')]")
+	@FindBy (xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[3]/div/div[2]/div/div[1]/button")
 	WebElement db_quickLaunch_assignLeave;
 	
-	@FindBy (xpath = "//button[@title='Leave List']//*[name()='svg']//*[name()='g' and contains(@fill,'currentCol')]//*[name()='g'][1]")
+	@FindBy (xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[3]/div/div[2]/div/div[2]/button")
 	WebElement db_quickLaunch_leavelist;
 	
-	@FindBy (xpath = "//button[@title='Timesheets']//*[name()='svg']//*[name()='g' and contains(@fill,'currentCol')]//*[name()='g'][1]")
+	@FindBy (xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[3]/div/div[2]/div/div[3]/button")
 	WebElement db_quickLaunch_timesheets;
 	
-	@FindBy (xpath = "//button[@title='Apply Leave']//*[name()='svg']//*[name()='g' and contains(@fill,'currentCol')]//*[name()='path' and contains(@class,'cls-1')]")
+	@FindBy (xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[3]/div/div[2]/div/div[4]/button")
 	WebElement db_quickLaunch_applyLeave;
 	
-	@FindBy (xpath = "//button[@title='My Leave']//*[name()='svg']//*[name()='g' and contains(@fill,'currentCol')]//*[name()='path' and contains(@class,'cls-1')]")
+	@FindBy (xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[3]/div/div[2]/div/div[5]/button")
 	WebElement db_quickLaunch_myLeave;
 	
-	@FindBy (xpath = "//button[@title='My Timesheet']//*[name()='svg']//*[name()='g' and contains(@fill,'currentCol')]//*[name()='path' and contains(@class,'cls-1')]")
+	@FindBy (xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[3]/div/div[2]/div/div[6]/button")
 	WebElement db_quickLaunch_myTimesheet;
 	
 	@FindBy (xpath = "//i[@class='oxd-icon bi-gear-fill orangehrm-leave-card-icon']")
@@ -46,9 +46,7 @@ public class Dashboard extends BasePage {
 	@FindBy (xpath = "//button[normalize-space()='Cancel']")
 	WebElement db_employeesOnLeaveToday_Settings_Popup_Cancel;
 	
-	
-	@FindBy (xpath = "//*[@id=\"oxd-toaster_1\"]")
-	WebElement toastNotif;
+ 
 	
 	
 	public Dashboard(WebDriver driver) {
@@ -104,9 +102,7 @@ public class Dashboard extends BasePage {
 		return db_employeesOnLeaveToday_Settings_Popup_Cancel;
 	}
 	
-	public WebElement getToastNotif() {
-		return toastNotif;
-	}
+ 
 	
 	
 

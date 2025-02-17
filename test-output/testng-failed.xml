@@ -3,13 +3,13 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="testcase.MyInfo.ContactDetailsTest">
+      <class name="testcase.DashboardTest">
         <methods>
           <include name="tearDown"/>
           <include name="setUp"/>
-          <include name="TC019_MyInfo_PersonalDetails_Edit" invocation-numbers="0"/>
+          <include name="TC018_employeesOnLeaveToday_Settings_Cancel" invocation-numbers="0"/>
         </methods>
-      </class> <!-- testcase.MyInfo.ContactDetailsTest -->
+      </class> <!-- testcase.DashboardTest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

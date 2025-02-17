@@ -11,7 +11,6 @@ import org.testng.annotations.Test;
 import page.LoginPage;
 import page.SideBar;
 import page.MyInfo.ContactDetails;
-import page.MyInfo.PersonalDetails;
 import testcase.BaseTest;
 
 public class ContactDetailsTest extends BaseTest {
@@ -71,11 +70,10 @@ public class ContactDetailsTest extends BaseTest {
 			js.executeScript("arguments[0].value = '" + expectedOtherEmail + "';", cd.getOtherEmail());
 
 			cd.getSaveBtn().click();
-
+	
 			wait.until(ExpectedConditions.visibilityOf(sb.getToastNotif()));
 
 			// assert
-
 			String actualStreet1 = cd.getStreet1Value();
 			Assert.assertEquals(expectedStreet1, actualStreet1);
 
@@ -105,7 +103,7 @@ public class ContactDetailsTest extends BaseTest {
 
 			String actualOtherEmail = cd.getOtherEmailValue();
 			Assert.assertEquals(expectedOtherEmail, actualOtherEmail);
-
+	
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -130,9 +128,6 @@ public class ContactDetailsTest extends BaseTest {
 		String expectedWorkNumber = "112-898-7612";
 		String expectedWorkEmail = "testqa123@example.com";
 		String expectedOtherEmail = "";
-
-		System.out.println(cd.getMobileNumberValue());
-		System.out.println(cd.getOtherEmailValue());
 
 		String actualStreet1 = cd.getStreet1Value();
 		Assert.assertEquals(expectedStreet1, actualStreet1);

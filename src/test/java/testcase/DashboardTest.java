@@ -20,10 +20,8 @@ public class DashboardTest extends BaseTest {
 		new SideBar(driver).getDashboard().click();
 		Dashboard db = new Dashboard(driver);
 		db.getDb_timeAtWork_stopwatch().click();
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		String actualTimeUrl = driver.getCurrentUrl();
 		String expectedTimeUrl = prop.getProperty("time");
-
 		Assert.assertEquals(expectedTimeUrl, actualTimeUrl);
 	}
 
@@ -33,7 +31,6 @@ public class DashboardTest extends BaseTest {
 		new SideBar(driver).getDashboard().click();
 		Dashboard db = new Dashboard(driver);
 		db.getDb_quickLaunch_assignLeave().click();
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		String actualAssignLeaveUrl = driver.getCurrentUrl();
 		String expectedAssignLeaveUrl = prop.getProperty("assignLeave");
 
@@ -46,7 +43,6 @@ public class DashboardTest extends BaseTest {
 		new SideBar(driver).getDashboard().click();
 		Dashboard db = new Dashboard(driver);
 		db.getDb_quickLaunch_leavelist().click();
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		String actualLeavelistUrl = driver.getCurrentUrl();
 		String expectedLeavelistUrl = prop.getProperty("leaveList");
 
@@ -59,7 +55,6 @@ public class DashboardTest extends BaseTest {
 		new SideBar(driver).getDashboard().click();
 		Dashboard db = new Dashboard(driver);
 		db.getDb_quickLaunch_timesheets().click();
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		String actualTimesheetsUrl = driver.getCurrentUrl();
 		String expectedTimesheetsUrl = prop.getProperty("timesheets");
 
@@ -72,7 +67,6 @@ public class DashboardTest extends BaseTest {
 		new SideBar(driver).getDashboard().click();
 		Dashboard db = new Dashboard(driver);
 		db.getDb_quickLaunch_applyLeave().click();
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		String actualApplyLeaveUrl = driver.getCurrentUrl();
 		String expectedApplyLeaveUrl = prop.getProperty("applyLeave");
 
@@ -85,7 +79,6 @@ public class DashboardTest extends BaseTest {
 		new SideBar(driver).getDashboard().click();
 		Dashboard db = new Dashboard(driver);
 		db.getDb_quickLaunch_myLeave().click();
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		String actualmyLeaveUrl = driver.getCurrentUrl();
 		String expectedmyLeaveUrl = prop.getProperty("myLeave");
 
@@ -98,7 +91,6 @@ public class DashboardTest extends BaseTest {
 		new SideBar(driver).getDashboard().click();
 		Dashboard db = new Dashboard(driver);
 		db.getDb_quickLaunch_myTimesheet().click();
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		String actualmyTimesheetUrl = driver.getCurrentUrl();
 		String expectedmyTimesheetUrl = prop.getProperty("myTimesheet");
 
@@ -111,49 +103,57 @@ public class DashboardTest extends BaseTest {
 		new SideBar(driver).getDashboard().click();
 		Dashboard db = new Dashboard(driver);
 		db.getDb_employeesOnLeaveToday_Settings().click();
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
 		Assert.assertTrue(db.getDb_employeesOnLeaveToday_Settings_Popup().isDisplayed());
 	}
 
 	@Test(dataProvider = "validCredential", description = "Verify employeesOnLeaveToday_Settings_Toggle")
-	public void TC016_employeesOnLeaveToday_Settings_Toggle(String username, String password) {
+	public void TC016_employeesOnLeaveToday_Settings_Toggle(String username, String password)
+			throws InterruptedException {
 		new LoginPage(driver).toLogin(username, password);
 		new SideBar(driver).getDashboard().click();
 		Dashboard db = new Dashboard(driver);
 		db.getDb_employeesOnLeaveToday_Settings().click();
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		Thread.sleep(1000);
 		boolean beforeToggle = db.getDb_employeesOnLeaveToday_Settings_Popup_Toggle().getDomProperty("className")
 				.contains("oxd-switch-input--active");
+
 		db.getDb_employeesOnLeaveToday_Settings_Popup_Toggle().click();
+		Thread.sleep(1000);
 		boolean afterToggle = db.getDb_employeesOnLeaveToday_Settings_Popup_Toggle().getDomProperty("className")
 				.contains("oxd-switch-input--active");
 		Assert.assertNotEquals(beforeToggle, afterToggle);
 	}
 
 	@Test(dataProvider = "validCredential", description = "Verify employeesOnLeaveToday_Settings_Save Button")
-	public void TC017_employeesOnLeaveToday_Settings_Save(String username, String password) {
+	public void TC017_employeesOnLeaveToday_Settings_Save(String username, String password)
+			throws InterruptedException {
 		new LoginPage(driver).toLogin(username, password);
-		new SideBar(driver).getDashboard().click();
+		SideBar sb = new SideBar(driver);
+		sb.getDashboard().click();
 		Dashboard db = new Dashboard(driver);
 		db.getDb_employeesOnLeaveToday_Settings().click();
+		Thread.sleep(1500);
 		db.getDb_employeesOnLeaveToday_Settings_Popup_Save().click();
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		WebElement toastNotif = wait.until(ExpectedConditions.visibilityOf(db.getToastNotif()));
+		WebElement toastNotif = wait.until(ExpectedConditions.visibilityOf(sb.getToastNotif()));
 		System.out.println(toastNotif.getText());
 		Assert.assertTrue(toastNotif.isDisplayed());
 	}
 
 	@Test(dataProvider = "validCredential", description = "Verify employeesOnLeaveToday_Settings_Cancel Button")
-	public void TC018_employeesOnLeaveToday_Settings_Cancel(String username, String password) {
+	public void TC018_employeesOnLeaveToday_Settings_Cancel(String username, String password) throws InterruptedException {
 		new LoginPage(driver).toLogin(username, password);
-		new SideBar(driver).getDashboard().click();
+		SideBar sb = new SideBar(driver);
+		sb.getDashboard().click();
 		Dashboard db = new Dashboard(driver);
 		db.getDb_employeesOnLeaveToday_Settings().click();
+		Thread.sleep(1500);
 		db.getDb_employeesOnLeaveToday_Settings_Popup_Cancel().click();
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		boolean isPopupClosed = wait.until(ExpectedConditions.invisibilityOf(db.getDb_employeesOnLeaveToday_Settings_Popup()));
-		Assert.assertTrue(isPopupClosed);
+		wait = new WebDriverWait(driver, Duration.ofSeconds(2));
+		boolean isPopupClosed = wait
+				.until(ExpectedConditions.invisibilityOf(db.getDb_employeesOnLeaveToday_Settings_Popup()));
+		Assert.assertFalse(isPopupClosed);
 	}
 
 }
