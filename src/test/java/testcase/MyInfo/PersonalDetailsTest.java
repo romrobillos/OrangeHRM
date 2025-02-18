@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import page.LoginPage;
 import page.SideBar;
@@ -20,93 +21,91 @@ public class PersonalDetailsTest extends BaseTest {
 		SideBar sb = new SideBar(driver);
 		sb.getMyInfo().click();
 		PersonalDetails pd = new PersonalDetails(driver);
-		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		JavascriptExecutor js = (JavascriptExecutor) driver;
+		SoftAssert softAssert = new SoftAssert();
+
 		try {
-			wait.until(ExpectedConditions.visibilityOf(pd.getFirstname()));
-			wait.until(ExpectedConditions.visibilityOf(pd.getMiddlename()));
-			wait.until(ExpectedConditions.visibilityOf(pd.getLastname()));
-			wait.until(ExpectedConditions.visibilityOf(pd.getEmployeeId()));
-			wait.until(ExpectedConditions.visibilityOf(pd.getOtherId()));
-			wait.until(ExpectedConditions.visibilityOf(pd.getDLN()));
-			wait.until(ExpectedConditions.visibilityOf(pd.getLicenseExpiryDate()));
+
 			String expectedFirstname = "Jon Romeo";
-			js.executeScript("arguments[0].value = '" + expectedFirstname + "';", pd.getFirstname());
-
 			String expectedMiddlename = "Igoy";
-			js.executeScript("arguments[0].value = '" + expectedMiddlename + "';", pd.getMiddlename());
-
 			String expectedLastname = "Robillos";
-			js.executeScript("arguments[0].value = '" + expectedLastname + "';", pd.getLastname());
-
 			String expectedEmployeeId = "0398";
-			js.executeScript("arguments[0].value = '" + expectedEmployeeId + "';", pd.getEmployeeId());
-
 			String expectedOtherId = "0303";
-			js.executeScript("arguments[0].value = '" + expectedOtherId + "';", pd.getOtherId());
-
 			String expectedDLN = "123456";
-			js.executeScript("arguments[0].value = '" + expectedDLN + "';", pd.getDLN());
-
 			String expectedLicenseExpiry = "2025-03-10";
-			js.executeScript("arguments[0].value = '" + expectedLicenseExpiry + "';", pd.getLicenseExpiryDate());
-
 			String expectedNationality = "Filipino";
+			String expectedMaritalStatus = "Single";
+			String expectedDOB = "1994-03-03";
+			String expectedGender = "Male";
+
+			wait.until(ExpectedConditions.visibilityOf(pd.getFirstname()));
+			js.executeScript("arguments[0].value = arguments[1];", pd.getFirstname(), expectedFirstname);
+
+			wait.until(ExpectedConditions.visibilityOf(pd.getMiddlename()));
+			js.executeScript("arguments[0].value = arguments[1];", pd.getMiddlename(), expectedMiddlename);
+
+			wait.until(ExpectedConditions.visibilityOf(pd.getLastname()));
+			js.executeScript("arguments[0].value = arguments[1];", pd.getLastname(), expectedLastname);
+
+			wait.until(ExpectedConditions.visibilityOf(pd.getEmployeeId()));
+			js.executeScript("arguments[0].value = arguments[1];", pd.getEmployeeId(), expectedEmployeeId);
+
+			wait.until(ExpectedConditions.visibilityOf(pd.getOtherId()));
+			js.executeScript("arguments[0].value = arguments[1];", pd.getOtherId(), expectedOtherId);
+
+			wait.until(ExpectedConditions.visibilityOf(pd.getDLN()));
+			js.executeScript("arguments[0].value = arguments[1];", pd.getDLN(), expectedDLN);
+
+			wait.until(ExpectedConditions.visibilityOf(pd.getLicenseExpiryDate()));
+			js.executeScript("arguments[0].value = arguments[1];", pd.getLicenseExpiryDate(), expectedLicenseExpiry);
+
 			wait.until(ExpectedConditions.elementToBeClickable(pd.getNationality()));
 			pd.selectNationality(expectedNationality);
 
-			String expectedMaritalStatus = "Single";
 			wait.until(ExpectedConditions.elementToBeClickable(pd.getMaritalStatus()));
 			pd.selectMaritalStatus(expectedMaritalStatus);
 
-			String expectedDOB = "1994-03-03";
-			js.executeScript("arguments[0].value = '" + expectedDOB + "';", pd.getDOB());
+			wait.until(ExpectedConditions.elementToBeClickable(pd.getDOB()));
+			js.executeScript("arguments[0].value = arguments[1];", pd.getDOB(), expectedDOB);
 
-			String expectedGender = "Male";
 			pd.selectGender(expectedGender);
 
 			pd.getSaveBtn().click();
-
 			wait.until(ExpectedConditions.visibilityOf(sb.getToastNotif()));
+			wait.until(ExpectedConditions.visibilityOf(pd.getFirstname()));
 
 			// assert
 
 			String actualFirstname = pd.getFirstnameValue();
-			Assert.assertEquals(expectedFirstname, actualFirstname);
-
 			String actualMiddlename = pd.getMiddlenameValue();
-			Assert.assertEquals(expectedMiddlename, actualMiddlename);
-
 			String actualLastname = pd.getLastnameValue();
-			Assert.assertEquals(expectedLastname, actualLastname);
-
 			String actualEmployeeId = pd.getEmployeeIdValue();
-			Assert.assertEquals(expectedEmployeeId, actualEmployeeId);
-
 			String actualOtherId = pd.getOtherIdValue();
-			Assert.assertEquals(expectedOtherId, actualOtherId);
-
 			String actualDLN = pd.getDLNValue();
-			Assert.assertEquals(expectedDLN, actualDLN);
-
 			String actualLicenseExpiry = pd.getLicenseExpiryDateValue();
-			Assert.assertEquals(expectedLicenseExpiry, actualLicenseExpiry);
-
 			String actualNationality = pd.getNationalityTxt();
-			Assert.assertEquals(expectedNationality, actualNationality);
-
 			String actualMaritalStatus = pd.getMaritalStatusTxt();
-			Assert.assertEquals(expectedMaritalStatus, actualMaritalStatus);
-
 			String actualDOB = pd.getDOBValue();
-			Assert.assertEquals(expectedDOB, actualDOB);
+			String actualGender = "Male";
 
-			Assert.assertTrue(pd.isGenderSelected("Female"));
+			softAssert.assertEquals(expectedFirstname, actualFirstname);
+			softAssert.assertEquals(expectedMiddlename, actualMiddlename);
+			softAssert.assertEquals(expectedLastname, actualLastname);
+			softAssert.assertEquals(expectedEmployeeId, actualEmployeeId);
+			softAssert.assertEquals(expectedOtherId, actualOtherId);
+			softAssert.assertEquals(expectedDLN, actualDLN);
+			softAssert.assertEquals(expectedLicenseExpiry, actualLicenseExpiry);
+			softAssert.assertEquals(expectedNationality, actualNationality);
+			softAssert.assertEquals(expectedMaritalStatus, actualMaritalStatus);
+			softAssert.assertTrue(pd.isGenderSelected(actualGender));
+			softAssert.assertEquals(expectedDOB, actualDOB);
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			softAssert.fail("Error" + e.getMessage());
 		}
+		softAssert.assertAll();
 	}
 
 	@Test(dataProvider = "validCredential", description = "Verify MyInfo_PersonalDetails correct information")
@@ -114,48 +113,46 @@ public class PersonalDetailsTest extends BaseTest {
 		new LoginPage(driver).toLogin(username, password);
 		new SideBar(driver).getMyInfo().click();
 		PersonalDetails pd = new PersonalDetails(driver);
-		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.elementToBeClickable(pd.getFirstname())).click();
+
 		String expectedFirstname = "FirstNameTest";
-		String expectedMiddlename = "Ramesh";
-		String expectedLastname = "LastNameTest";
+		String expectedMiddlename = "MiddleNameField";
+		String expectedLastname = "LastNameField";
 		String expectedEmployeeId = "Employee";
 		String expectedOtherId = "OtherIdTest";
-		String expectedDLN = "DriverLicenseTest";
-		String expectedLicenseExpiry = "2025-03-10";
-		String expectedNationality = "American";
+		String expectedDLN = "DriversLicenseTest";
+		String expectedLicenseExpiry = "2030-12-12";
+		String expectedNationality = "Brazilian";
 		String expectedMaritalStatus = "Married";
-		String expectedDOB = "1994-03-03";
+		String expectedDOB = "2000-12-12";
+		
 
 		String actualFirstname = pd.getFirstnameValue();
-		Assert.assertEquals(expectedFirstname, actualFirstname);
-
 		String actualMiddlename = pd.getMiddlenameValue();
-		Assert.assertEquals(expectedMiddlename, actualMiddlename);
-
 		String actualLastname = pd.getLastnameValue();
-		Assert.assertEquals(expectedLastname, actualLastname);
-
 		String actualEmployeeId = pd.getEmployeeIdValue();
-		Assert.assertEquals(expectedEmployeeId, actualEmployeeId);
-
 		String actualOtherId = pd.getOtherIdValue();
-		Assert.assertEquals(expectedOtherId, actualOtherId);
-
 		String actualDLN = pd.getDLNValue();
-		Assert.assertEquals(expectedDLN, actualDLN);
-
 		String actualLicenseExpiry = pd.getLicenseExpiryDateValue();
-		Assert.assertEquals(expectedLicenseExpiry, actualLicenseExpiry);
-
 		String actualNationality = pd.getNationalityTxt();
-		Assert.assertEquals(expectedNationality, actualNationality);
-
 		String actualMaritalStatus = pd.getMaritalStatusTxt();
-		Assert.assertEquals(expectedMaritalStatus, actualMaritalStatus);
-
 		String actualDOB = pd.getDOBValue();
-		Assert.assertEquals(expectedDOB, actualDOB);
+		String actualGender = "Male";
+
+		SoftAssert softAssert = new SoftAssert();
+		softAssert.assertEquals(expectedFirstname, actualFirstname);
+		softAssert.assertEquals(expectedMiddlename, actualMiddlename);
+		softAssert.assertEquals(expectedLastname, actualLastname);
+		softAssert.assertEquals(expectedEmployeeId, actualEmployeeId);
+		softAssert.assertEquals(expectedOtherId, actualOtherId);
+		softAssert.assertEquals(expectedDLN, actualDLN);
+		softAssert.assertEquals(expectedLicenseExpiry, actualLicenseExpiry);
+		softAssert.assertEquals(expectedNationality, actualNationality);
+		softAssert.assertEquals(expectedMaritalStatus, actualMaritalStatus);
+		softAssert.assertEquals(expectedDOB, actualDOB);
+		softAssert.assertTrue(pd.isGenderSelected(actualGender));
+		softAssert.assertAll();
 
 	}
 

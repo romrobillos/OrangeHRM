@@ -1,6 +1,7 @@
 package page.MyInfo;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,13 +14,13 @@ public class PersonalDetails extends BasePage {
 	@FindBy(xpath = "///a[normalize-space()='Personal Details']")
 	WebElement personalDetails;
 
-	@FindBy(xpath = "//input[@placeholder='First Name']")
+	@FindBy(xpath = "//form[@class='oxd-form']/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[2]/input")
 	WebElement pd_firstname;
 
-	@FindBy(xpath = "//input[@placeholder='Middle Name']")
+	@FindBy(xpath = "//form[@class='oxd-form']/div[1]/div[1]/div[1]/div[1]/div[2]/div[2]/div[2]/input")
 	WebElement pd_middlename;
 
-	@FindBy(xpath = "//input[@placeholder='Last Name']")
+	@FindBy(xpath = "//form[@class='oxd-form']/div[1]/div[1]/div[1]/div[1]/div[2]/div[3]/div[2]/input")
 	WebElement pd_lastname;
 
 	@FindBy(xpath = "//form[@class='oxd-form']/div[2]/div[1]/div[1]/div[1]/div[2]/input")
@@ -42,9 +43,9 @@ public class PersonalDetails extends BasePage {
 
 	@FindBy(xpath = "//div[@class='oxd-form-row']/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/input")
 	WebElement pd_DOB;
-
-	@FindBy(xpath = "//label[normalize-space()='Male']")
-	WebElement pd_Gender;
+//
+//	@FindBy(xpath = "//label[normalize-space()='Male']")
+//	WebElement pd_Gender;
 
 	@FindBy(xpath = "//div[contains(@class,'horizontal')]//button[@type='submit'][normalize-space()='Save']")
 	WebElement pd_saveBtn;
@@ -182,15 +183,13 @@ public class PersonalDetails extends BasePage {
 	}
 
 	public void selectGender(String gender) {
-		String xpath = "//label[normalize-space()='" + gender + "']";
+		String xpath = "//label[normalize-space()='"+ gender +"']//preceding-sibling::input";
 		WebElement genderRadioButton = driver.findElement(By.xpath(xpath));
-
-		if (!genderRadioButton.isSelected()) {
-			genderRadioButton.click();
-		}
+		((JavascriptExecutor) driver).executeScript("arguments[0].click();", genderRadioButton);
+ 
 	}
 	public boolean isGenderSelected(String gender) {
-	    String xpath = "//label[normalize-space()='" + gender + "']";
+	    String xpath = "//label[normalize-space()='"+ gender +"']//preceding-sibling::input";
 	    WebElement genderRadioButton = driver.findElement(By.xpath(xpath));
 	    return genderRadioButton.isSelected();
 	}

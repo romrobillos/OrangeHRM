@@ -24,16 +24,19 @@ public class BaseTest {
 	@BeforeMethod
 	public void setUp() throws IOException {
 
-		WebDriverManager.firefoxdriver().setup();
-		driver = new FirefoxDriver();
+		WebDriverManager.chromedriver().setup();
+		driver = new ChromeDriver();
+	
 		driver.get("https://opensource-demo.orangehrmlive.com/");
+		
 		driver.manage().window().maximize();
+		
 		
 		FileReader fr = new FileReader(
 				System.getProperty("user.dir") + "\\src\\test\\resources\\configfiles\\config.properties");
 		prop.load(fr);
 		
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 	}
 
 	@AfterMethod

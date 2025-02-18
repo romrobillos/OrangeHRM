@@ -3,6 +3,7 @@ package page;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class LoginPage extends BasePage {
 
@@ -38,18 +39,15 @@ public class LoginPage extends BasePage {
 
 	@FindBy(xpath = "//button[@type='button']")
 	WebElement cancelBtn;
-	
+
 	@FindBy(xpath = "//h5[normalize-space()='Login']")
 	WebElement loginLabel;
-	
+
 	@FindBy(xpath = "//img[@alt='client brand banner']")
 	WebElement orangeHrmBanner;
-	
+
 	@FindBy(xpath = "//span[normalize-space()='My Info']")
 	WebElement myInfo;
-	
-	
-	
 
 	public LoginPage(WebDriver driver) {
 		super(driver);
@@ -107,15 +105,13 @@ public class LoginPage extends BasePage {
 		return resetIsSentLabel.isDisplayed()
 				&& resetIsSentLabel.getText().equals("Reset Password link sent successfully");
 	}
-	
+
 	public boolean isLoginPage() {
-		return loginLabel.isDisplayed()
-				&& loginLabel.getText().equals("Login");
+		return loginLabel.isDisplayed() && loginLabel.getText().equals("Login");
 	}
-	
+
 	public boolean isLoginSuccesful() {
-		return orangeHrmBanner.isDisplayed()
-				&& myInfo.isDisplayed();
+		return orangeHrmBanner.isDisplayed() && myInfo.isDisplayed();
 	}
 
 }

@@ -117,8 +117,9 @@ public class DashboardTest extends BaseTest {
 		Thread.sleep(1000);
 		boolean beforeToggle = db.getDb_employeesOnLeaveToday_Settings_Popup_Toggle().getDomProperty("className")
 				.contains("oxd-switch-input--active");
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.elementToBeClickable(db.getDb_employeesOnLeaveToday_Settings_Popup_Toggle())).click();
 
-		db.getDb_employeesOnLeaveToday_Settings_Popup_Toggle().click();
 		Thread.sleep(1000);
 		boolean afterToggle = db.getDb_employeesOnLeaveToday_Settings_Popup_Toggle().getDomProperty("className")
 				.contains("oxd-switch-input--active");
@@ -142,7 +143,8 @@ public class DashboardTest extends BaseTest {
 	}
 
 	@Test(dataProvider = "validCredential", description = "Verify employeesOnLeaveToday_Settings_Cancel Button")
-	public void TC018_employeesOnLeaveToday_Settings_Cancel(String username, String password) throws InterruptedException {
+	public void TC018_employeesOnLeaveToday_Settings_Cancel(String username, String password)
+			throws InterruptedException {
 		new LoginPage(driver).toLogin(username, password);
 		SideBar sb = new SideBar(driver);
 		sb.getDashboard().click();
@@ -153,7 +155,7 @@ public class DashboardTest extends BaseTest {
 		wait = new WebDriverWait(driver, Duration.ofSeconds(2));
 		boolean isPopupClosed = wait
 				.until(ExpectedConditions.invisibilityOf(db.getDb_employeesOnLeaveToday_Settings_Popup()));
-		Assert.assertFalse(isPopupClosed);
+		Assert.assertTrue(isPopupClosed);
 	}
 
 }
