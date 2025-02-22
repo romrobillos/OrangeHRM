@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="1" total="2" passed="1" failed="0" skipped="0">
+<testng-results ignored="3" total="4" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2025-02-19T05:53:58 GMT+08:00" name="Default suite" finished-at="2025-02-19T05:54:09 GMT+08:00" duration-ms="11208">
+  <suite started-at="2025-02-23T07:16:42 GMT+08:00" name="Default suite" finished-at="2025-02-23T07:16:54 GMT+08:00" duration-ms="12268">
     <groups>
     </groups>
-    <test started-at="2025-02-19T05:53:58 GMT+08:00" name="Default test" finished-at="2025-02-19T05:54:09 GMT+08:00" duration-ms="11208">
-      <class name="testcase.MyInfo.PersonalDetailsTest">
-        <test-method is-config="true" signature="setUp()[pri:0, instance:testcase.MyInfo.PersonalDetailsTest@587e5365]" started-at="2025-02-19T05:53:58 GMT+08:00" name="setUp" finished-at="2025-02-19T05:54:03 GMT+08:00" duration-ms="5525" status="PASS">
+    <test started-at="2025-02-23T07:16:42 GMT+08:00" name="Default test" finished-at="2025-02-23T07:16:54 GMT+08:00" duration-ms="12268">
+      <class name="testcase.Recruitment.CandidatesTest">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:testcase.Recruitment.CandidatesTest@2de23121]" started-at="2025-02-23T07:16:42 GMT+08:00" name="setUp" finished-at="2025-02-23T07:16:47 GMT+08:00" duration-ms="4977" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="TC020_MyInfo_PersonalDetails_isCorrect(java.lang.String,java.lang.String)[pri:0, instance:testcase.MyInfo.PersonalDetailsTest@587e5365]" started-at="2025-02-19T05:54:03 GMT+08:00" name="TC020_MyInfo_PersonalDetails_isCorrect" description="Verify MyInfo_PersonalDetails correct information" data-provider="validCredential" finished-at="2025-02-19T05:54:09 GMT+08:00" duration-ms="5350" status="PASS">
+        <test-method signature="TC0_Recruitment_Candidates_isDateFiltered(java.lang.String,java.lang.String)[pri:0, instance:testcase.Recruitment.CandidatesTest@2de23121]" started-at="2025-02-23T07:16:47 GMT+08:00" name="TC0_Recruitment_Candidates_isDateFiltered" description=" Verify Recruitment Candidates if Date is filtered" data-provider="validCredential" finished-at="2025-02-23T07:16:54 GMT+08:00" duration-ms="7072" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -26,12 +26,12 @@
           </params>
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- TC020_MyInfo_PersonalDetails_isCorrect -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:testcase.MyInfo.PersonalDetailsTest@587e5365]" started-at="2025-02-19T05:54:09 GMT+08:00" name="tearDown" finished-at="2025-02-19T05:54:09 GMT+08:00" duration-ms="251" status="PASS">
+        </test-method> <!-- TC0_Recruitment_Candidates_isDateFiltered -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:testcase.Recruitment.CandidatesTest@2de23121]" started-at="2025-02-23T07:16:54 GMT+08:00" name="tearDown" finished-at="2025-02-23T07:16:54 GMT+08:00" duration-ms="170" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-      </class> <!-- testcase.MyInfo.PersonalDetailsTest -->
+      </class> <!-- testcase.Recruitment.CandidatesTest -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

@@ -1,5 +1,7 @@
 package page.MyInfo;
 
+import java.time.Duration;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -7,6 +9,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import page.BasePage;
 
@@ -43,8 +46,8 @@ public class EmergencyContacts extends BasePage {
 		super(driver);
 	}
 
-	public WebElement getEmergencyContacts() {
-		return emergencyContacts;
+	public void clickEmergencyContacts() {
+		  emergencyContacts.click();;
 	}
 
 	public WebElement getAddEmergencyContactsBtn() {
@@ -71,12 +74,12 @@ public class EmergencyContacts extends BasePage {
 		return ec_workTelephoneTxt;
 	}
 
-	public WebElement getCancelBtn() {
-		return cancelBtn;
+	public void clickCancelBtn() {
+		  cancelBtn.click();
 	}
 
-	public WebElement getSaveBtn() {
-		return saveBtn;
+	public void clickSaveBtn() {
+		  saveBtn.click();;
 	}
 
 	public boolean isEmergencyContactNameDisplayed() {
@@ -90,7 +93,7 @@ public class EmergencyContacts extends BasePage {
 	public boolean isEmergencyContactDisplayed(String name, String mobileNumber) {
 		String contactXpath = "//div[contains(@class,'oxd-table-row')]//div[text()='" + name + "']";
 		String mobileXpath = "//div[contains(@class,'oxd-table-row')]//div[text()='" + mobileNumber + "']";
-
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		WebElement nameElement = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(contactXpath)));
 		WebElement mobileElement = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(mobileXpath)));
 		return nameElement.isDisplayed() && mobileElement.isDisplayed();

@@ -1,7 +1,5 @@
 package testcase;
 
-import java.time.Duration;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
