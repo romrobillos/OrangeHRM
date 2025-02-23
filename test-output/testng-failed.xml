@@ -7,7 +7,7 @@
         <methods>
           <include name="tearDown"/>
           <include name="setUp"/>
-          <include name="TC0_Recruitment_Candidates_isDateFiltered" invocation-numbers="0"/>
+          <include name="TC0_Recruitment_Candidates_isCandidateFiltered" invocation-numbers="0"/>
         </methods>
       </class> <!-- testcase.Recruitment.CandidatesTest -->
     </classes>

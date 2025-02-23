@@ -31,6 +31,27 @@ public class CandidatesTest extends BaseTest {
 
 	}
 
+	@Test(dataProvider = "validCredential", description = " Verify Recruitment Candidates if CandidatesName are filtered")
+	public void TC0_Recruitment_Candidates_isCandidateFiltered(String username, String password) {
+		new LoginPage(driver).toLogin(username, password);
+		SideBar sb = new SideBar(driver);
+		sb.getRecruitment().click();
+		Candidates c = new Candidates(driver);
+		c.getCandidates().click();
+
+		String expectedCandidateName = "Gautham Raj R";
+		c.getCandidateName().sendKeys(expectedCandidateName.split(" ")[0]); 
+		c.selectName(expectedCandidateName);
+		c.clickSearch();
+
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("window.scrollBy(0,500)");
+
+		boolean isItFiltered = c.isCandidateNameFiltered(expectedCandidateName);
+		Assert.assertTrue(isItFiltered);
+
+	}
+
 	@Test(dataProvider = "validCredential", description = " Verify Recruitment Candidates if Hiring Manager are filtered")
 	public void TC0_Recruitment_Candidates_isHiringManagerFiltered(String username, String password) {
 		new LoginPage(driver).toLogin(username, password);
@@ -50,7 +71,31 @@ public class CandidatesTest extends BaseTest {
 		Assert.assertTrue(isItFiltered);
 
 	}
-	
+
+	@Test(dataProvider = "validCredential", description = " Verify Recruitment_Candidates if Date is WithinRange")
+	public void TC0_Recruitment_Candidates_isDateFiltered(String username, String password)
+			throws InterruptedException {
+		new LoginPage(driver).toLogin(username, password);
+		SideBar sb = new SideBar(driver);
+		sb.getRecruitment().click();
+		Candidates c = new Candidates(driver);
+		c.getCandidates().click();
+
+		String expectedDateFrom = "2024-02-02";
+		String expectedDateTo = "2024-06-02";
+
+		c.getdateFrom().sendKeys(expectedDateFrom);
+		c.getdateTo().sendKeys(expectedDateTo);
+		c.clickSearch();
+
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("window.scrollBy(0,500)");
+		Thread.sleep(1000);
+		boolean isWithinRange = c.isDateOfApplicationWithinRange();
+		Assert.assertTrue(isWithinRange, "Some dates are out of the specified range!");
+
+	}
+
 	@Test(dataProvider = "validCredential", description = " Verify Recruitment Candidates if Status are filtered")
 	public void TC0_Recruitment_Candidates_isStatusFiltered(String username, String password) {
 		new LoginPage(driver).toLogin(username, password);
@@ -70,28 +115,5 @@ public class CandidatesTest extends BaseTest {
 		Assert.assertTrue(isItFiltered);
 
 	}
-	
-	@Test(dataProvider = "validCredential", description = " Verify Recruitment Candidates if Date is filtered")
-	public void TC0_Recruitment_Candidates_isDateFiltered(String username, String password) throws InterruptedException {
-		new LoginPage(driver).toLogin(username, password);
-		SideBar sb = new SideBar(driver);
-		sb.getRecruitment().click();
-		Candidates c = new Candidates(driver);
-		c.getCandidates().click();
 
-		
-		String expectedDateFrom = "2024-02-02";
-		String expectedDateTo = "2024-06-02";
-		
-		c.getdateFrom().sendKeys(expectedDateFrom);
-		c.getdateTo().sendKeys(expectedDateTo);
-		c.clickSearch();
-
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("window.scrollBy(0,500)");
-		Thread.sleep(2000);
-		boolean isWithinRange = c.isDateOfApplicationWithinRange();
-		Assert.assertTrue(isWithinRange, "Some dates are out of the specified range!");
-
-	}
 }
