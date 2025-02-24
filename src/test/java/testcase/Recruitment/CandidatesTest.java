@@ -115,5 +115,24 @@ public class CandidatesTest extends BaseTest {
 		Assert.assertTrue(isItFiltered);
 
 	}
+	
+	@Test(dataProvider = "validCredential", description = " Verify Recruitment_Candidates_Table_Action_ViewProfileBtn")
+	public void TC0_Recruitment_Candidates_Action_isViewProfileBtnWorking(String username, String password) throws InterruptedException {
+		new LoginPage(driver).toLogin(username, password);
+		SideBar sb = new SideBar(driver);
+		sb.getRecruitment().click();
+		Candidates c = new Candidates(driver);
+		c.getCandidates().click();
+		
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("window.scrollBy(0,500)");
+		
+		String row1Name = c.getRow1Name();
+		c.clickViewProfile();
+		
+		boolean isAtCorrectProfile = c.isProfileEqualToRowName(row1Name);
+		Thread.sleep(4000);
+		Assert.assertTrue(isAtCorrectProfile);
+	}
 
 }

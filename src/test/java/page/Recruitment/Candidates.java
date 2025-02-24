@@ -46,14 +46,17 @@ public class Candidates extends BasePage {
 	@FindBy(xpath = "//input[@placeholder='Enter comma seperated words...']")
 	WebElement candidates_keywords;
 
-	@FindBy(xpath = "//button[normalize-space()='Search']")
-	WebElement candidates_search;
-
 	@FindBy(xpath = "//input[@placeholder='From']")
 	WebElement candidates_dateFrom;
 
 	@FindBy(xpath = "//input[@placeholder='To']")
 	WebElement candidates_dateTo;
+
+	@FindBy(xpath = "//button[normalize-space()='Search']")
+	WebElement candidates_search;
+
+	@FindBy(xpath = "//div[@class='oxd-table-body']/div[1]/div[1]/div[7]/div/button[1]")
+	WebElement action_viewProfile;
 
 	public WebElement getCandidates() {
 		return candidates;
@@ -69,6 +72,10 @@ public class Candidates extends BasePage {
 
 	public WebElement getCandidateName() {
 		return candidates_candidateName;
+	}
+
+	public void clickViewProfile() {
+		action_viewProfile.click();
 	}
 
 	public void clickSearch() {
@@ -246,21 +253,21 @@ public class Candidates extends BasePage {
 	}
 
 	public void selectName(String name) {
-		 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		List<WebElement> dropdown = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
 				By.xpath("//div[@role='listbox']/div/span[normalize-space()='" + name + "']")));
-		
+
 		System.out.println("Dropdown list:");
 		for (int i = 0; i < dropdown.size(); i++) {
 			System.out.println(dropdown.get(i).getText());
 		}
-		System.out.println("Total:"+dropdown.size());
+		System.out.println("Total:" + dropdown.size());
 		// select
 		for (int i = 0; i < dropdown.size(); i++)
 			if (dropdown.get(i).getText().equalsIgnoreCase(name)) {
 				dropdown.get(i).click();
 				break;
-				
+
 			}
 
 	}
@@ -350,4 +357,25 @@ public class Candidates extends BasePage {
 		return true; // All dates are within range
 	}
 
+	public boolean isProfileEqualToRowName(String name) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	 
+		String stageXpath = wait
+			    .until(ExpectedConditions.presenceOfElementLocated(By.xpath(
+			        "//div[@class='oxd-input-group']/div[2]/p[contains(normalize-space(.), \"" + name + "\")]")))
+			    .getText();
+
+		boolean isItEqual = name.equals(stageXpath);
+		return isItEqual;
+
+	}
+	
+	public String getRow1Name() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		String row1Xpath = wait
+				.until(ExpectedConditions.presenceOfElementLocated(
+						By.xpath("//div[@class='oxd-table-body']/div[1]//div[contains(@class,'oxd-table-cell')][3]")))
+				.getText();
+		return row1Xpath;
+	}
 }
