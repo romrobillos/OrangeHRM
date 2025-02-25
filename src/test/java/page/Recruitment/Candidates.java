@@ -58,6 +58,15 @@ public class Candidates extends BasePage {
 	@FindBy(xpath = "//div[@class='oxd-table-body']/div[1]/div[1]/div[7]/div/button[1]")
 	WebElement action_viewProfile;
 
+	@FindBy(xpath = "//div[@class='oxd-table-body']/div[1]/div[1]/div[7]/div/button[2]")
+	WebElement action_deleteProfile;
+
+	@FindBy(xpath = "//button[normalize-space()='Yes, Delete']")
+	WebElement action_popUpDeleteBtn;
+
+	@FindBy(xpath = "//div[@class='oxd-table-header']//label/span")
+	WebElement table_checkbox;
+
 	public WebElement getCandidates() {
 		return candidates;
 	}
@@ -74,12 +83,27 @@ public class Candidates extends BasePage {
 		return candidates_candidateName;
 	}
 
+	public void clickSearch() {
+		candidates_search.click();
+	}
+
+	public void clickHeaderCheckbox() {
+		table_checkbox.click();
+	}
+
 	public void clickViewProfile() {
 		action_viewProfile.click();
 	}
 
-	public void clickSearch() {
-		candidates_search.click();
+	public void clickDeleteProfile() {
+		action_deleteProfile.click();
+	}
+
+	public void clickPopupDeleteBtn() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+
+		WebElement deleteButton = wait.until(ExpectedConditions.elementToBeClickable(action_popUpDeleteBtn));
+		deleteButton.click();
 	}
 
 	public String getHiringManagerTxt() {
@@ -252,26 +276,23 @@ public class Candidates extends BasePage {
 		return flag;
 	}
 
-	public void selectName(String name) {
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		List<WebElement> dropdown = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
-				By.xpath("//div[@role='listbox']/div/span[normalize-space()='" + name + "']")));
+	public void selectNameFromSuggestion1(String name) {
+		 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
-		System.out.println("Dropdown list:");
-		for (int i = 0; i < dropdown.size(); i++) {
-			System.out.println(dropdown.get(i).getText());
+		    // Wait for the suggestion list to load
+		    List<WebElement> suggestions = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+		        By.xpath("//div[@role='listbox']/div/span[normalize-space()='" + name + "']")
+		    ));
+
+		    System.out.println("Total Suggestions Found: " + suggestions.size());
+
+		    if (!suggestions.isEmpty()) {
+		        System.out.println("Selecting: " + suggestions.get(0).getText());
+		        suggestions.get(0).click(); // Click the first suggestion
+		    } else {
+		        System.out.println("No matching suggestion found for: " + name);
+		    }
 		}
-		System.out.println("Total:" + dropdown.size());
-		// select
-		for (int i = 0; i < dropdown.size(); i++)
-			if (dropdown.get(i).getText().equalsIgnoreCase(name)) {
-				dropdown.get(i).click();
-				break;
-
-			}
-
-	}
-
 	public boolean isCandidateNameFiltered(String name) {
 
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -279,7 +300,6 @@ public class Candidates extends BasePage {
 		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[@class='oxd-table-body']/div")));
 
 		List<WebElement> rows = driver.findElements(By.xpath("//div[@class='oxd-table-body']/div"));
-		System.out.println("Total rows found: " + rows.size());
 		boolean flag = false;
 
 		for (int i = 1; i <= rows.size(); i++) {
@@ -292,7 +312,7 @@ public class Candidates extends BasePage {
 						.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(dynamicXpath)));
 
 				String actValue = nameElement.getText();
-				System.out.println("Row " + i + ": " + actValue);
+				System.out.println("Row " + i + " Candidate Name: " + actValue);
 				if (actValue.contains(name)) {
 					flag = true;
 					break;
@@ -308,16 +328,13 @@ public class Candidates extends BasePage {
 	public boolean isDateOfApplicationWithinRange() {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-		// Get "Date From" and "Date To" values from input fields
 		String dateFromText = candidates_dateFrom.getAttribute("value").trim();
 		String dateToText = candidates_dateTo.getAttribute("value").trim();
 
-		// Convert "Date From" and "Date To" into LocalDate
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Adjust format if needed
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDate dateFrom = LocalDate.parse(dateFromText, formatter);
 		LocalDate dateTo = LocalDate.parse(dateToText, formatter);
 
-		// Retrieve all displayed "Date of Application" values from the table
 		List<WebElement> dateElements = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
 				By.xpath("//div[@class='oxd-table-body']//div[contains(@class,'oxd-table-cell')][5]")));
 
@@ -328,18 +345,15 @@ public class Candidates extends BasePage {
 			return false;
 		}
 
-		// Traditional for-loop version
 		for (int i = 0; i < dateElements.size(); i++) {
 			WebElement dateElement = dateElements.get(i);
 
-			// Get text and convert to LocalDate
 			String dateText = dateElement.getText().trim();
 			System.out.println("Row " + (i + 1) + ": Raw date text - " + dateText);
 
 			try {
 				LocalDate applicationDate = LocalDate.parse(dateText, formatter);
 
-				// Check if application date is within range
 				boolean isWithinRange = (applicationDate.isEqual(dateFrom) || applicationDate.isAfter(dateFrom))
 						&& (applicationDate.isEqual(dateTo) || applicationDate.isBefore(dateTo));
 
@@ -347,35 +361,122 @@ public class Candidates extends BasePage {
 						+ " -> Result: " + isWithinRange);
 
 				if (!isWithinRange) {
-					return false; // If any date is out of range, return false immediately
+					return false;
 				}
 			} catch (DateTimeParseException e) {
 				System.out.println("Skipping row " + (i + 1) + " due to invalid date format: " + dateText);
 			}
 		}
 
-		return true; // All dates are within range
+		return true;
 	}
 
-	public boolean isProfileEqualToRowName(String name) {
+	public boolean verifySelectAllCheckbox() {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-	 
+
+		List<WebElement> rowCheckboxes = wait.until(ExpectedConditions
+				.presenceOfAllElementsLocatedBy(By.xpath("//div[@class='oxd-table-body']//input[@type='checkbox']")));
+
+		boolean allChecked = true;
+		for (WebElement checkbox : rowCheckboxes) {
+			if (!checkbox.isSelected()) {
+				allChecked = false;
+				System.out.println("Checkbox not selected: " + checkbox);
+			}
+		}
+
+		// Print result
+		if (allChecked) {
+			System.out.println("All checked!");
+		} else {
+			System.out.println("Some checkboxes are NOT selected.");
+		}
+
+		return allChecked;
+	}
+
+	public boolean isProfileEqualToRow1Name(String name) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+
 		String stageXpath = wait
-			    .until(ExpectedConditions.presenceOfElementLocated(By.xpath(
-			        "//div[@class='oxd-input-group']/div[2]/p[contains(normalize-space(.), \"" + name + "\")]")))
-			    .getText();
+				.until(ExpectedConditions.presenceOfElementLocated(By.xpath(
+						"//div[@class='oxd-input-group']/div[2]/p[contains(normalize-space(.), \"" + name + "\")]")))
+				.getText();
+		System.out.println("Application Stage Candidate Name: " + stageXpath);
 
 		boolean isItEqual = name.equals(stageXpath);
 		return isItEqual;
 
 	}
-	
+
 	public String getRow1Name() {
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-		String row1Xpath = wait
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		String row1NameXpath = wait
 				.until(ExpectedConditions.presenceOfElementLocated(
 						By.xpath("//div[@class='oxd-table-body']/div[1]//div[contains(@class,'oxd-table-cell')][3]")))
 				.getText();
-		return row1Xpath;
+		return row1NameXpath;
 	}
+
+	public String getRow1NameAndDate() {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		List<WebElement> row1NameAndDate = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+				By.xpath("//div[@class='oxd-table-body']/div[1]//div[contains(@class,'oxd-table-cell')][3] | "
+						+ "//div[@class='oxd-table-body']/div[1]//div[contains(@class,'oxd-table-cell')][5]")));
+		String row1Name = row1NameAndDate.get(0).getText().trim();
+		String row1Date = row1NameAndDate.get(1).getText().trim();
+
+		return row1Name + " & " + row1Date;
+	}
+
+	public boolean isRow1CandidateDeleted(String nameAndDate) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+		List<WebElement> updatedRows = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+				By.xpath("//div[@class='oxd-table-body']/div//div[contains(@class,'oxd-table-cell')][3] | "
+						+ "//div[@class='oxd-table-body']/div//div[contains(@class,'oxd-table-cell')][5]")));
+
+		System.out.println("Total elements found: " + updatedRows.size());
+
+		String[] parts = nameAndDate.split("\\&");
+		if (parts.length != 2) {
+			System.out.println("Error: Invalid format. Expected 'Name & Date'. Received: " + nameAndDate);
+			return false;
+		}
+
+		String expectedName = parts[0].trim();
+		String expectedDate = parts[1].trim();
+
+		System.out.println("Expected Name: " + expectedName);
+		System.out.println("Expected Date: " + expectedDate);
+
+		boolean candidateFound = false;
+		int duplicateCount = 0;
+
+		for (int i = 0; i < updatedRows.size(); i += 2) {
+			String rowName = updatedRows.get(i).getText().trim();
+			String rowDate = updatedRows.get(i + 1).getText().trim();
+
+			System.out.println("Checking row " + (i / 2 + 1) + ": " + rowName + " | " + rowDate);
+
+			if (rowName.equalsIgnoreCase(expectedName) && rowDate.equals(expectedDate)) {
+				duplicateCount++;
+				candidateFound = true;
+
+			}
+		}
+
+		if (candidateFound) {
+			if (duplicateCount > 1) {
+				System.out.println("Candidate still exists as a duplicate! Found " + duplicateCount + " times.");
+			} else {
+				System.out.println("Candidate still exists.");
+			}
+			return false;
+		}
+
+		System.out.println("Candidate deleted successfully.");
+		return true;
+	}
+
 }

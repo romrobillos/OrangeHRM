@@ -6,8 +6,8 @@
       <class name="testcase.Recruitment.CandidatesTest">
         <methods>
           <include name="tearDown"/>
+          <include name="TC0_Recruitment_Candidates_Action_isDeleteProfileBtnWorking" invocation-numbers="0"/>
           <include name="setUp"/>
-          <include name="TC0_Recruitment_Candidates_Action_isViewProfileBtnWorking" invocation-numbers="0"/>
         </methods>
       </class> <!-- testcase.Recruitment.CandidatesTest -->
     </classes>
