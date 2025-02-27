@@ -277,22 +277,52 @@ public class Candidates extends BasePage {
 	}
 
 	public void selectNameFromSuggestion1(String name) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+
+		// Wait for the suggestion list to load
+		List<WebElement> suggestions = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+				By.xpath("//div[@role='listbox']/div/span[normalize-space()='" + name + "']")));
+
+		System.out.println("Total Suggestions Found: " + suggestions.size());
+
+		if (!suggestions.isEmpty()) {
+			System.out.println("Selecting: " + suggestions.get(0).getText());
+			suggestions.get(0).click(); // Click the first suggestion
+		} else {
+			System.out.println("No matching suggestion found for: " + name);
+		}
+	}
+
+	public boolean isManualSearchGotFilteredOrInvalid(String name) {
 		 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
-		    // Wait for the suggestion list to load
-		    List<WebElement> suggestions = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
-		        By.xpath("//div[@role='listbox']/div/span[normalize-space()='" + name + "']")
-		    ));
+		    // Get all search results
+		    List<WebElement> tableResults = driver.findElements(By.xpath("//div[@class='oxd-table-body']//div[@role='row']/div[3]"));
 
-		    System.out.println("Total Suggestions Found: " + suggestions.size());
-
-		    if (!suggestions.isEmpty()) {
-		        System.out.println("Selecting: " + suggestions.get(0).getText());
-		        suggestions.get(0).click(); // Click the first suggestion
-		    } else {
-		        System.out.println("No matching suggestion found for: " + name);
+		    // Check if invalid search error appears
+		    boolean invalid = false;
+		    try {
+		        WebElement errorMessage = wait.until(ExpectedConditions
+		                .presenceOfElementLocated(By.xpath("//div[contains(@class,'text-input--error')]")));
+		        invalid = errorMessage.isDisplayed();
+		    } catch (TimeoutException e) {
+		        invalid = false; // If no error message appears, set invalid to false
 		    }
+
+		    // Check if all table results exactly match the given name
+		    boolean allMatch = true;
+		    for (WebElement row : tableResults) {
+		        String rowText = row.getText().trim();
+		        if (!rowText.equalsIgnoreCase(name)) {
+		            allMatch = false;
+		            break;
+		        }
+		    }
+
+		    // If search is invalid OR results do not match the expected name, return true (meaning test should fail)
+		    return invalid || !allMatch;
 		}
+
 	public boolean isCandidateNameFiltered(String name) {
 
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
