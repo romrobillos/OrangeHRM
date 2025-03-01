@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="8" total="9" passed="0" failed="1" skipped="0">
+<testng-results ignored="10" total="11" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2025-02-27T22:01:35 GMT+08:00" name="Default suite" finished-at="2025-02-27T22:01:56 GMT+08:00" duration-ms="21740">
+  <suite started-at="2025-03-01T04:37:01 GMT+08:00" name="Default suite" finished-at="2025-03-01T04:37:16 GMT+08:00" duration-ms="14515">
     <groups>
     </groups>
-    <test started-at="2025-02-27T22:01:35 GMT+08:00" name="Default test" finished-at="2025-02-27T22:01:56 GMT+08:00" duration-ms="21740">
+    <test started-at="2025-03-01T04:37:01 GMT+08:00" name="Default test" finished-at="2025-03-01T04:37:16 GMT+08:00" duration-ms="14515">
       <class name="testcase.Recruitment.CandidatesTest">
-        <test-method is-config="true" signature="setUp()[pri:0, instance:testcase.Recruitment.CandidatesTest@6913c1fb]" started-at="2025-02-27T22:01:35 GMT+08:00" name="setUp" finished-at="2025-02-27T22:01:41 GMT+08:00" duration-ms="6618" status="PASS">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:testcase.Recruitment.CandidatesTest@bccb269]" started-at="2025-03-01T04:37:01 GMT+08:00" name="setUp" finished-at="2025-03-01T04:37:08 GMT+08:00" duration-ms="6486" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="verifyCandidateSearchWithoutSuggestionClick(java.lang.String,java.lang.String)[pri:0, instance:testcase.Recruitment.CandidatesTest@6913c1fb]" started-at="2025-02-27T22:01:41 GMT+08:00" name="verifyCandidateSearchWithoutSuggestionClick" description=" Verify Recruitment_Candidates if Manual search for Candidates name is working" data-provider="validCredential" finished-at="2025-02-27T22:01:56 GMT+08:00" duration-ms="14636" status="FAIL">
+        <test-method signature="TC0_Recruitment_Candidates_addCandidate_ToCancel(java.lang.String,java.lang.String)[pri:0, instance:testcase.Recruitment.CandidatesTest@bccb269]" started-at="2025-03-01T04:37:08 GMT+08:00" name="TC0_Recruitment_Candidates_addCandidate_ToCancel" description=" Verify Add Candidate to Cancel" data-provider="validCredential" finished-at="2025-03-01T04:37:16 GMT+08:00" duration-ms="7688" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -24,54 +24,10 @@
               </value>
             </param>
           </params>
-          <exception class="java.lang.AssertionError">
-            <message>
-              <![CDATA[The following asserts failed:
-FAILED: Invalid search message displayed OR search results did not match the expected name filter for: John expected [false] but found [true],
-FAILED: Invalid search message displayed OR search results did not match the expected name filter for: Doe expected [false] but found [true],
-FAILED: Invalid search message displayed OR search results did not match the expected name filter for: John Doe expected [false] but found [true]]]>
-            </message>
-            <full-stacktrace>
-              <![CDATA[java.lang.AssertionError: The following asserts failed:
-FAILED: Invalid search message displayed OR search results did not match the expected name filter for: John expected [false] but found [true],
-FAILED: Invalid search message displayed OR search results did not match the expected name filter for: Doe expected [false] but found [true],
-FAILED: Invalid search message displayed OR search results did not match the expected name filter for: John Doe expected [false] but found [true]
-at org.testng.asserts.SoftAssert.assertAll(SoftAssert.java:46)
-at org.testng.asserts.SoftAssert.assertAll(SoftAssert.java:30)
-at testcase.Recruitment.CandidatesTest.verifyCandidateSearchWithoutSuggestionClick(CandidatesTest.java:99)
-at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
-at java.base/java.lang.reflect.Method.invoke(Method.java:580)
-at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:141)
-at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:687)
-at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:230)
-at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:63)
-at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:995)
-at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:203)
-at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:154)
-at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:134)
-at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
-at org.testng.TestRunner.privateRun(TestRunner.java:741)
-at org.testng.TestRunner.run(TestRunner.java:616)
-at org.testng.SuiteRunner.runTest(SuiteRunner.java:421)
-at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:413)
-at org.testng.SuiteRunner.privateRun(SuiteRunner.java:373)
-at org.testng.SuiteRunner.run(SuiteRunner.java:312)
-at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
-at org.testng.TestNG.runSuitesSequentially(TestNG.java:1274)
-at org.testng.TestNG.runSuitesLocally(TestNG.java:1208)
-at org.testng.TestNG.runSuites(TestNG.java:1112)
-at org.testng.TestNG.run(TestNG.java:1079)
-at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
-at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:293)
-at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:91)
-]]>
-            </full-stacktrace>
-          </exception> <!-- java.lang.AssertionError -->
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- verifyCandidateSearchWithoutSuggestionClick -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:testcase.Recruitment.CandidatesTest@6913c1fb]" started-at="2025-02-27T22:01:56 GMT+08:00" name="tearDown" finished-at="2025-02-27T22:01:56 GMT+08:00" duration-ms="409" status="PASS">
+        </test-method> <!-- TC0_Recruitment_Candidates_addCandidate_ToCancel -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:testcase.Recruitment.CandidatesTest@bccb269]" started-at="2025-03-01T04:37:16 GMT+08:00" name="tearDown" finished-at="2025-03-01T04:37:16 GMT+08:00" duration-ms="272" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->

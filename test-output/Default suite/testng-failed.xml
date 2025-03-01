@@ -6,8 +6,8 @@
       <class name="testcase.Recruitment.CandidatesTest">
         <methods>
           <include name="tearDown"/>
+          <include name="TC0_Recruitment_Candidates_addCandidate" invocation-numbers="0"/>
           <include name="setUp"/>
-          <include name="verifyCandidateSearchWithoutSuggestionClick" invocation-numbers="0"/>
         </methods>
       </class> <!-- testcase.Recruitment.CandidatesTest -->
     </classes>

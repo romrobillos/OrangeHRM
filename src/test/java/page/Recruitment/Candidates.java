@@ -55,6 +55,9 @@ public class Candidates extends BasePage {
 	@FindBy(xpath = "//button[normalize-space()='Search']")
 	WebElement candidates_search;
 
+	@FindBy(xpath = "//button[normalize-space()='Add']")
+	WebElement table_add;
+
 	@FindBy(xpath = "//div[@class='oxd-table-body']/div[1]/div[1]/div[7]/div/button[1]")
 	WebElement action_viewProfile;
 
@@ -67,7 +70,32 @@ public class Candidates extends BasePage {
 	@FindBy(xpath = "//div[@class='oxd-table-header']//label/span")
 	WebElement table_checkbox;
 
-	public WebElement getCandidates() {
+	// Add Candidate
+	@FindBy(xpath = "//input[@placeholder='First Name']")
+	WebElement addCandidate_firstname;
+
+	@FindBy(xpath = "//input[@placeholder='Middle Name']")
+	WebElement addCandidate_middlename;
+
+	@FindBy(xpath = "//input[@placeholder='Last Name']")
+	WebElement addCandidate_lastname;
+
+	@FindBy(xpath = "//div[@class='oxd-select-text-input']")
+	WebElement addCandidate_vacancy;
+
+	@FindBy(xpath = "//div[3]//div[1]//div[1]//div[1]//div[2]//input[1]")
+	WebElement addCandidate_email;
+
+	@FindBy(xpath = "//form[@class='oxd-form']/div[3]/div[1]/div[2]//input")
+	WebElement addCandidate_contactnumber;
+
+	@FindBy(xpath = "//button[normalize-space()='Save']")
+	WebElement addCandidate_save;
+
+	@FindBy(xpath = "//button[normalize-space()='Cancel']")
+	WebElement addCandidate_cancel;
+
+	public WebElement getCandidatesSubTab() {
 		return candidates;
 	}
 
@@ -85,6 +113,10 @@ public class Candidates extends BasePage {
 
 	public void clickSearch() {
 		candidates_search.click();
+	}
+
+	public void clickAdd() {
+		table_add.click();
 	}
 
 	public void clickHeaderCheckbox() {
@@ -279,7 +311,6 @@ public class Candidates extends BasePage {
 	public void selectNameFromSuggestion1(String name) {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
-		// Wait for the suggestion list to load
 		List<WebElement> suggestions = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
 				By.xpath("//div[@role='listbox']/div/span[normalize-space()='" + name + "']")));
 
@@ -294,34 +325,31 @@ public class Candidates extends BasePage {
 	}
 
 	public boolean isManualSearchGotFilteredOrInvalid(String name) {
-		 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
-		    // Get all search results
-		    List<WebElement> tableResults = driver.findElements(By.xpath("//div[@class='oxd-table-body']//div[@role='row']/div[3]"));
+		List<WebElement> tableResults = driver
+				.findElements(By.xpath("//div[@class='oxd-table-body']//div[@role='row']/div[3]"));
 
-		    // Check if invalid search error appears
-		    boolean invalid = false;
-		    try {
-		        WebElement errorMessage = wait.until(ExpectedConditions
-		                .presenceOfElementLocated(By.xpath("//div[contains(@class,'text-input--error')]")));
-		        invalid = errorMessage.isDisplayed();
-		    } catch (TimeoutException e) {
-		        invalid = false; // If no error message appears, set invalid to false
-		    }
-
-		    // Check if all table results exactly match the given name
-		    boolean allMatch = true;
-		    for (WebElement row : tableResults) {
-		        String rowText = row.getText().trim();
-		        if (!rowText.equalsIgnoreCase(name)) {
-		            allMatch = false;
-		            break;
-		        }
-		    }
-
-		    // If search is invalid OR results do not match the expected name, return true (meaning test should fail)
-		    return invalid || !allMatch;
+		boolean invalid = false;
+		try {
+			WebElement errorMessage = wait.until(ExpectedConditions
+					.presenceOfElementLocated(By.xpath("//div[contains(@class,'text-input--error')]")));
+			invalid = errorMessage.isDisplayed();
+		} catch (TimeoutException e) {
+			invalid = false;
 		}
+
+		boolean allMatch = true;
+		for (WebElement row : tableResults) {
+			String rowText = row.getText().trim();
+			if (!rowText.equalsIgnoreCase(name)) {
+				allMatch = false;
+				break;
+			}
+		}
+
+		return invalid || !allMatch;
+	}
 
 	public boolean isCandidateNameFiltered(String name) {
 
@@ -415,7 +443,6 @@ public class Candidates extends BasePage {
 			}
 		}
 
-		// Print result
 		if (allChecked) {
 			System.out.println("All checked!");
 		} else {
@@ -425,12 +452,12 @@ public class Candidates extends BasePage {
 		return allChecked;
 	}
 
-	public boolean isProfileEqualToRow1Name(String name) {
+	public boolean isProfileEqualToAddedOrRow1Name(String name) {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
 		String stageXpath = wait
 				.until(ExpectedConditions.presenceOfElementLocated(By.xpath(
-						"//div[@class='oxd-input-group']/div[2]/p[contains(normalize-space(.), \"" + name + "\")]")))
+						"//div[@class='oxd-input-group']/div[2]/p[contains(normalize-space(.), '" + name + "')]")))
 				.getText();
 		System.out.println("Application Stage Candidate Name: " + stageXpath);
 
@@ -509,4 +536,61 @@ public class Candidates extends BasePage {
 		return true;
 	}
 
+	// Add Candidate
+
+	public WebElement getFirstname() {
+		return addCandidate_firstname;
+	}
+
+	public WebElement getMiddlename() {
+		return addCandidate_middlename;
+	}
+
+	public WebElement getLastname() {
+		return addCandidate_lastname;
+	}
+
+	public String getAdd_VacancyTxt() {
+		return addCandidate_vacancy.getText();
+	}
+
+	public WebElement getAdd_Vacancy() {
+		return addCandidate_vacancy;
+	}
+
+	public void selectAdd_Vacancy(String vacancy) {
+		addCandidate_vacancy.click();
+		int maxTries = 100;
+		boolean found = true;
+
+		for (int i = 0; i < maxTries; i++) {
+			String highlightedText = getAdd_VacancyTxt();
+
+			if (highlightedText.equals(vacancy)) {
+				addCandidate_vacancy.sendKeys(Keys.ENTER);
+				break;
+			}
+			addCandidate_vacancy.sendKeys(Keys.ARROW_DOWN);
+		}
+
+		if (!found) {
+			throw new RuntimeException("Vacancy not found: " + vacancy);
+		}
+	}
+
+	public WebElement getEmail() {
+		return addCandidate_email;
+	}
+
+	public WebElement getContactnumber() {
+		return addCandidate_contactnumber;
+	}
+
+	public void clickSave() {
+		addCandidate_save.click();
+	}
+
+	public void clickCancel() {
+		addCandidate_cancel.click();
+	}
 }

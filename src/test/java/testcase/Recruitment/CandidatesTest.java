@@ -2,7 +2,6 @@ package testcase.Recruitment;
 
 import java.time.Duration;
 
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -25,7 +24,7 @@ public class CandidatesTest extends BaseTest {
 		SideBar sb = new SideBar(driver);
 		sb.getRecruitment().click();
 		Candidates c = new Candidates(driver);
-		c.getCandidates().click();
+		c.getCandidatesSubTab().click();
 
 		String expectedVacancy = "Payroll Administrator";
 		c.selectVacancy(expectedVacancy);
@@ -45,7 +44,7 @@ public class CandidatesTest extends BaseTest {
 		SideBar sb = new SideBar(driver);
 		sb.getRecruitment().click();
 		Candidates c = new Candidates(driver);
-		c.getCandidates().click();
+		c.getCandidatesSubTab().click();
 
 		String expectedCandidateName = "Gautham Raj R";
 		c.getCandidateName().sendKeys(expectedCandidateName.split(" ")[0]);
@@ -61,42 +60,35 @@ public class CandidatesTest extends BaseTest {
 	}
 
 	@Test(dataProvider = "validCredential", description = " Verify Recruitment_Candidates if Manual search for Candidates name is working")
-	public void verifyCandidateSearchWithoutSuggestionClick(String username, String password)
-			throws InterruptedException {
+	public void candidateNameManualSearch(String username, String password) throws InterruptedException {
 		new LoginPage(driver).toLogin(username, password);
 
-		// Navigate to Recruitment > Candidates
 		SideBar sb = new SideBar(driver);
 		sb.getRecruitment().click();
 		Candidates c = new Candidates(driver);
-		c.getCandidates().click();
+		c.getCandidatesSubTab().click();
 
-		// Test names
 		String[] testNames = { "John", "Doe", "John Doe" };
 
-		SoftAssert softAssert = new SoftAssert(); // Declare SoftAssert once
+		SoftAssert softAssert = new SoftAssert();
 		for (String testName : testNames) {
 			WebElement candidateNameInput = c.getCandidateName();
 
-			// Clear input field properly
-			candidateNameInput.sendKeys(Keys.CONTROL + "a"); // Select all text
-			candidateNameInput.sendKeys(Keys.BACK_SPACE); // Delete selected text
+			candidateNameInput.sendKeys(Keys.CONTROL + "a");
+			candidateNameInput.sendKeys(Keys.BACK_SPACE);
 
-			// Enter new name
 			candidateNameInput.sendKeys(testName);
 
-			// Click search button
 			c.clickSearch();
 
-			Thread.sleep(2000);
-			// Wait for results
-			boolean result = c.isManualSearchGotFilteredOrInvalid(testName); // Should return true if no results found
+			boolean result = c.isManualSearchGotFilteredOrInvalid(testName);
 
-			// Assertion - Expecting search to be **invalid (fail if results appear)**
-			softAssert.assertFalse(result, "FAILED: Invalid search message displayed OR search results did not match the expected name filter for: " + testName);
+			softAssert.assertFalse(result,
+					"FAILED: Invalid search message displayed OR search results did not match the expected name filter for: "
+							+ testName);
 		}
 
-		softAssert.assertAll(); // Ensure all assertions are checked
+		softAssert.assertAll();
 	}
 
 	@Test(dataProvider = "validCredential", description = " Verify Recruitment Candidates if Hiring Manager are filtered")
@@ -105,7 +97,7 @@ public class CandidatesTest extends BaseTest {
 		SideBar sb = new SideBar(driver);
 		sb.getRecruitment().click();
 		Candidates c = new Candidates(driver);
-		c.getCandidates().click();
+		c.getCandidatesSubTab().click();
 
 		String expectedManager = "Test 54";
 		c.selectHiringManager(expectedManager);
@@ -126,7 +118,7 @@ public class CandidatesTest extends BaseTest {
 		SideBar sb = new SideBar(driver);
 		sb.getRecruitment().click();
 		Candidates c = new Candidates(driver);
-		c.getCandidates().click();
+		c.getCandidatesSubTab().click();
 
 		String expectedDateFrom = "2024-02-02";
 		String expectedDateTo = "2024-06-02";
@@ -150,7 +142,7 @@ public class CandidatesTest extends BaseTest {
 		SideBar sb = new SideBar(driver);
 		sb.getRecruitment().click();
 		Candidates c = new Candidates(driver);
-		c.getCandidates().click();
+		c.getCandidatesSubTab().click();
 
 		String expectedStatus = "Shortlisted";
 		c.selectStatus(expectedStatus);
@@ -164,13 +156,66 @@ public class CandidatesTest extends BaseTest {
 
 	}
 
+	@Test(dataProvider = "validCredential", description = " Verify Added Candidate")
+	public void TC0_Recruitment_Candidates_addCandidate(String username, String password) throws InterruptedException {
+		new LoginPage(driver).toLogin(username, password);
+		SideBar sb = new SideBar(driver);
+		sb.getRecruitment().click();
+		Candidates c = new Candidates(driver);
+		c.getCandidatesSubTab().click();
+		c.clickAdd();
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+
+		String expectedFirstname = "Jon Romeo";
+		String expectedMiddlename = "Igoy";
+		String expectedLastname = "Robillos";
+		String expectedFullname = "Jon Romeo Igoy Robillos";
+		String expectedEmail = "rom.robillos@yahoo.com";
+		String expectedContactnumber = "0966";
+		String expectedVacancy = "Senior QA Lead";
+
+		wait.until(ExpectedConditions.visibilityOf(c.getFirstname())).sendKeys(expectedFirstname);
+		wait.until(ExpectedConditions.visibilityOf(c.getMiddlename())).sendKeys(expectedMiddlename);
+		wait.until(ExpectedConditions.visibilityOf(c.getLastname())).sendKeys(expectedLastname);
+		wait.until(ExpectedConditions.visibilityOf(c.getEmail())).sendKeys(expectedEmail);
+		wait.until(ExpectedConditions.visibilityOf(c.getContactnumber())).sendKeys(expectedContactnumber);
+		wait.until(ExpectedConditions.elementToBeClickable(c.getAdd_Vacancy()));
+		c.selectAdd_Vacancy(expectedVacancy);
+		
+		c.clickSave();
+		wait.until(ExpectedConditions.visibilityOf(sb.getToastNotif()));
+		
+		Assert.assertTrue(c.isProfileEqualToAddedOrRow1Name(expectedFullname));
+		
+	}
+	
+	@Test(dataProvider = "validCredential", description = " Verify Add Candidate to Cancel")
+	public void TC0_Recruitment_Candidates_addCandidate_ToCancel(String username, String password) throws InterruptedException {
+		new LoginPage(driver).toLogin(username, password);
+		SideBar sb = new SideBar(driver);
+		sb.getRecruitment().click();
+		Candidates c = new Candidates(driver);
+		c.getCandidatesSubTab().click();
+		c.clickAdd();
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOf(c.getFirstname()));
+		c.clickCancel();
+		
+		String expectedUrl = "https://opensource-demo.orangehrmlive.com/web/index.php/recruitment/viewCandidates";
+		String actualUrl = driver.getCurrentUrl();
+		
+		Assert.assertEquals(expectedUrl, actualUrl);
+		Assert.assertTrue(c.getCandidateName().isDisplayed());
+		
+	}
+
 	@Test(dataProvider = "validCredential", description = " Verify Recruitment_Candidates_Table if Checkbox Header Working")
 	public void TC0_Recruitment_Candidates_Table_isCheckboxHeaderWorking(String username, String password) {
 		new LoginPage(driver).toLogin(username, password);
 		SideBar sb = new SideBar(driver);
 		sb.getRecruitment().click();
 		Candidates c = new Candidates(driver);
-		c.getCandidates().click();
+		c.getCandidatesSubTab().click();
 
 		Actions actions = new Actions(driver);
 		actions.scrollByAmount(0, 500).perform();
@@ -188,7 +233,7 @@ public class CandidatesTest extends BaseTest {
 		SideBar sb = new SideBar(driver);
 		sb.getRecruitment().click();
 		Candidates c = new Candidates(driver);
-		c.getCandidates().click();
+		c.getCandidatesSubTab().click();
 
 		Actions actions = new Actions(driver);
 		actions.scrollByAmount(0, 500).perform();
@@ -197,7 +242,7 @@ public class CandidatesTest extends BaseTest {
 		System.out.println("Row1 Candidate name: " + row1Name);
 		c.clickViewProfile();
 
-		boolean isAtCorrectProfile = c.isProfileEqualToRow1Name(row1Name);
+		boolean isAtCorrectProfile = c.isProfileEqualToAddedOrRow1Name(row1Name);
 
 		Assert.assertTrue(isAtCorrectProfile);
 	}
@@ -208,7 +253,7 @@ public class CandidatesTest extends BaseTest {
 		SideBar sb = new SideBar(driver);
 		sb.getRecruitment().click();
 		Candidates c = new Candidates(driver);
-		c.getCandidates().click();
+		c.getCandidatesSubTab().click();
 
 		Actions actions = new Actions(driver);
 		actions.scrollByAmount(0, 500).perform();
