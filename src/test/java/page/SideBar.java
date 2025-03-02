@@ -1,8 +1,12 @@
 package page;
 
+import java.time.Duration;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class SideBar extends BasePage {
 
@@ -26,12 +30,13 @@ public class SideBar extends BasePage {
 		return myInfo;
 	}
 
-	public WebElement getToastNotif() {
-		return toastNotif;
-	}
+    public WebElement getToastNotif() {
+    	return waitForElement(toastNotif);
+    }
 
-	public WebElement getDashboard() {
-		return dashboard;
+	public void  clickDashboard() {
+		clickWaitElement(dashboard);
+		
 	}
 
 	public WebElement getRecruitment() {

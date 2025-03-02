@@ -13,12 +13,14 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import page.BasePage;
 
 public class BaseTest {
 	public static WebDriver driver;
 	public static Properties prop = new Properties();
 	public static FileReader fr;
 	public WebDriverWait wait;
+	public BasePage page;
 	
 	@BeforeMethod
 	public void setUp() throws IOException {
@@ -29,6 +31,8 @@ public class BaseTest {
 		driver.get("https://opensource-demo.orangehrmlive.com/");
 		
 		driver.manage().window().maximize();
+		wait = new WebDriverWait(driver, Duration.ofSeconds(10)); 
+		page = new BasePage(driver);
 		
 		
 		FileReader fr = new FileReader(

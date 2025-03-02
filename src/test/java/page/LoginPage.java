@@ -55,41 +55,46 @@ public class LoginPage extends BasePage {
 	}
 
 	public void toLogin(String username, String password) {
-		this.username.sendKeys(username);
-		this.password.sendKeys(password);
-		loginBtn.click();
+		sendKeysWithWait(this.username, username);
+		sendKeysWithWait(this.password, password);
+		clickWaitElement(loginBtn);
 	}
 
 	public void clickLoginBtn() {
-		loginBtn.click();
+		clickWaitElement(loginBtn);
 	}
 
 	public String getTxtErrorMessage() {
 		return errorLabel.getText();
 	}
 
-	public String getTxtRequiredUser() {
+	public String getTxtUserRequired() {
 		return requiredUser.getText();
 	}
 
-	public String getTxtRequiredPass() {
+	public String getTxtPassRequired() {
 		return requiredPass.getText();
 	}
 
 	public String getUserBorderColor() {
-		return username.getCssValue("border-color");
+		WebElement userTxtbox = username;
+		waitForCssValueChange(userTxtbox, "border-color", "rgb(235, 9, 16)");
+		return userTxtbox.getCssValue("border-color");
 	}
 
 	public String getPassBorderColor() {
-		return password.getCssValue("border-color");
+		WebElement passTxtbox = password; 
+		waitForCssValueChange(passTxtbox, "border-color", "rgb(235, 9, 16)");
+		return passTxtbox.getCssValue("border-color");
 	}
 
 	public void clickforgotPass() {
-		forgotPasswordLink.click();
+		clickWaitElement(forgotPasswordLink); 
 	}
 
-	public void clickCancelBtn() {
-		cancelBtn.click();
+	public void clickCancelResetBtn() {
+		clickWaitElement(forgotPasswordLink); 
+		clickWaitElement(cancelBtn);
 	}
 
 	public WebElement getResetPassLabel() {
@@ -97,8 +102,9 @@ public class LoginPage extends BasePage {
 	}
 
 	public void toResetPass(String username) {
-		this.username.sendKeys(username);
-		resetPassBtn.click();
+		clickWaitElement(forgotPasswordLink); 
+		sendKeysWithWait(this.username, username);
+		clickWaitElement(resetPassBtn);
 	}
 
 	public boolean isResetSuccess() {

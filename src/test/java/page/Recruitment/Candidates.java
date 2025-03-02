@@ -5,10 +5,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -25,8 +23,10 @@ public class Candidates extends BasePage {
 		super(driver);
 	}
 
+	// Candidates
+
 	@FindBy(xpath = "//a[normalize-space()='Candidates']")
-	WebElement candidates;
+	WebElement candidatesSubTab;
 
 	@FindBy(xpath = "//form[@class='oxd-form']/div[1]/div[1]/div[1]/div[1]/div[2]/div/div/div[1]")
 	WebElement candidates_jobTitle;
@@ -54,6 +54,47 @@ public class Candidates extends BasePage {
 
 	@FindBy(xpath = "//button[normalize-space()='Search']")
 	WebElement candidates_search;
+
+	@FindBy(xpath = "//button[normalize-space()='Reset']")
+	WebElement candidates_reset;
+
+	public WebElement getCandidatesSubTab() {
+		return candidatesSubTab;
+	}
+
+	public WebElement getCandidateName() {
+		return candidates_candidateName;
+	}
+
+	public WebElement getdateFrom() {
+		return candidates_dateFrom;
+	}
+
+	public WebElement getdateTo() {
+		return candidates_dateTo;
+	}
+
+	public void clickSearch() {
+		candidates_search.click();
+	}
+
+	public void clickReset() {
+		candidates_reset.click();
+	}
+
+	public String getHiringManagerTxt() {
+		return candidates_hiringManager.getText();
+	}
+
+	public String getStatusTxt() {
+		return candidates_status.getText();
+	}
+
+	public String getVacancyTxt() {
+		return candidates_vacancy.getText();
+	}
+
+	// Table
 
 	@FindBy(xpath = "//button[normalize-space()='Add']")
 	WebElement table_add;
@@ -95,26 +136,6 @@ public class Candidates extends BasePage {
 	@FindBy(xpath = "//button[normalize-space()='Cancel']")
 	WebElement addCandidate_cancel;
 
-	public WebElement getCandidatesSubTab() {
-		return candidates;
-	}
-
-	public WebElement getdateFrom() {
-		return candidates_dateFrom;
-	}
-
-	public WebElement getdateTo() {
-		return candidates_dateTo;
-	}
-
-	public WebElement getCandidateName() {
-		return candidates_candidateName;
-	}
-
-	public void clickSearch() {
-		candidates_search.click();
-	}
-
 	public void clickAdd() {
 		table_add.click();
 	}
@@ -132,22 +153,10 @@ public class Candidates extends BasePage {
 	}
 
 	public void clickPopupDeleteBtn() {
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
 		WebElement deleteButton = wait.until(ExpectedConditions.elementToBeClickable(action_popUpDeleteBtn));
 		deleteButton.click();
-	}
-
-	public String getHiringManagerTxt() {
-		return candidates_hiringManager.getText();
-	}
-
-	public String getStatusTxt() {
-		return candidates_status.getText();
-	}
-
-	public String getVacancyTxt() {
-		return candidates_vacancy.getText();
 	}
 
 	public void selectVacancy(String vacancy) {
@@ -173,7 +182,7 @@ public class Candidates extends BasePage {
 
 	public boolean isVacancyFiltered(String vacancy) {
 
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
 		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[@class='oxd-table-body']/div")));
 
@@ -225,7 +234,7 @@ public class Candidates extends BasePage {
 
 	public boolean isHiringManagerFiltered(String manager) {
 
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
 		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[@class='oxd-table-body']/div")));
 
@@ -278,7 +287,7 @@ public class Candidates extends BasePage {
 
 	public boolean isStatusFiltered(String status) {
 
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
 		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[@class='oxd-table-body']/div")));
 
@@ -309,7 +318,7 @@ public class Candidates extends BasePage {
 	}
 
 	public void selectNameFromSuggestion1(String name) {
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
 		List<WebElement> suggestions = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
 				By.xpath("//div[@role='listbox']/div/span[normalize-space()='" + name + "']")));
@@ -353,7 +362,7 @@ public class Candidates extends BasePage {
 
 	public boolean isCandidateNameFiltered(String name) {
 
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
 		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[@class='oxd-table-body']/div")));
 
@@ -430,7 +439,7 @@ public class Candidates extends BasePage {
 	}
 
 	public boolean verifySelectAllCheckbox() {
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
 		List<WebElement> rowCheckboxes = wait.until(ExpectedConditions
 				.presenceOfAllElementsLocatedBy(By.xpath("//div[@class='oxd-table-body']//input[@type='checkbox']")));
@@ -453,7 +462,7 @@ public class Candidates extends BasePage {
 	}
 
 	public boolean isProfileEqualToAddedOrRow1Name(String name) {
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
 		String stageXpath = wait
 				.until(ExpectedConditions.presenceOfElementLocated(By.xpath(
@@ -467,7 +476,7 @@ public class Candidates extends BasePage {
 	}
 
 	public String getRow1Name() {
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		String row1NameXpath = wait
 				.until(ExpectedConditions.presenceOfElementLocated(
 						By.xpath("//div[@class='oxd-table-body']/div[1]//div[contains(@class,'oxd-table-cell')][3]")))

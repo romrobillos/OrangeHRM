@@ -9,33 +9,34 @@ public class LoginTest extends BaseTest {
 
 	@Test(dataProvider = "validCredential")
 	public void TC001_toLogin(String username, String password) {
-		LoginPage login = new LoginPage(driver);
-		login.toLogin(username, password);
-		Assert.assertTrue(login.isLoginSuccesful());
+		LoginPage loginPage = page.getInstance(LoginPage.class);
+		loginPage.toLogin(username, password);
+		boolean isLoginSuccessful = loginPage.isLoginSuccesful();
+		Assert.assertTrue(isLoginSuccessful);
 	}
 
 	@Test(priority = 2, description = "Verify Invalid login error message")
 	public void TC002_verifyErrorMessage() {
-		String errorMessage;
 		String username = "invalid";
 		String password = "1234";
-		LoginPage loginPage = new LoginPage(driver);
+		
+		LoginPage loginPage = page.getInstance(LoginPage.class);
 		loginPage.toLogin(username, password);
-		errorMessage = loginPage.getTxtErrorMessage();
-		Assert.assertTrue(errorMessage.contains("Invalid credentials"));
+		
+		Assert.assertTrue(loginPage.getTxtErrorMessage().contains("Invalid credentials"));
 	}
 
 	@Test(priority = 3, description = "Required Field Validation")
 	public void TC003_verifyRequiredField()  {
-		LoginPage loginPage = new LoginPage(driver);
+		LoginPage loginPage = page.getInstance(LoginPage.class);
 		loginPage.clickLoginBtn();
-		Assert.assertEquals(loginPage.getTxtRequiredUser(), "Required");
-		Assert.assertEquals(loginPage.getTxtRequiredPass(), "Required");
+		Assert.assertEquals(loginPage.getTxtUserRequired(), "Required");
+		Assert.assertEquals(loginPage.getTxtPassRequired(), "Required");
 	}
 
 	@Test(priority = 4, description = "Verify textbox border color")
 	public void TC004_txtboxBorderColor() {
-		LoginPage loginPage = new LoginPage(driver);
+		LoginPage loginPage = page.getInstance(LoginPage.class);
 		loginPage.clickLoginBtn();
 		String expectedRedColor = "rgb(235, 9, 16)";
 
@@ -45,21 +46,24 @@ public class LoginTest extends BaseTest {
 
 	@Test(priority = 5, description = "Verify forgot password link")
 	public void TC005_forgotPassLink() {
-		LoginPage loginPage = new LoginPage(driver);
+		LoginPage loginPage = page.getInstance(LoginPage.class);
 		loginPage.clickforgotPass();
-
+		
+		Assert.assertTrue(loginPage.getResetPassLabel().isDisplayed());
+		
 		String expectedResetUrl = prop.getProperty("resetUrl");
-		String actualResetUrl = driver.getCurrentUrl();
+		String actualResetUrl = loginPage.getCurrentPageUrl();
+		
 		
 		Assert.assertEquals(expectedResetUrl, actualResetUrl);
-		Assert.assertTrue(loginPage.getResetPassLabel().isDisplayed());
+		
 	}
 
 	@Test(priority = 6, description = "Verify Reset password")
 	public void TC006_toResetPassword() {
 		String username = "Admin";
-		LoginPage loginPage = new LoginPage(driver);
-		loginPage.clickforgotPass();
+		LoginPage loginPage = page.getInstance(LoginPage.class);
+		
 		loginPage.toResetPass(username);
 
 		Assert.assertTrue(loginPage.isResetSuccess());
@@ -69,13 +73,12 @@ public class LoginTest extends BaseTest {
 	@Test(priority = 7, description = "Verify Cancel Reset Button")
 	public void TC007_toCancel() {
 
-		LoginPage loginPage = new LoginPage(driver);
-		loginPage.clickforgotPass();
-		loginPage.clickCancelBtn();
+		LoginPage loginPage = page.getInstance(LoginPage.class);
+		loginPage.clickCancelResetBtn();
 		
 
 		String expectedLoginUrl = prop.getProperty("loginUrl");
-		String actualLoginUrl = driver.getCurrentUrl();
+		String actualLoginUrl =  loginPage.getCurrentPageUrl();
 		
 		Assert.assertEquals(expectedLoginUrl, actualLoginUrl);
 		Assert.assertTrue(loginPage.isLoginPage());

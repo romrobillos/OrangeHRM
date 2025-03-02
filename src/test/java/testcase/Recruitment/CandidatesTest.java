@@ -156,8 +156,50 @@ public class CandidatesTest extends BaseTest {
 
 	}
 
+	@Test(dataProvider = "validCredential", description = " Verify Recruitment_Candidates Reset Button")
+	public void TC0_Recruitment_Candidates_isReset(String username, String password) {
+		new LoginPage(driver).toLogin(username, password);
+		SideBar sb = new SideBar(driver);
+		sb.getRecruitment().click();
+		Candidates c = new Candidates(driver);
+		c.getCandidatesSubTab().click();
+
+		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		wait.until(ExpectedConditions.visibilityOf(c.getCandidateName()));
+
+		String garbageValue = "Senior QA Lead";
+
+		c.selectVacancy(garbageValue);
+
+		c.clickReset();
+
+		String expectedVacancy = "-- Select --";
+		String expectedHiringManager = "-- Select --";
+		String expectedStatus = "-- Select --";
+		String expectedCandidateName = "";
+		String expectedDateFrom = "";
+		String expectedDateTo = "";
+
+		String actualVacancy = c.getVacancyTxt();
+		String actualHiringManager = c.getHiringManagerTxt();
+		String actualStatus = c.getStatusTxt();
+		String actualCandidateName = c.getCandidateName().getAttribute("value");
+		String actualDateFrom = c.getdateFrom().getAttribute("value");
+		String actualDateTo = c.getdateTo().getAttribute("value");
+
+		SoftAssert softAssert = new SoftAssert();
+		softAssert.assertEquals(expectedVacancy, actualVacancy);
+		softAssert.assertEquals(expectedHiringManager, actualHiringManager);
+		softAssert.assertEquals(expectedStatus, actualStatus);
+		softAssert.assertEquals(expectedCandidateName, actualCandidateName);
+		softAssert.assertEquals(expectedDateFrom, actualDateFrom);
+		softAssert.assertEquals(expectedDateTo, actualDateTo);
+		softAssert.assertAll();
+
+	}
+
 	@Test(dataProvider = "validCredential", description = " Verify Added Candidate")
-	public void TC0_Recruitment_Candidates_addCandidate(String username, String password) throws InterruptedException {
+	public void TC0_Recruitment_Candidates_addCandidate(String username, String password) {
 		new LoginPage(driver).toLogin(username, password);
 		SideBar sb = new SideBar(driver);
 		sb.getRecruitment().click();
@@ -181,16 +223,17 @@ public class CandidatesTest extends BaseTest {
 		wait.until(ExpectedConditions.visibilityOf(c.getContactnumber())).sendKeys(expectedContactnumber);
 		wait.until(ExpectedConditions.elementToBeClickable(c.getAdd_Vacancy()));
 		c.selectAdd_Vacancy(expectedVacancy);
-		
+
 		c.clickSave();
 		wait.until(ExpectedConditions.visibilityOf(sb.getToastNotif()));
-		
+
 		Assert.assertTrue(c.isProfileEqualToAddedOrRow1Name(expectedFullname));
-		
+
 	}
-	
+
 	@Test(dataProvider = "validCredential", description = " Verify Add Candidate to Cancel")
-	public void TC0_Recruitment_Candidates_addCandidate_ToCancel(String username, String password) throws InterruptedException {
+	public void TC0_Recruitment_Candidates_addCandidate_ToCancel(String username, String password)
+			throws InterruptedException {
 		new LoginPage(driver).toLogin(username, password);
 		SideBar sb = new SideBar(driver);
 		sb.getRecruitment().click();
@@ -200,13 +243,13 @@ public class CandidatesTest extends BaseTest {
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOf(c.getFirstname()));
 		c.clickCancel();
-		
+
 		String expectedUrl = "https://opensource-demo.orangehrmlive.com/web/index.php/recruitment/viewCandidates";
 		String actualUrl = driver.getCurrentUrl();
-		
+
 		Assert.assertEquals(expectedUrl, actualUrl);
 		Assert.assertTrue(c.getCandidateName().isDisplayed());
-		
+
 	}
 
 	@Test(dataProvider = "validCredential", description = " Verify Recruitment_Candidates_Table if Checkbox Header Working")
@@ -264,8 +307,7 @@ public class CandidatesTest extends BaseTest {
 		c.clickDeleteProfile();
 		c.clickPopupDeleteBtn();
 
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.visibilityOf(sb.getToastNotif()));
+		sb.getToastNotif();
 
 		boolean isDeleted = c.isRow1CandidateDeleted(row1NameAndDate);
 

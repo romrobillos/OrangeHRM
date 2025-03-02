@@ -3,108 +3,102 @@ package page;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Dashboard extends BasePage {
 
-	
-	
-	@FindBy (xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[1]/div/div[2]/div[1]/div[2]/button")
+	@FindBy(xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[1]/div/div[2]/div[1]/div[2]/button")
 	WebElement db_timeAtWork_stopwatch;
 
-	
 	// Quick Launch
-	@FindBy (xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[3]/div/div[2]/div/div[1]/button")
+	@FindBy(xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[3]/div/div[2]/div/div[1]/button")
 	WebElement db_quickLaunch_assignLeave;
-	
-	@FindBy (xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[3]/div/div[2]/div/div[2]/button")
+
+	@FindBy(xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[3]/div/div[2]/div/div[2]/button")
 	WebElement db_quickLaunch_leavelist;
-	
-	@FindBy (xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[3]/div/div[2]/div/div[3]/button")
+
+	@FindBy(xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[3]/div/div[2]/div/div[3]/button")
 	WebElement db_quickLaunch_timesheets;
-	
-	@FindBy (xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[3]/div/div[2]/div/div[4]/button")
+
+	@FindBy(xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[3]/div/div[2]/div/div[4]/button")
 	WebElement db_quickLaunch_applyLeave;
-	
-	@FindBy (xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[3]/div/div[2]/div/div[5]/button")
+
+	@FindBy(xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[3]/div/div[2]/div/div[5]/button")
 	WebElement db_quickLaunch_myLeave;
-	
-	@FindBy (xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[3]/div/div[2]/div/div[6]/button")
+
+	@FindBy(xpath = "//*[@id=\"app\"]/div[1]/div[2]/div[2]/div/div[3]/div/div[2]/div/div[6]/button")
 	WebElement db_quickLaunch_myTimesheet;
-	
-	@FindBy (xpath = "//i[@class='oxd-icon bi-gear-fill orangehrm-leave-card-icon']")
+
+	@FindBy(xpath = "//i[@class='oxd-icon bi-gear-fill orangehrm-leave-card-icon']")
 	WebElement db_employeesOnLeaveToday_Settings;
-	
-	@FindBy (xpath = "//div[@role='document']")
+
+	@FindBy(xpath = "//div[@role='document']")
 	WebElement db_employeesOnLeaveToday_Settings_Popup;
-	
-	@FindBy (xpath = "//span[contains(@class, 'oxd-switch-input')]")
+
+	@FindBy(xpath = "//span[contains(@class, 'oxd-switch-input')]")
 	WebElement db_employeesOnLeaveToday_Settings_Popup_Toggle;
-	
-	@FindBy (xpath = "//button[@type='submit']")
+
+	@FindBy(xpath = "//button[@type='submit']")
 	WebElement db_employeesOnLeaveToday_Settings_Popup_Save;
-	
-	@FindBy (xpath = "//button[normalize-space()='Cancel']")
+
+	@FindBy(xpath = "//button[normalize-space()='Cancel']")
 	WebElement db_employeesOnLeaveToday_Settings_Popup_Cancel;
-	
- 
-	
-	
+
 	public Dashboard(WebDriver driver) {
-		super(driver); 
-	}
-	
-	public WebElement getDb_timeAtWork_stopwatch() {
-		return db_timeAtWork_stopwatch;
-	}
-	
-	// Quick Launch 
-	public WebElement getDb_quickLaunch_assignLeave() {
-		return db_quickLaunch_assignLeave;
-	}
-	
-	public WebElement getDb_quickLaunch_leavelist() {
-		return db_quickLaunch_leavelist;
-	}
-	
-	public WebElement getDb_quickLaunch_timesheets() {
-		return db_quickLaunch_timesheets;
-	}
-	
-	public WebElement getDb_quickLaunch_applyLeave() {
-		return db_quickLaunch_applyLeave;
-	}
-	
-	public WebElement getDb_quickLaunch_myLeave() {
-		return db_quickLaunch_myLeave;
+		super(driver);
 	}
 
-	public WebElement getDb_quickLaunch_myTimesheet() {
-		return db_quickLaunch_myTimesheet;
+	public void clickDb_timeAtWork_stopwatch() {
+		clickWaitElement(db_timeAtWork_stopwatch);
 	}
-	
-	public WebElement getDb_employeesOnLeaveToday_Settings() {
-		return db_employeesOnLeaveToday_Settings;
+
+	// Quick Launch
+	public void clickDb_quickLaunch_assignLeave() {
+		clickWaitElement(db_quickLaunch_assignLeave);
 	}
-	
+
+	public void clickDb_quickLaunch_leavelist() {
+		clickWaitElement(db_quickLaunch_leavelist);
+	}
+
+	public void clickDb_quickLaunch_timesheets() {
+		clickWaitElement(db_quickLaunch_timesheets);
+	}
+
+	public void clickDb_quickLaunch_applyLeave() {
+		clickWaitElement(db_quickLaunch_applyLeave);
+	}
+
+	public void clickDb_quickLaunch_myLeave() {
+		clickWaitElement(db_quickLaunch_myLeave);
+	}
+
+	public void clickDb_quickLaunch_myTimesheet() {
+		clickWaitElement(db_quickLaunch_myTimesheet);
+	}
+
+	public void clickDb_employeesOnLeaveToday_Settings() {
+		clickWaitElement(db_employeesOnLeaveToday_Settings);
+	}
+
 	public WebElement getDb_employeesOnLeaveToday_Settings_Popup() {
-		return db_employeesOnLeaveToday_Settings_Popup;
+		return waitForElement(db_employeesOnLeaveToday_Settings_Popup);
 	}
-	
+
 	public WebElement getDb_employeesOnLeaveToday_Settings_Popup_Toggle() {
-		return db_employeesOnLeaveToday_Settings_Popup_Toggle;
+		return waitForElement(db_employeesOnLeaveToday_Settings_Popup_Toggle);
 	}
 	
-	public WebElement getDb_employeesOnLeaveToday_Settings_Popup_Save() {
-		return db_employeesOnLeaveToday_Settings_Popup_Save;
+	public void clickDb_employeesOnLeaveToday_Settings_Popup_Toggle() {
+		 db_employeesOnLeaveToday_Settings_Popup_Toggle.click(); //.click to prevent double waiting. clickWaitElement() (X)
 	}
-	
-	public WebElement getDb_employeesOnLeaveToday_Settings_Popup_Cancel() {
-		return db_employeesOnLeaveToday_Settings_Popup_Cancel;
+
+	public void clickDb_employeesOnLeaveToday_Settings_Popup_Save() {
+		clickWaitElement(db_employeesOnLeaveToday_Settings_Popup_Save);
 	}
-	
- 
-	
+
+	public void clickDb_employeesOnLeaveToday_Settings_Popup_Cancel() {
+		clickWaitElement(db_employeesOnLeaveToday_Settings_Popup_Cancel);
+	}
 	
 
 }
