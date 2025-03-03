@@ -1,15 +1,11 @@
 package page.MyInfo;
 
-import java.time.Duration;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import page.BasePage;
 
@@ -47,11 +43,11 @@ public class EmergencyContacts extends BasePage {
 	}
 
 	public void clickEmergencyContacts() {
-		  emergencyContacts.click();;
+		clickWaitElement(emergencyContacts);
 	}
 
-	public WebElement getAddEmergencyContactsBtn() {
-		return addEmergencyContactsBtn;
+	public void clickAddEmergencyContactsBtn() {
+		clickWaitElement(addEmergencyContactsBtn);
 	}
 
 	public WebElement getEc_nameTxt() {
@@ -75,16 +71,12 @@ public class EmergencyContacts extends BasePage {
 	}
 
 	public void clickCancelBtn() {
-		  cancelBtn.click();
-	}
-
-	public void clickSaveBtn() {
-		  saveBtn.click();;
+		clickWaitElement(cancelBtn);
 	}
 
 	public boolean isEmergencyContactNameDisplayed() {
 		try {
-			return getEc_nameTxt().isDisplayed();
+			return ec_nameTxt.isDisplayed();
 		} catch (NoSuchElementException | StaleElementReferenceException e) {
 			return false;
 		}
@@ -93,11 +85,18 @@ public class EmergencyContacts extends BasePage {
 	public boolean isEmergencyContactDisplayed(String name, String mobileNumber) {
 		String contactXpath = "//div[contains(@class,'oxd-table-row')]//div[text()='" + name + "']";
 		String mobileXpath = "//div[contains(@class,'oxd-table-row')]//div[text()='" + mobileNumber + "']";
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		WebElement nameElement = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(contactXpath)));
-		WebElement mobileElement = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(mobileXpath)));
-		return nameElement.isDisplayed() && mobileElement.isDisplayed();
+		WebElement nameElement = driver.findElement(By.xpath(contactXpath));
+		WebElement mobileElement = driver.findElement(By.xpath(mobileXpath));
 
+		return waitForElement(nameElement).isDisplayed() && waitForElement(mobileElement).isDisplayed();
+
+	}
+
+	public void fillOutEC(String name, String mobile, String relationship) {
+		sendKeysWithWait(ec_nameTxt, name);
+		sendKeysWithWait(ec_mobileTxt, mobile);
+		sendKeysWithWait(ec_relationTxt, relationship);
+		clickWaitElement(saveBtn);
 	}
 
 }

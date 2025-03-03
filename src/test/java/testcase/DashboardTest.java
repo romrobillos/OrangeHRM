@@ -1,10 +1,7 @@
 package testcase;
 
-import java.time.Duration;
-
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -136,7 +133,7 @@ public class DashboardTest extends BaseTest {
 		Dashboard db = page.getInstance(Dashboard.class);
 		db.clickDb_employeesOnLeaveToday_Settings();
 		db.clickDb_employeesOnLeaveToday_Settings_Popup_Save();
-		WebElement toastNotif = sb.getToastNotif();
+		WebElement toastNotif = sb.waitToastNotif();
 		System.out.println(toastNotif.getText());
 		Assert.assertTrue(toastNotif.isDisplayed());
 	}
@@ -151,14 +148,11 @@ public class DashboardTest extends BaseTest {
 		db.clickDb_employeesOnLeaveToday_Settings();
 
 
-		// Click Cancel Button
 		db.clickDb_employeesOnLeaveToday_Settings_Popup_Cancel();
-		// Wait until the popup is invisible
 		boolean isPopupClosed = wait
 				.until(ExpectedConditions.invisibilityOf(db.getDb_employeesOnLeaveToday_Settings_Popup()));
 
-		// Assert the popup is closed
-		Assert.assertTrue(isPopupClosed, "Settings popup should be closed after clicking Cancel.");
+		Assert.assertTrue(isPopupClosed);
 	}
 
 }

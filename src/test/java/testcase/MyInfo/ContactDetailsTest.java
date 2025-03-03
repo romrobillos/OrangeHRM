@@ -1,12 +1,10 @@
 package testcase.MyInfo;
 
-import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import page.LoginPage;
 import page.SideBar;
@@ -14,109 +12,78 @@ import page.MyInfo.ContactDetails;
 import testcase.BaseTest;
 
 public class ContactDetailsTest extends BaseTest {
-
-	@Test(dataProvider = "validCredential", description = "Verify MyInfo_ContactDetails if Editable")
-	public void TC019_MyInfo_PersonalDetails_Edit(String username, String password) throws InterruptedException {
-		new LoginPage(driver).toLogin(username, password);
-		SideBar sb = new SideBar(driver);
-		sb.getMyInfo().click();
-		ContactDetails cd = new ContactDetails(driver);
-		cd.getContactDetails().click();
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		try {
-			wait.until(ExpectedConditions.visibilityOf(cd.getStreet1()));
-			wait.until(ExpectedConditions.visibilityOf(cd.getStreet2()));
-			wait.until(ExpectedConditions.visibilityOf(cd.getCity()));
-			wait.until(ExpectedConditions.visibilityOf(cd.getState()));
-			wait.until(ExpectedConditions.visibilityOf(cd.getZip()));
-			wait.until(ExpectedConditions.visibilityOf(cd.getCountry()));
-			wait.until(ExpectedConditions.visibilityOf(cd.getHomeNumber()));
-			wait.until(ExpectedConditions.visibilityOf(cd.getWorkNumber()));
-			wait.until(ExpectedConditions.visibilityOf(cd.getMobileNumber()));
-			wait.until(ExpectedConditions.visibilityOf(cd.getWorkEmail()));
-			wait.until(ExpectedConditions.visibilityOf(cd.getOtherEmail()));
-
-			String expectedStreet1 = "2050B";
-			js.executeScript("arguments[0].value = '" + expectedStreet1 + "';", cd.getStreet1());
-
-			String expectedStreet2 = "Sampaloc";
-			js.executeScript("arguments[0].value = '" + expectedStreet2 + "';", cd.getStreet2());
-
-			String expectedCity = "Manila";
-			js.executeScript("arguments[0].value = '" + expectedCity + "';", cd.getCity());
-
-			String expectedZip = "1008";
-			js.executeScript("arguments[0].value = '" + expectedZip + "';", cd.getZip());
-
-			String expectedCountry = "Philippines";
-			wait.until(ExpectedConditions.elementToBeClickable(cd.getCountry()));
-			cd.selectCountry(expectedCountry);
-
-			String expectedHomeNumber = "73312312";
-			js.executeScript("arguments[0].value = '" + expectedHomeNumber + "';", cd.getHomeNumber());
-
-			String expectedMobileNumber = "096656";
-			js.executeScript("arguments[0].value = '" + expectedMobileNumber + "';", cd.getMobileNumber());
-
-			String expectedWorkNumber = "096656";
-			js.executeScript("arguments[0].value = '" + expectedWorkNumber + "';", cd.getWorkNumber());
-
-			String expectedWorkEmail = "rom.robillos@yahoo.com";
-			js.executeScript("arguments[0].value = '" + expectedWorkEmail + "';", cd.getWorkEmail());
-
-			String expectedOtherEmail = "rom.robillos@yahoo.com";
-			js.executeScript("arguments[0].value = '" + expectedOtherEmail + "';", cd.getOtherEmail());
-
-			cd.getSaveBtn().click();
-	
-			wait.until(ExpectedConditions.visibilityOf(sb.getToastNotif()));
-
-			// assert
-			String actualStreet1 = cd.getStreet1Value();
-			Assert.assertEquals(expectedStreet1, actualStreet1);
-
-			String actualStreet2 = cd.getStreet2Value();
-			Assert.assertEquals(expectedStreet2, actualStreet2);
-
-			String actualCity = cd.getCityValue();
-			Assert.assertEquals(expectedCity, actualCity);
-
-			String actualZip = cd.getZipValue();
-			Assert.assertEquals(expectedZip, actualZip);
-
-			String actualCountry = cd.getCountryTxt();
-			Assert.assertEquals(expectedCountry, actualCountry);
-
-			String actualHomeNumber = cd.getHomeNumberValue();
-			Assert.assertEquals(expectedHomeNumber, actualHomeNumber);
-
-			String actualMobileNumber = cd.getMobileNumberValue();
-			Assert.assertEquals(expectedMobileNumber, actualMobileNumber);
-
-			String actualWorkNumber = cd.getWorkNumberValue();
-			Assert.assertEquals(expectedWorkNumber, actualWorkNumber);
-
-			String actualWorkEmail = cd.getWorkEmailValue();
-			Assert.assertEquals(expectedWorkEmail, actualWorkEmail);
-
-			String actualOtherEmail = cd.getOtherEmailValue();
-			Assert.assertEquals(expectedOtherEmail, actualOtherEmail);
-	
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	private Map<String, String> getExpectedContactDetails() {
+		Map<String, String> details = new HashMap<>();
+		details.put("street1", "2050B");
+		details.put("street2", "Sampaloc");
+		details.put("city", "Manila");
+		details.put("state", "NCR");
+		details.put("zip", "1008");
+		details.put("country", "Philippines");
+		details.put("homenumber", "73312312");
+		details.put("mobilenumber", "096656");
+		details.put("worknumber", "096656");
+		details.put("workemail", "rom.robillos@yahoo.com");
+		details.put("otheremail", "rom.robillos@yahoo.com");
+		return details;
 	}
 
-	@Test(dataProvider = "validCredential", description = "Verify MyInfo_ContactDetails correct information")
+	@Test(dataProvider = "validCredential", description = "Check if MyInfo Contact Details fields can be modified.")
+	public void TC019_MyInfo_PersonalDetails_Edit(String username, String password) throws InterruptedException {
+		page.getInstance(LoginPage.class).toLogin(username, password);
+		SideBar sb = page.getInstance(SideBar.class);
+		sb.clickDashboard();
+		sb.clickMyInfo();
+		ContactDetails cd = page.getInstance(ContactDetails.class);
+		cd.clickContactDetails();
+
+		Map<String, String> expectedDetails = getExpectedContactDetails();
+		cd.fillOutCD(expectedDetails.get("street1"), expectedDetails.get("street2"), expectedDetails.get("city"),
+				expectedDetails.get("state"), expectedDetails.get("zip"), expectedDetails.get("country"),
+				expectedDetails.get("homenumber"), expectedDetails.get("mobilenumber"),
+				expectedDetails.get("worknumber"), expectedDetails.get("workemail"), expectedDetails.get("otheremail"));
+
+		sb.waitToastNotif();
+
+		// assert
+		String actualStreet1 = cd.getStreet1Value();
+		String actualStreet2 = cd.getStreet2Value();
+		String actualCity = cd.getCityValue();
+		String actualState = cd.getStateValue();
+		String actualZip = cd.getZipValue();
+		String actualCountry = cd.getCountryTxt();
+		String actualHomenumber = cd.getHomeNumberValue();
+		String actualMobilenumber = cd.getMobileNumberValue();
+		String actualWorknumber = cd.getWorkNumberValue();
+		String actualWorkemail = cd.getWorkEmailValue();
+		String actualOtheremail = cd.getOtherEmailValue();
+
+		SoftAssert softAssert = new SoftAssert();
+
+		softAssert.assertEquals(actualStreet1, expectedDetails.get("street1"), "Street1 mismatch!");
+		softAssert.assertEquals(actualStreet2, expectedDetails.get("street2"), "Street2 mismatch!");
+		softAssert.assertEquals(actualCity, expectedDetails.get("city"), "City mismatch!");
+		softAssert.assertEquals(actualState, expectedDetails.get("state"), "State mismatch!");
+		softAssert.assertEquals(actualZip, expectedDetails.get("zip"), "Zip Code mismatch!");
+		softAssert.assertEquals(actualCountry, expectedDetails.get("country"), "Country mismatch!");
+		softAssert.assertEquals(actualHomenumber, expectedDetails.get("homenumber"), "Home number mismatch!");
+		softAssert.assertEquals(actualMobilenumber, expectedDetails.get("mobilenumber"), "Mobile number mismatch!");
+		softAssert.assertEquals(actualWorknumber, expectedDetails.get("worknumber"), "Work number mismatch!");
+		softAssert.assertEquals(actualWorkemail, expectedDetails.get("workemail"), "Work email mismatch!");
+		softAssert.assertEquals(actualOtheremail, expectedDetails.get("otheremail"), "Other email mismatch!");
+
+		softAssert.assertAll();
+	}
+
+	@Test(dataProvider = "validCredential", description = "Check if MyInfo Contact Details are accurate.")
 	public void TC0_MyInfo_ContactDetails(String username, String password) throws InterruptedException {
-		new LoginPage(driver).toLogin(username, password);
-		new SideBar(driver).getMyInfo().click();
-		ContactDetails cd = new ContactDetails(driver);
-		cd.getContactDetails().click();
-		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-		wait.until(ExpectedConditions.elementToBeClickable(cd.getStreet1())).click();
+		page.getInstance(LoginPage.class).toLogin(username, password);
+		SideBar sb = page.getInstance(SideBar.class);
+		sb.clickDashboard();
+		sb.clickMyInfo();
+		ContactDetails cd = page.getInstance(ContactDetails.class);
+		cd.clickContactDetails();
+
 		String expectedStreet1 = "Rua Sevilla 215";
 		String expectedStreet2 = "Rua Berlim 434";
 		String expectedCity = "Campinas";
@@ -130,36 +97,31 @@ public class ContactDetailsTest extends BaseTest {
 		String expectedOtherEmail = "";
 
 		String actualStreet1 = cd.getStreet1Value();
-		Assert.assertEquals(expectedStreet1, actualStreet1);
-
 		String actualStreet2 = cd.getStreet2Value();
-		Assert.assertEquals(expectedStreet2, actualStreet2);
-
 		String actualCity = cd.getCityValue();
-		Assert.assertEquals(expectedCity, actualCity);
-
 		String actualState = cd.getStateValue();
-		Assert.assertEquals(expectedState, actualState);
-
 		String actualZip = cd.getZipValue();
-		Assert.assertEquals(expectedZip, actualZip);
-
 		String actualCountry = cd.getCountryTxt();
-		Assert.assertEquals(expectedCountry, actualCountry);
+		String actualHomenumber = cd.getHomeNumberValue();
+		String actualMobilenumber = cd.getMobileNumberValue();
+		String actualWorknumber = cd.getWorkNumberValue();
+		String actualWorkemail = cd.getWorkEmailValue();
+		String actualOtheremail = cd.getOtherEmailValue();
 
-		String actualHomeNumber = cd.getHomeNumberValue();
-		Assert.assertEquals(expectedHomeNumber, actualHomeNumber);
+		SoftAssert softAssert = new SoftAssert();
 
-		String actualMobileNumber = cd.getMobileNumberValue();
-		Assert.assertEquals(expectedMobileNumber, actualMobileNumber);
+		softAssert.assertEquals(actualStreet1, expectedStreet1, "Street1 mismatch!");
+		softAssert.assertEquals(actualStreet2, expectedStreet2, "Street2 mismatch!");
+		softAssert.assertEquals(actualCity, expectedCity, "City mismatch!");
+		softAssert.assertEquals(actualState, expectedState, "State mismatch!");
+		softAssert.assertEquals(actualZip, expectedZip, "Zip Code mismatch!");
+		softAssert.assertEquals(actualCountry, expectedCountry, "Country mismatch!");
+		softAssert.assertEquals(actualHomenumber, expectedHomeNumber, "Home number mismatch!");
+		softAssert.assertEquals(actualMobilenumber, expectedMobileNumber, "Mobile number mismatch!");
+		softAssert.assertEquals(actualWorknumber, expectedWorkNumber, "Work number mismatch!");
+		softAssert.assertEquals(actualWorkemail, expectedWorkEmail, "Work email mismatch!");
+		softAssert.assertEquals(actualOtheremail, expectedOtherEmail, "Other email mismatch!");
 
-		String actualWorkNumber = cd.getWorkNumberValue();
-		Assert.assertEquals(expectedWorkNumber, actualWorkNumber);
-
-		String actualWorkEmail = cd.getWorkEmailValue();
-		Assert.assertEquals(expectedWorkEmail, actualWorkEmail);
-
-		String actualOtherEmail = cd.getOtherEmailValue();
-		Assert.assertEquals(expectedOtherEmail, actualOtherEmail);
+		softAssert.assertAll(); 
 	}
 }

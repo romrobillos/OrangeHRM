@@ -58,12 +58,12 @@ public class Candidates extends BasePage {
 	@FindBy(xpath = "//button[normalize-space()='Reset']")
 	WebElement candidates_reset;
 
-	public WebElement getCandidatesSubTab() {
-		return candidatesSubTab;
+	public void clickCandidatesSubTab() {
+		clickWaitElement(candidatesSubTab);
 	}
 
 	public WebElement getCandidateName() {
-		return candidates_candidateName;
+		return waitForElement(candidates_candidateName);
 	}
 
 	public WebElement getdateFrom() {
@@ -75,7 +75,7 @@ public class Candidates extends BasePage {
 	}
 
 	public void clickSearch() {
-		candidates_search.click();
+		clickWaitElement(candidates_search);
 	}
 
 	public void clickReset() {
@@ -160,7 +160,7 @@ public class Candidates extends BasePage {
 	}
 
 	public void selectVacancy(String vacancy) {
-		candidates_vacancy.click();
+		clickWaitElement(candidates_vacancy);
 
 		int maxTries = 100;
 		boolean found = true;
@@ -170,6 +170,7 @@ public class Candidates extends BasePage {
 
 			if (highlightedText.equals(vacancy)) {
 				candidates_vacancy.sendKeys(Keys.ENTER);
+				clickWaitElement(candidates_search);
 				break;
 			}
 			candidates_vacancy.sendKeys(Keys.ARROW_DOWN);
@@ -181,8 +182,6 @@ public class Candidates extends BasePage {
 	}
 
 	public boolean isVacancyFiltered(String vacancy) {
-
-		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
 		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[@class='oxd-table-body']/div")));
 
@@ -212,7 +211,7 @@ public class Candidates extends BasePage {
 	}
 
 	public void selectHiringManager(String manager) {
-		candidates_hiringManager.click();
+		clickWaitElement(candidates_hiringManager);  
 
 		int maxTries = 100;
 		boolean found = true;
@@ -222,6 +221,7 @@ public class Candidates extends BasePage {
 
 			if (highlightedText.contains(manager)) {
 				candidates_hiringManager.sendKeys(Keys.ENTER);
+				clickWaitElement(candidates_search);
 				break;
 			}
 			candidates_hiringManager.sendKeys(Keys.ARROW_DOWN);
@@ -234,17 +234,16 @@ public class Candidates extends BasePage {
 
 	public boolean isHiringManagerFiltered(String manager) {
 
-		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
 		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[@class='oxd-table-body']/div")));
 
 		List<WebElement> rows = driver.findElements(By.xpath("//div[@class='oxd-table-body']/div"));
 		System.out.println("Total rows found: " + rows.size());
 		boolean flag = false;
+		String label = manager.split(" ")[0];
 
 		for (int i = 1; i <= rows.size(); i++) {
 			String dynamicXpath = "//div[@class='oxd-table-body']/div[" + i
-					+ "]//div[contains(@class,'oxd-table-cell')]//descendant::div[contains(text(),'" + manager + "')]";
+					+ "]//div[contains(@class,'oxd-table-cell')]//descendant::div[contains(text(),'" + label + "')]";
 
 			try {
 				WebElement managerElement = wait
@@ -317,6 +316,24 @@ public class Candidates extends BasePage {
 		return flag;
 	}
 
+	public void searchCandidateByNameThruManual(String testName) {
+		WebElement candidateNameInput = getCandidateName(); // Assuming this method gets the input field
+
+		candidateNameInput.sendKeys(Keys.CONTROL + "a");
+		candidateNameInput.sendKeys(Keys.BACK_SPACE);
+
+		candidateNameInput.sendKeys(testName);
+
+		clickSearch();
+	}
+
+	public void searchCandidateByNameThruAutoSuggest(String fullName) {
+		String firstName = fullName.split(" ")[0];
+		sendKeysWithWait(candidates_candidateName, firstName);
+		selectNameFromSuggestion1(fullName);
+		clickSearch();
+	}
+
 	public void selectNameFromSuggestion1(String name) {
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
@@ -334,8 +351,6 @@ public class Candidates extends BasePage {
 	}
 
 	public boolean isManualSearchGotFilteredOrInvalid(String name) {
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-
 		List<WebElement> tableResults = driver
 				.findElements(By.xpath("//div[@class='oxd-table-body']//div[@role='row']/div[3]"));
 
@@ -361,9 +376,6 @@ public class Candidates extends BasePage {
 	}
 
 	public boolean isCandidateNameFiltered(String name) {
-
-		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
 		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[@class='oxd-table-body']/div")));
 
 		List<WebElement> rows = driver.findElements(By.xpath("//div[@class='oxd-table-body']/div"));

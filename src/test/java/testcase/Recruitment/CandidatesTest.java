@@ -18,41 +18,36 @@ import testcase.BaseTest;
 
 public class CandidatesTest extends BaseTest {
 
-	@Test(dataProvider = "validCredential", description = " Verify Recruitment Candidates if Vacancy are filtered")
+	@Test(dataProvider = "validCredential", description = "Verify Recruitment Candidates if Vacancy is Filtered")
 	public void TC0_Recruitment_Candidates_isVacancyFiltered(String username, String password) {
-		new LoginPage(driver).toLogin(username, password);
-		SideBar sb = new SideBar(driver);
-		sb.getRecruitment().click();
-		Candidates c = new Candidates(driver);
-		c.getCandidatesSubTab().click();
+		page.getInstance(LoginPage.class).toLogin(username, password);
+		SideBar sb = page.getInstance(SideBar.class);
+		sb.clickRecruitment();
+		Candidates c = page.getInstance(Candidates.class);
+		c.clickCandidatesSubTab();
 
 		String expectedVacancy = "Payroll Administrator";
 		c.selectVacancy(expectedVacancy);
-		c.clickSearch();
 
-		Actions actions = new Actions(driver);
-		actions.scrollByAmount(0, 500).perform();
+		c.scrollBy(0, 500);
 
 		boolean isItFiltered = c.isVacancyFiltered(expectedVacancy);
 		Assert.assertTrue(isItFiltered);
 
 	}
 
-	@Test(dataProvider = "validCredential", description = " Verify Recruitment Candidates if CandidatesName are filtered")
+	@Test(dataProvider = "validCredential", description = "Verify Recruitment Candidates if Candidate Name is Filtered")
 	public void TC0_Recruitment_Candidates_isCandidateFiltered(String username, String password) {
-		new LoginPage(driver).toLogin(username, password);
-		SideBar sb = new SideBar(driver);
-		sb.getRecruitment().click();
-		Candidates c = new Candidates(driver);
-		c.getCandidatesSubTab().click();
+		page.getInstance(LoginPage.class).toLogin(username, password);
+		SideBar sb = page.getInstance(SideBar.class);
+		sb.clickRecruitment();
+		Candidates c = page.getInstance(Candidates.class);
+		c.clickCandidatesSubTab();
 
 		String expectedCandidateName = "Gautham Raj R";
-		c.getCandidateName().sendKeys(expectedCandidateName.split(" ")[0]);
-		c.selectNameFromSuggestion1(expectedCandidateName);
-		c.clickSearch();
+		c.searchCandidateByNameThruAutoSuggest(expectedCandidateName);
 
-		Actions actions = new Actions(driver);
-		actions.scrollByAmount(0, 500).perform();
+		c.scrollBy(0, 500);
 
 		boolean isItFiltered = c.isCandidateNameFiltered(expectedCandidateName);
 		Assert.assertTrue(isItFiltered);
@@ -61,25 +56,17 @@ public class CandidatesTest extends BaseTest {
 
 	@Test(dataProvider = "validCredential", description = " Verify Recruitment_Candidates if Manual search for Candidates name is working")
 	public void candidateNameManualSearch(String username, String password) throws InterruptedException {
-		new LoginPage(driver).toLogin(username, password);
-
-		SideBar sb = new SideBar(driver);
-		sb.getRecruitment().click();
-		Candidates c = new Candidates(driver);
-		c.getCandidatesSubTab().click();
+		page.getInstance(LoginPage.class).toLogin(username, password);
+		SideBar sb = page.getInstance(SideBar.class);
+		sb.clickRecruitment();
+		Candidates c = page.getInstance(Candidates.class);
+		c.clickCandidatesSubTab();
 
 		String[] testNames = { "John", "Doe", "John Doe" };
 
 		SoftAssert softAssert = new SoftAssert();
 		for (String testName : testNames) {
-			WebElement candidateNameInput = c.getCandidateName();
-
-			candidateNameInput.sendKeys(Keys.CONTROL + "a");
-			candidateNameInput.sendKeys(Keys.BACK_SPACE);
-
-			candidateNameInput.sendKeys(testName);
-
-			c.clickSearch();
+			c.searchCandidateByNameThruManual(testName);
 
 			boolean result = c.isManualSearchGotFilteredOrInvalid(testName);
 
@@ -93,18 +80,16 @@ public class CandidatesTest extends BaseTest {
 
 	@Test(dataProvider = "validCredential", description = " Verify Recruitment Candidates if Hiring Manager are filtered")
 	public void TC0_Recruitment_Candidates_isHiringManagerFiltered(String username, String password) {
-		new LoginPage(driver).toLogin(username, password);
-		SideBar sb = new SideBar(driver);
-		sb.getRecruitment().click();
-		Candidates c = new Candidates(driver);
-		c.getCandidatesSubTab().click();
+		page.getInstance(LoginPage.class).toLogin(username, password);
+		SideBar sb = page.getInstance(SideBar.class);
+		sb.clickRecruitment();
+		Candidates c = page.getInstance(Candidates.class);
+		c.clickCandidatesSubTab();
 
-		String expectedManager = "Test 54";
+		String expectedManager = "manda";
 		c.selectHiringManager(expectedManager);
-		c.clickSearch();
 
-		Actions actions = new Actions(driver);
-		actions.scrollByAmount(0, 500).perform();
+		c.scrollBy(0, 500);
 
 		boolean isItFiltered = c.isHiringManagerFiltered(expectedManager);
 		Assert.assertTrue(isItFiltered);
@@ -116,9 +101,9 @@ public class CandidatesTest extends BaseTest {
 			throws InterruptedException {
 		new LoginPage(driver).toLogin(username, password);
 		SideBar sb = new SideBar(driver);
-		sb.getRecruitment().click();
+		sb.clickRecruitment().click();
 		Candidates c = new Candidates(driver);
-		c.getCandidatesSubTab().click();
+		c.clickCandidatesSubTab().click();
 
 		String expectedDateFrom = "2024-02-02";
 		String expectedDateTo = "2024-06-02";
@@ -140,9 +125,9 @@ public class CandidatesTest extends BaseTest {
 	public void TC0_Recruitment_Candidates_isStatusFiltered(String username, String password) {
 		new LoginPage(driver).toLogin(username, password);
 		SideBar sb = new SideBar(driver);
-		sb.getRecruitment().click();
+		sb.clickRecruitment().click();
 		Candidates c = new Candidates(driver);
-		c.getCandidatesSubTab().click();
+		c.clickCandidatesSubTab().click();
 
 		String expectedStatus = "Shortlisted";
 		c.selectStatus(expectedStatus);
@@ -160,9 +145,9 @@ public class CandidatesTest extends BaseTest {
 	public void TC0_Recruitment_Candidates_isReset(String username, String password) {
 		new LoginPage(driver).toLogin(username, password);
 		SideBar sb = new SideBar(driver);
-		sb.getRecruitment().click();
+		sb.clickRecruitment().click();
 		Candidates c = new Candidates(driver);
-		c.getCandidatesSubTab().click();
+		c.clickCandidatesSubTab().click();
 
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOf(c.getCandidateName()));
@@ -202,9 +187,9 @@ public class CandidatesTest extends BaseTest {
 	public void TC0_Recruitment_Candidates_addCandidate(String username, String password) {
 		new LoginPage(driver).toLogin(username, password);
 		SideBar sb = new SideBar(driver);
-		sb.getRecruitment().click();
+		sb.clickRecruitment().click();
 		Candidates c = new Candidates(driver);
-		c.getCandidatesSubTab().click();
+		c.clickCandidatesSubTab().click();
 		c.clickAdd();
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
@@ -225,7 +210,7 @@ public class CandidatesTest extends BaseTest {
 		c.selectAdd_Vacancy(expectedVacancy);
 
 		c.clickSave();
-		wait.until(ExpectedConditions.visibilityOf(sb.getToastNotif()));
+		wait.until(ExpectedConditions.visibilityOf(sb.waitToastNotif()));
 
 		Assert.assertTrue(c.isProfileEqualToAddedOrRow1Name(expectedFullname));
 
@@ -236,9 +221,9 @@ public class CandidatesTest extends BaseTest {
 			throws InterruptedException {
 		new LoginPage(driver).toLogin(username, password);
 		SideBar sb = new SideBar(driver);
-		sb.getRecruitment().click();
+		sb.clickRecruitment().click();
 		Candidates c = new Candidates(driver);
-		c.getCandidatesSubTab().click();
+		c.clickCandidatesSubTab().click();
 		c.clickAdd();
 		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		wait.until(ExpectedConditions.visibilityOf(c.getFirstname()));
@@ -256,9 +241,9 @@ public class CandidatesTest extends BaseTest {
 	public void TC0_Recruitment_Candidates_Table_isCheckboxHeaderWorking(String username, String password) {
 		new LoginPage(driver).toLogin(username, password);
 		SideBar sb = new SideBar(driver);
-		sb.getRecruitment().click();
+		sb.clickRecruitment().click();
 		Candidates c = new Candidates(driver);
-		c.getCandidatesSubTab().click();
+		c.clickCandidatesSubTab().click();
 
 		Actions actions = new Actions(driver);
 		actions.scrollByAmount(0, 500).perform();
@@ -274,9 +259,9 @@ public class CandidatesTest extends BaseTest {
 	public void TC0_Recruitment_Candidates_Action_isViewProfileBtnWorking(String username, String password) {
 		new LoginPage(driver).toLogin(username, password);
 		SideBar sb = new SideBar(driver);
-		sb.getRecruitment().click();
+		sb.clickRecruitment().click();
 		Candidates c = new Candidates(driver);
-		c.getCandidatesSubTab().click();
+		c.clickCandidatesSubTab().click();
 
 		Actions actions = new Actions(driver);
 		actions.scrollByAmount(0, 500).perform();
@@ -294,9 +279,9 @@ public class CandidatesTest extends BaseTest {
 	public void TC0_Recruitment_Candidates_Action_isDeleteProfileBtnWorking(String username, String password) {
 		new LoginPage(driver).toLogin(username, password);
 		SideBar sb = new SideBar(driver);
-		sb.getRecruitment().click();
+		sb.clickRecruitment().click();
 		Candidates c = new Candidates(driver);
-		c.getCandidatesSubTab().click();
+		c.clickCandidatesSubTab().click();
 
 		Actions actions = new Actions(driver);
 		actions.scrollByAmount(0, 500).perform();
@@ -307,7 +292,7 @@ public class CandidatesTest extends BaseTest {
 		c.clickDeleteProfile();
 		c.clickPopupDeleteBtn();
 
-		sb.getToastNotif();
+		sb.waitToastNotif();
 
 		boolean isDeleted = c.isRow1CandidateDeleted(row1NameAndDate);
 

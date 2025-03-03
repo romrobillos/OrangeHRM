@@ -28,19 +28,19 @@ public class ContactDetails extends BasePage {
 	WebElement cd_country;
 
 	@FindBy(xpath = "//form[@class='oxd-form']/div[2]/div[1]/div[1]/div[1]/div[2]/input")
-	WebElement cd_homeNumber;
+	WebElement cd_homenumber;
 
 	@FindBy(xpath = "//form[@class='oxd-form']/div[2]/div[1]/div[2]/div[1]/div[2]/input")
-	WebElement cd_mobileNumber;
+	WebElement cd_mobilenumber;
 
 	@FindBy(xpath = "//form[@class='oxd-form']/div[2]/div[1]/div[3]/div[1]/div[2]/input")
-	WebElement cd_workNumber;
+	WebElement cd_worknumber;
 
 	@FindBy(xpath = "//form[@class='oxd-form']/div[3]/div[1]/div[1]/div[1]/div[2]/input")
-	WebElement cd_workEmail;
+	WebElement cd_workemail;
 
 	@FindBy(xpath = "//form[@class='oxd-form']/div[3]/div[1]/div[2]/div[1]/div[2]/input")
-	WebElement cd_otherEmail;
+	WebElement cd_otheremail;
 
 	@FindBy(xpath = "//a[normalize-space()='Contact Details']")
 	WebElement contactDetails;
@@ -48,55 +48,12 @@ public class ContactDetails extends BasePage {
 	@FindBy(xpath = "//button[normalize-space()='Save']")
 	WebElement cd_saveBtn;
 
-	public WebElement getContactDetails() {							
-		return contactDetails;
-	}
-
-	public WebElement getStreet1() {
-		return cd_street1;
-	}
-	
-	public WebElement getStreet2() {
-		return cd_street2;
-	}
-
-	public WebElement getCity() {
-		return cd_city;
-	}
-
-	public WebElement getState() {
-		return cd_state;
-	}
-
-	public WebElement getZip() {
-		return cd_zip;
-	}
-
-	public WebElement getCountry() {
-		return cd_country;
-	}
-
-	public WebElement getHomeNumber() {
-		return cd_homeNumber;
-	}
-
-	public WebElement getMobileNumber() {
-		return cd_mobileNumber;
-	}
-
-	public WebElement getWorkNumber() {
-		return cd_workNumber;
-	}
-
-	public WebElement getWorkEmail() {
-		return cd_workEmail;
-	}
-
-	public WebElement getOtherEmail() {
-		return cd_otherEmail;
+	public void clickContactDetails() {
+		clickWaitElement(contactDetails);
 	}
 
 	public String getStreet1Value() {
+		waitForElement(cd_street1);
 		return cd_street1.getAttribute("value");
 	}
 
@@ -105,51 +62,58 @@ public class ContactDetails extends BasePage {
 	}
 
 	public String getCityValue() {
+		waitForElement(cd_city);
 		return cd_city.getAttribute("value");
 	}
 
 	public String getStateValue() {
+		waitForElement(cd_state);
 		return cd_state.getAttribute("value");
 	}
 
 	public String getZipValue() {
+		waitForElement(cd_zip);
 		return cd_zip.getAttribute("value");
 	}
 
 	public String getCountryTxt() {
+		waitForElement(cd_country);
 		return cd_country.getText();
 	}
 
 	public String getHomeNumberValue() {
-		return cd_homeNumber.getAttribute("value");
+		waitForElement(cd_homenumber);
+		return cd_homenumber.getAttribute("value");
 	}
 
 	public String getMobileNumberValue() {
-		return cd_mobileNumber.getAttribute("value");
+		waitForElement(cd_mobilenumber);
+		return cd_mobilenumber.getAttribute("value");
 	}
 
 	public String getWorkNumberValue() {
-		return cd_workNumber.getAttribute("value");
+		waitForElement(cd_worknumber);
+		return cd_worknumber.getAttribute("value");
 	}
 
 	public String getWorkEmailValue() {
-		return cd_workEmail.getAttribute("value");
+		waitForElement(cd_workemail);
+		return cd_workemail.getAttribute("value");
 	}
 
 	public String getOtherEmailValue() {
-		return cd_otherEmail.getAttribute("value");
+		waitForElement(cd_otheremail);
+		return cd_otheremail.getAttribute("value");
 	}
 
-	public WebElement getSaveBtn() {
-		return cd_saveBtn;
-	}
+	 
 
 	public ContactDetails(WebDriver driver) {
 		super(driver);
 	}
-	
+
 	public void selectCountry(String country) {
-		cd_country.click();
+		clickWaitElement(cd_country);
 		int maxTries = 200;
 		boolean found = true;
 
@@ -166,6 +130,24 @@ public class ContactDetails extends BasePage {
 		if (!found) {
 			throw new RuntimeException("Nationality not found: " + country);
 		}
+	}
+
+	public void fillOutCD(String street1, String street2, String city, String state, String zip, String country,
+			String homenumber, String mobilenumber, String worknumber, String workemail, String otheremail) {
+		jsExecuteScriptWithWait(cd_street1, street1);
+		jsExecuteScriptWithWait(cd_street2, street2);
+		jsExecuteScriptWithWait(cd_city, city);
+		jsExecuteScriptWithWait(cd_zip, zip);
+		jsExecuteScriptWithWait(cd_state, state);
+		selectCountry(country);
+		jsExecuteScriptWithWait(cd_homenumber, homenumber);
+		jsExecuteScriptWithWait(cd_mobilenumber, mobilenumber);
+		jsExecuteScriptWithWait(cd_worknumber, worknumber);
+		jsExecuteScriptWithWait(cd_workemail, workemail);
+		jsExecuteScriptWithWait(cd_otheremail, otheremail);
+
+		clickWaitElement(cd_saveBtn);
+
 	}
 
 }

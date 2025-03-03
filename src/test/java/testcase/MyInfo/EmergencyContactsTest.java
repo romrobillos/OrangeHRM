@@ -1,9 +1,8 @@
 package testcase.MyInfo;
 
-import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -13,57 +12,56 @@ import page.MyInfo.EmergencyContacts;
 import testcase.BaseTest;
 
 public class EmergencyContactsTest extends BaseTest {
+	private Map<String, String> getExpectedEmergencyContactDetails() {
+		Map<String, String> details = new HashMap<>();
+		details.put("name", "Al Jubail");
+		details.put("mobile", "0926");
+		details.put("relationship", "Brother");	
+		return details;
+	}
 
 	@Test(dataProvider = "validCredential", description = "Verify MyInfo_EmergencyContacts Add Button")
 	public void TC0_MyInfo_EmergencyContacts_AddBtn(String username, String password) {
-		new LoginPage(driver).toLogin(username, password);
-		SideBar sb = new SideBar(driver);
-		sb.getMyInfo().click();
-		EmergencyContacts ec = new EmergencyContacts(driver);
+		page.getInstance(LoginPage.class).toLogin(username, password);
+		SideBar sb = page.getInstance(SideBar.class);
+		sb.clickMyInfo();
+		EmergencyContacts ec = page.getInstance(EmergencyContacts.class);
 		ec.clickEmergencyContacts();
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.elementToBeClickable(ec.getAddEmergencyContactsBtn())).click();
+		ec.clickAddEmergencyContactsBtn();
 
 		Assert.assertTrue(ec.isEmergencyContactNameDisplayed());
 	}
 
 	@Test(dataProvider = "validCredential", description = "Verify MyInfo_EmergencyContacts Cancel Button")
 	public void TC0_MyInfo_EmergencyContacts_CancelBtn(String username, String password) throws InterruptedException {
-		new LoginPage(driver).toLogin(username, password);
-		SideBar sb = new SideBar(driver);
-		sb.getMyInfo().click();
-		EmergencyContacts ec = new EmergencyContacts(driver);
+		page.getInstance(LoginPage.class).toLogin(username, password);
+		SideBar sb = page.getInstance(SideBar.class);
+		sb.clickMyInfo();
+		EmergencyContacts ec = page.getInstance(EmergencyContacts.class);
 		ec.clickEmergencyContacts();
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.elementToBeClickable(ec.getAddEmergencyContactsBtn())).click();
+		ec.clickAddEmergencyContactsBtn();
 		ec.clickCancelBtn();
 
 		Assert.assertFalse(ec.isEmergencyContactNameDisplayed());
 	}
 
-	@Test(dataProvider = "validCredential", description = "Verify MyInfo_EmergencyContacts Add Emergency contact")
+	@Test(dataProvider = "validCredential", description = "Verify adding an emergency contact in MyInfo_EmergencyContacts")
 	public void TC0_MyInfo_EmergencyContacts_AddEmergencyContact(String username, String password) {
-		new LoginPage(driver).toLogin(username, password);
-		SideBar sb = new SideBar(driver);
-		sb.getMyInfo().click();
-		EmergencyContacts ec = new EmergencyContacts(driver);
+		page.getInstance(LoginPage.class).toLogin(username, password);
+		SideBar sb = page.getInstance(SideBar.class);
+		sb.clickMyInfo();
+		EmergencyContacts ec = page.getInstance(EmergencyContacts.class);
 		ec.clickEmergencyContacts();
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.elementToBeClickable(ec.getAddEmergencyContactsBtn())).click();
+		ec.clickAddEmergencyContactsBtn();
 
-		String name = "Al Jubail";
-		String mobile = "0926";
-		String relationship = "Brother";
+	 
 
-		ec.getEc_nameTxt().sendKeys(name);
-		ec.getEc_mobileTxt().sendKeys(mobile);
-		ec.getEc_relationTxt().sendKeys(relationship);
+		Map<String, String> expectedDetails = getExpectedEmergencyContactDetails();
+		ec.fillOutEC(expectedDetails.get("name"), expectedDetails.get("mobile"), expectedDetails.get("relationship"));
 
-		ec.clickSaveBtn();
+		sb.waitToastNotif();
 
-		wait.until(ExpectedConditions.visibilityOf(sb.getToastNotif()));
-
-		boolean isITDisplayed = ec.isEmergencyContactDisplayed(name, mobile);
+		boolean isITDisplayed = ec.isEmergencyContactDisplayed(expectedDetails.get("name"), expectedDetails.get("mobile"));
 
 		Assert.assertTrue(isITDisplayed, "Emergency Contact is not displayed in records.");
 
