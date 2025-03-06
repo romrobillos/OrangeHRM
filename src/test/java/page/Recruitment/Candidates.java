@@ -53,7 +53,7 @@ public class Candidates extends BasePage {
 	WebElement candidates_dateTo;
 
 	@FindBy(xpath = "//button[normalize-space()='Search']")
-	WebElement candidates_search;
+	WebElement candidates_searchBtn;
 
 	@FindBy(xpath = "//button[normalize-space()='Reset']")
 	WebElement candidates_reset;
@@ -75,7 +75,7 @@ public class Candidates extends BasePage {
 	}
 
 	public void clickSearch() {
-		clickWaitElement(candidates_search);
+		clickWaitElement(candidates_searchBtn);
 	}
 
 	public void clickReset() {
@@ -100,10 +100,10 @@ public class Candidates extends BasePage {
 	WebElement table_add;
 
 	@FindBy(xpath = "//div[@class='oxd-table-body']/div[1]/div[1]/div[7]/div/button[1]")
-	WebElement action_viewProfile;
+	WebElement actionViewProfileRow1;
 
 	@FindBy(xpath = "//div[@class='oxd-table-body']/div[1]/div[1]/div[7]/div/button[2]")
-	WebElement action_deleteProfile;
+	WebElement actionDeleteProfileRow1;
 
 	@FindBy(xpath = "//button[normalize-space()='Yes, Delete']")
 	WebElement action_popUpDeleteBtn;
@@ -131,7 +131,7 @@ public class Candidates extends BasePage {
 	WebElement addCandidate_contactnumber;
 
 	@FindBy(xpath = "//button[normalize-space()='Save']")
-	WebElement addCandidate_save;
+	WebElement addCandidate_saveBtn;
 
 	@FindBy(xpath = "//button[normalize-space()='Cancel']")
 	WebElement addCandidate_cancel;
@@ -141,25 +141,19 @@ public class Candidates extends BasePage {
 	}
 
 	public void clickHeaderCheckbox() {
-		table_checkbox.click();
+		clickWaitElement(table_checkbox);
 	}
 
-	public void clickViewProfile() {
-		action_viewProfile.click();
+	public void viewProfileRow1() {
+		clickWaitElement(actionViewProfileRow1);
 	}
 
-	public void clickDeleteProfile() {
-		action_deleteProfile.click();
+	public void deleteProfileRow1() {
+		clickWaitElement(actionDeleteProfileRow1);
+		clickWaitElement(action_popUpDeleteBtn);
 	}
 
-	public void clickPopupDeleteBtn() {
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-
-		WebElement deleteButton = wait.until(ExpectedConditions.elementToBeClickable(action_popUpDeleteBtn));
-		deleteButton.click();
-	}
-
-	public void selectVacancy(String vacancy) {
+	public void searchVacancy(String vacancy) {
 		clickWaitElement(candidates_vacancy);
 
 		int maxTries = 100;
@@ -170,7 +164,7 @@ public class Candidates extends BasePage {
 
 			if (highlightedText.equals(vacancy)) {
 				candidates_vacancy.sendKeys(Keys.ENTER);
-				clickWaitElement(candidates_search);
+				clickWaitElement(candidates_searchBtn);
 				break;
 			}
 			candidates_vacancy.sendKeys(Keys.ARROW_DOWN);
@@ -210,8 +204,8 @@ public class Candidates extends BasePage {
 		return flag;
 	}
 
-	public void selectHiringManager(String manager) {
-		clickWaitElement(candidates_hiringManager);  
+	public void searchHiringManager(String manager) {
+		clickWaitElement(candidates_hiringManager);
 
 		int maxTries = 100;
 		boolean found = true;
@@ -221,7 +215,7 @@ public class Candidates extends BasePage {
 
 			if (highlightedText.contains(manager)) {
 				candidates_hiringManager.sendKeys(Keys.ENTER);
-				clickWaitElement(candidates_search);
+				clickWaitElement(candidates_searchBtn);
 				break;
 			}
 			candidates_hiringManager.sendKeys(Keys.ARROW_DOWN);
@@ -263,8 +257,8 @@ public class Candidates extends BasePage {
 		return flag;
 	}
 
-	public void selectStatus(String status) {
-		candidates_status.click();
+	public void searchStatus(String status) {
+		clickWaitElement(candidates_status);
 
 		int maxTries = 100;
 		boolean found = true;
@@ -274,6 +268,7 @@ public class Candidates extends BasePage {
 
 			if (highlightedText.contains(status)) {
 				candidates_status.sendKeys(Keys.ENTER);
+				clickWaitElement(candidates_searchBtn);
 				break;
 			}
 			candidates_status.sendKeys(Keys.ARROW_DOWN);
@@ -284,9 +279,13 @@ public class Candidates extends BasePage {
 		}
 	}
 
-	public boolean isStatusFiltered(String status) {
+	public void searchDate(String DateFrom, String DateTo) {
+		sendKeysWithWait(candidates_dateFrom, DateFrom);
+		sendKeysWithWait(candidates_dateTo, DateTo);
+		clickWaitElement(candidates_searchBtn);
+	}
 
-		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	public boolean isStatusFiltered(String status) {
 
 		wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[@class='oxd-table-body']/div")));
 
@@ -317,7 +316,7 @@ public class Candidates extends BasePage {
 	}
 
 	public void searchCandidateByNameThruManual(String testName) {
-		WebElement candidateNameInput = getCandidateName(); // Assuming this method gets the input field
+		WebElement candidateNameInput = getCandidateName();
 
 		candidateNameInput.sendKeys(Keys.CONTROL + "a");
 		candidateNameInput.sendKeys(Keys.BACK_SPACE);
@@ -335,7 +334,6 @@ public class Candidates extends BasePage {
 	}
 
 	public void selectNameFromSuggestion1(String name) {
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
 		List<WebElement> suggestions = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
 				By.xpath("//div[@role='listbox']/div/span[normalize-space()='" + name + "']")));
@@ -405,7 +403,6 @@ public class Candidates extends BasePage {
 	}
 
 	public boolean isDateOfApplicationWithinRange() {
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
 		String dateFromText = candidates_dateFrom.getAttribute("value").trim();
 		String dateToText = candidates_dateTo.getAttribute("value").trim();
@@ -451,7 +448,6 @@ public class Candidates extends BasePage {
 	}
 
 	public boolean verifySelectAllCheckbox() {
-		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
 		List<WebElement> rowCheckboxes = wait.until(ExpectedConditions
 				.presenceOfAllElementsLocatedBy(By.xpath("//div[@class='oxd-table-body']//input[@type='checkbox']")));
@@ -474,8 +470,6 @@ public class Candidates extends BasePage {
 	}
 
 	public boolean isProfileEqualToAddedOrRow1Name(String name) {
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-
 		String stageXpath = wait
 				.until(ExpectedConditions.presenceOfElementLocated(By.xpath(
 						"//div[@class='oxd-input-group']/div[2]/p[contains(normalize-space(.), '" + name + "')]")))
@@ -488,7 +482,6 @@ public class Candidates extends BasePage {
 	}
 
 	public String getRow1Name() {
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		String row1NameXpath = wait
 				.until(ExpectedConditions.presenceOfElementLocated(
 						By.xpath("//div[@class='oxd-table-body']/div[1]//div[contains(@class,'oxd-table-cell')][3]")))
@@ -497,7 +490,6 @@ public class Candidates extends BasePage {
 	}
 
 	public String getRow1NameAndDate() {
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		List<WebElement> row1NameAndDate = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
 				By.xpath("//div[@class='oxd-table-body']/div[1]//div[contains(@class,'oxd-table-cell')][3] | "
 						+ "//div[@class='oxd-table-body']/div[1]//div[contains(@class,'oxd-table-cell')][5]")));
@@ -508,7 +500,6 @@ public class Candidates extends BasePage {
 	}
 
 	public boolean isRow1CandidateDeleted(String nameAndDate) {
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
 		List<WebElement> updatedRows = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
 				By.xpath("//div[@class='oxd-table-body']/div//div[contains(@class,'oxd-table-cell')][3] | "
@@ -559,18 +550,6 @@ public class Candidates extends BasePage {
 
 	// Add Candidate
 
-	public WebElement getFirstname() {
-		return addCandidate_firstname;
-	}
-
-	public WebElement getMiddlename() {
-		return addCandidate_middlename;
-	}
-
-	public WebElement getLastname() {
-		return addCandidate_lastname;
-	}
-
 	public String getAdd_VacancyTxt() {
 		return addCandidate_vacancy.getText();
 	}
@@ -579,8 +558,26 @@ public class Candidates extends BasePage {
 		return addCandidate_vacancy;
 	}
 
+	public void addCandidate(String fname, String mname, String lname, String email, String contactNumber,
+			String vacancy) {
+		clickWaitElement(table_add);
+		sendKeysWithWait(addCandidate_firstname, fname);
+		sendKeysWithWait(addCandidate_middlename, mname);
+		sendKeysWithWait(addCandidate_lastname, lname);
+		sendKeysWithWait(addCandidate_email, email);
+		sendKeysWithWait(addCandidate_contactnumber, contactNumber);
+		selectAdd_Vacancy(vacancy);
+		clickWaitElement(addCandidate_saveBtn);
+	}
+
+	public void cancelAddCandidate() {
+		clickWaitElement(table_add);
+		waitForElement(addCandidate_firstname);
+		clickWaitElement(addCandidate_cancel);
+	}
+
 	public void selectAdd_Vacancy(String vacancy) {
-		addCandidate_vacancy.click();
+		clickWaitElement(addCandidate_vacancy);
 		int maxTries = 100;
 		boolean found = true;
 
@@ -599,19 +596,4 @@ public class Candidates extends BasePage {
 		}
 	}
 
-	public WebElement getEmail() {
-		return addCandidate_email;
-	}
-
-	public WebElement getContactnumber() {
-		return addCandidate_contactnumber;
-	}
-
-	public void clickSave() {
-		addCandidate_save.click();
-	}
-
-	public void clickCancel() {
-		addCandidate_cancel.click();
-	}
 }

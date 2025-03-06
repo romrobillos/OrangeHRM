@@ -1,12 +1,5 @@
 package testcase.Recruitment;
 
-import java.time.Duration;
-
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -27,7 +20,7 @@ public class CandidatesTest extends BaseTest {
 		c.clickCandidatesSubTab();
 
 		String expectedVacancy = "Payroll Administrator";
-		c.selectVacancy(expectedVacancy);
+		c.searchVacancy(expectedVacancy);
 
 		c.scrollBy(0, 500);
 
@@ -87,7 +80,7 @@ public class CandidatesTest extends BaseTest {
 		c.clickCandidatesSubTab();
 
 		String expectedManager = "manda";
-		c.selectHiringManager(expectedManager);
+		c.searchHiringManager(expectedManager);
 
 		c.scrollBy(0, 500);
 
@@ -97,25 +90,20 @@ public class CandidatesTest extends BaseTest {
 	}
 
 	@Test(dataProvider = "validCredential", description = " Verify Recruitment_Candidates if Date is WithinRange")
-	public void TC0_Recruitment_Candidates_isDateFiltered(String username, String password)
-			throws InterruptedException {
-		new LoginPage(driver).toLogin(username, password);
-		SideBar sb = new SideBar(driver);
-		sb.clickRecruitment().click();
-		Candidates c = new Candidates(driver);
-		c.clickCandidatesSubTab().click();
+	public void TC0_Recruitment_Candidates_isDateFiltered(String username, String password) {
+		page.getInstance(LoginPage.class).toLogin(username, password);
+		SideBar sb = page.getInstance(SideBar.class);
+		sb.clickRecruitment();
+		Candidates c = page.getInstance(Candidates.class);
+		c.clickCandidatesSubTab();
 
 		String expectedDateFrom = "2024-02-02";
 		String expectedDateTo = "2024-06-02";
 
-		c.getdateFrom().sendKeys(expectedDateFrom);
-		c.getdateTo().sendKeys(expectedDateTo);
-		c.clickSearch();
+		c.searchDate(expectedDateFrom, expectedDateTo);
 
-		Actions actions = new Actions(driver);
-		actions.scrollByAmount(0, 500).perform();
+		c.scrollBy(0, 500);
 
-		Thread.sleep(1000);
 		boolean isWithinRange = c.isDateOfApplicationWithinRange();
 		Assert.assertTrue(isWithinRange, "Some dates are out of the specified range!");
 
@@ -123,18 +111,17 @@ public class CandidatesTest extends BaseTest {
 
 	@Test(dataProvider = "validCredential", description = " Verify Recruitment Candidates if Status are filtered")
 	public void TC0_Recruitment_Candidates_isStatusFiltered(String username, String password) {
-		new LoginPage(driver).toLogin(username, password);
-		SideBar sb = new SideBar(driver);
-		sb.clickRecruitment().click();
-		Candidates c = new Candidates(driver);
-		c.clickCandidatesSubTab().click();
+		page.getInstance(LoginPage.class).toLogin(username, password);
+		SideBar sb = page.getInstance(SideBar.class);
+		sb.clickRecruitment();
+		Candidates c = page.getInstance(Candidates.class);
+		c.clickCandidatesSubTab();
 
 		String expectedStatus = "Shortlisted";
-		c.selectStatus(expectedStatus);
-		c.clickSearch();
 
-		Actions actions = new Actions(driver);
-		actions.scrollByAmount(0, 500).perform();
+		c.searchStatus(expectedStatus);
+
+		c.scrollBy(0, 500);
 
 		boolean isItFiltered = c.isStatusFiltered(expectedStatus);
 		Assert.assertTrue(isItFiltered);
@@ -143,18 +130,15 @@ public class CandidatesTest extends BaseTest {
 
 	@Test(dataProvider = "validCredential", description = " Verify Recruitment_Candidates Reset Button")
 	public void TC0_Recruitment_Candidates_isReset(String username, String password) {
-		new LoginPage(driver).toLogin(username, password);
-		SideBar sb = new SideBar(driver);
-		sb.clickRecruitment().click();
-		Candidates c = new Candidates(driver);
-		c.clickCandidatesSubTab().click();
-
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.visibilityOf(c.getCandidateName()));
+		page.getInstance(LoginPage.class).toLogin(username, password);
+		SideBar sb = page.getInstance(SideBar.class);
+		sb.clickRecruitment();
+		Candidates c = page.getInstance(Candidates.class);
+		c.clickCandidatesSubTab();
 
 		String garbageValue = "Senior QA Lead";
 
-		c.selectVacancy(garbageValue);
+		c.searchVacancy(garbageValue);
 
 		c.clickReset();
 
@@ -185,13 +169,11 @@ public class CandidatesTest extends BaseTest {
 
 	@Test(dataProvider = "validCredential", description = " Verify Added Candidate")
 	public void TC0_Recruitment_Candidates_addCandidate(String username, String password) {
-		new LoginPage(driver).toLogin(username, password);
-		SideBar sb = new SideBar(driver);
-		sb.clickRecruitment().click();
-		Candidates c = new Candidates(driver);
-		c.clickCandidatesSubTab().click();
-		c.clickAdd();
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		page.getInstance(LoginPage.class).toLogin(username, password);
+		SideBar sb = page.getInstance(SideBar.class);
+		sb.clickRecruitment();
+		Candidates c = page.getInstance(Candidates.class);
+		c.clickCandidatesSubTab();
 
 		String expectedFirstname = "Jon Romeo";
 		String expectedMiddlename = "Igoy";
@@ -201,36 +183,27 @@ public class CandidatesTest extends BaseTest {
 		String expectedContactnumber = "0966";
 		String expectedVacancy = "Senior QA Lead";
 
-		wait.until(ExpectedConditions.visibilityOf(c.getFirstname())).sendKeys(expectedFirstname);
-		wait.until(ExpectedConditions.visibilityOf(c.getMiddlename())).sendKeys(expectedMiddlename);
-		wait.until(ExpectedConditions.visibilityOf(c.getLastname())).sendKeys(expectedLastname);
-		wait.until(ExpectedConditions.visibilityOf(c.getEmail())).sendKeys(expectedEmail);
-		wait.until(ExpectedConditions.visibilityOf(c.getContactnumber())).sendKeys(expectedContactnumber);
-		wait.until(ExpectedConditions.elementToBeClickable(c.getAdd_Vacancy()));
-		c.selectAdd_Vacancy(expectedVacancy);
+		c.addCandidate(expectedFirstname, expectedMiddlename, expectedLastname, expectedEmail, expectedContactnumber,
+				expectedVacancy);
 
-		c.clickSave();
-		wait.until(ExpectedConditions.visibilityOf(sb.waitToastNotif()));
+		sb.waitToastNotif();
 
 		Assert.assertTrue(c.isProfileEqualToAddedOrRow1Name(expectedFullname));
 
 	}
 
 	@Test(dataProvider = "validCredential", description = " Verify Add Candidate to Cancel")
-	public void TC0_Recruitment_Candidates_addCandidate_ToCancel(String username, String password)
-			throws InterruptedException {
-		new LoginPage(driver).toLogin(username, password);
-		SideBar sb = new SideBar(driver);
-		sb.clickRecruitment().click();
-		Candidates c = new Candidates(driver);
-		c.clickCandidatesSubTab().click();
-		c.clickAdd();
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		wait.until(ExpectedConditions.visibilityOf(c.getFirstname()));
-		c.clickCancel();
+	public void TC0_Recruitment_Candidates_addCandidate_ToCancel(String username, String password) {
+		page.getInstance(LoginPage.class).toLogin(username, password);
+		SideBar sb = page.getInstance(SideBar.class);
+		sb.clickRecruitment();
+		Candidates c = page.getInstance(Candidates.class);
+		c.clickCandidatesSubTab();
+
+		c.cancelAddCandidate();
 
 		String expectedUrl = "https://opensource-demo.orangehrmlive.com/web/index.php/recruitment/viewCandidates";
-		String actualUrl = driver.getCurrentUrl();
+		String actualUrl = c.getCurrentPageUrl();
 
 		Assert.assertEquals(expectedUrl, actualUrl);
 		Assert.assertTrue(c.getCandidateName().isDisplayed());
@@ -239,14 +212,13 @@ public class CandidatesTest extends BaseTest {
 
 	@Test(dataProvider = "validCredential", description = " Verify Recruitment_Candidates_Table if Checkbox Header Working")
 	public void TC0_Recruitment_Candidates_Table_isCheckboxHeaderWorking(String username, String password) {
-		new LoginPage(driver).toLogin(username, password);
-		SideBar sb = new SideBar(driver);
-		sb.clickRecruitment().click();
-		Candidates c = new Candidates(driver);
-		c.clickCandidatesSubTab().click();
+		page.getInstance(LoginPage.class).toLogin(username, password);
+		SideBar sb = page.getInstance(SideBar.class);
+		sb.clickRecruitment();
+		Candidates c = page.getInstance(Candidates.class);
+		c.clickCandidatesSubTab();
 
-		Actions actions = new Actions(driver);
-		actions.scrollByAmount(0, 500).perform();
+		c.scrollBy(0, 500);
 
 		c.clickHeaderCheckbox();
 
@@ -255,42 +227,39 @@ public class CandidatesTest extends BaseTest {
 
 	}
 
-	@Test(dataProvider = "validCredential", description = " Verify Recruitment_Candidates_Table_Action_ViewProfileBtn for Row1")
+	@Test(dataProvider = "validCredential", description = "Verify Recruitment Candidates Table Action - View Profile Button for First Row")
 	public void TC0_Recruitment_Candidates_Action_isViewProfileBtnWorking(String username, String password) {
-		new LoginPage(driver).toLogin(username, password);
-		SideBar sb = new SideBar(driver);
-		sb.clickRecruitment().click();
-		Candidates c = new Candidates(driver);
-		c.clickCandidatesSubTab().click();
+		page.getInstance(LoginPage.class).toLogin(username, password);
+		SideBar sb = page.getInstance(SideBar.class);
+		sb.clickRecruitment();
+		Candidates c = page.getInstance(Candidates.class);
+		c.clickCandidatesSubTab();
 
-		Actions actions = new Actions(driver);
-		actions.scrollByAmount(0, 500).perform();
+		c.scrollBy(0, 500);
 
 		String row1Name = c.getRow1Name();
 		System.out.println("Row1 Candidate name: " + row1Name);
-		c.clickViewProfile();
+		c.viewProfileRow1();
 
 		boolean isAtCorrectProfile = c.isProfileEqualToAddedOrRow1Name(row1Name);
 
 		Assert.assertTrue(isAtCorrectProfile);
 	}
 
-	@Test(dataProvider = "validCredential", description = " Verify Recruitment_Candidates_Table_Action_DeleteProfileBtn for Row1")
+	@Test(dataProvider = "validCredential", description = " Verify Recruitment Candidates Table Action - Delete Profile Button for First Row")
 	public void TC0_Recruitment_Candidates_Action_isDeleteProfileBtnWorking(String username, String password) {
-		new LoginPage(driver).toLogin(username, password);
-		SideBar sb = new SideBar(driver);
-		sb.clickRecruitment().click();
-		Candidates c = new Candidates(driver);
-		c.clickCandidatesSubTab().click();
+		page.getInstance(LoginPage.class).toLogin(username, password);
+		SideBar sb = page.getInstance(SideBar.class);
+		sb.clickRecruitment();
+		Candidates c = page.getInstance(Candidates.class);
+		c.clickCandidatesSubTab();
 
-		Actions actions = new Actions(driver);
-		actions.scrollByAmount(0, 500).perform();
+		c.scrollBy(0, 500);
 
 		String row1NameAndDate = c.getRow1NameAndDate();
 		System.out.println("Candidate to be deleted: " + row1NameAndDate);
 
-		c.clickDeleteProfile();
-		c.clickPopupDeleteBtn();
+		c.deleteProfileRow1();
 
 		sb.waitToastNotif();
 

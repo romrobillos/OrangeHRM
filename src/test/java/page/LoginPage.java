@@ -7,6 +7,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class LoginPage extends BasePage {
 
+	public LoginPage(WebDriver driver) {
+		super(driver);
+
+	}
 	@FindBy(name = "username")
 	WebElement username;
 
@@ -49,10 +53,6 @@ public class LoginPage extends BasePage {
 	@FindBy(xpath = "//span[normalize-space()='My Info']")
 	WebElement myInfo;
 
-	public LoginPage(WebDriver driver) {
-		super(driver);
-
-	}
 
 	public void toLogin(String username, String password) {
 		sendKeysWithWait(this.username, username);
@@ -83,17 +83,17 @@ public class LoginPage extends BasePage {
 	}
 
 	public String getPassBorderColor() {
-		WebElement passTxtbox = password; 
+		WebElement passTxtbox = password;
 		waitForCssValueChange(passTxtbox, "border-color", "rgb(235, 9, 16)");
 		return passTxtbox.getCssValue("border-color");
 	}
 
 	public void clickforgotPass() {
-		clickWaitElement(forgotPasswordLink); 
+		clickWaitElement(forgotPasswordLink);
 	}
 
 	public void clickCancelResetBtn() {
-		clickWaitElement(forgotPasswordLink); 
+		clickWaitElement(forgotPasswordLink);
 		clickWaitElement(cancelBtn);
 	}
 
@@ -102,7 +102,7 @@ public class LoginPage extends BasePage {
 	}
 
 	public void toResetPass(String username) {
-		clickWaitElement(forgotPasswordLink); 
+		clickWaitElement(forgotPasswordLink);
 		sendKeysWithWait(this.username, username);
 		clickWaitElement(resetPassBtn);
 	}

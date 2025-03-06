@@ -9,6 +9,10 @@ import page.BasePage;
 
 public class ContactDetails extends BasePage {
 
+	public ContactDetails(WebDriver driver) {
+		super(driver);
+	}
+	
 	@FindBy(xpath = "//form[@class='oxd-form']/div[1]/div[1]/div[1]/div[1]/div[2]/input")
 	WebElement cd_street1;
 
@@ -104,12 +108,6 @@ public class ContactDetails extends BasePage {
 	public String getOtherEmailValue() {
 		waitForElement(cd_otheremail);
 		return cd_otheremail.getAttribute("value");
-	}
-
-	 
-
-	public ContactDetails(WebDriver driver) {
-		super(driver);
 	}
 
 	public void selectCountry(String country) {

@@ -50,26 +50,6 @@ public class EmergencyContacts extends BasePage {
 		clickWaitElement(addEmergencyContactsBtn);
 	}
 
-	public WebElement getEc_nameTxt() {
-		return ec_nameTxt;
-	}
-
-	public WebElement getEc_relationTxt() {
-		return ec_relationTxt;
-	}
-
-	public WebElement getEc_homeTelephoneTxt() {
-		return ec_homeTelephoneTxt;
-	}
-
-	public WebElement getEc_mobileTxt() {
-		return ec_mobileTxt;
-	}
-
-	public WebElement getEc_workTelephoneTxt() {
-		return ec_workTelephoneTxt;
-	}
-
 	public void clickCancelBtn() {
 		clickWaitElement(cancelBtn);
 	}

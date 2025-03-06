@@ -11,6 +11,7 @@ public class LoginTest extends BaseTest {
 	public void TC001_toLogin(String username, String password) {
 		LoginPage loginPage = page.getInstance(LoginPage.class);
 		loginPage.toLogin(username, password);
+	
 		boolean isLoginSuccessful = loginPage.isLoginSuccesful();
 		Assert.assertTrue(isLoginSuccessful);
 	}
