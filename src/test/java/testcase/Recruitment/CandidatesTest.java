@@ -157,12 +157,12 @@ public class CandidatesTest extends BaseTest {
 		String actualDateTo = c.getdateTo().getAttribute("value");
 
 		SoftAssert softAssert = new SoftAssert();
-		softAssert.assertEquals(expectedVacancy, actualVacancy);
-		softAssert.assertEquals(expectedHiringManager, actualHiringManager);
-		softAssert.assertEquals(expectedStatus, actualStatus);
-		softAssert.assertEquals(expectedCandidateName, actualCandidateName);
-		softAssert.assertEquals(expectedDateFrom, actualDateFrom);
-		softAssert.assertEquals(expectedDateTo, actualDateTo);
+		softAssert.assertEquals(actualVacancy, expectedVacancy);
+		softAssert.assertEquals(actualHiringManager, expectedHiringManager);
+		softAssert.assertEquals(actualStatus, expectedStatus);
+		softAssert.assertEquals(actualCandidateName, expectedCandidateName);
+		softAssert.assertEquals(actualDateFrom, expectedDateFrom);
+		softAssert.assertEquals(actualDateTo, expectedDateTo);
 		softAssert.assertAll();
 
 	}

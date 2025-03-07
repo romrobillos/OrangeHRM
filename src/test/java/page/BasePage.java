@@ -23,11 +23,15 @@ public class BasePage {
 	public String getCurrentPageUrl() {
 		return driver.getCurrentUrl();
 	}
-	
+
+	public void toRefreshPage() {
+		driver.navigate().refresh();
+	}
+
 	// Scroll
 	public void scrollBy(int x, int y) {
-	    Actions actions = new Actions(driver);
-	    actions.scrollByAmount(x, y).perform();
+		Actions actions = new Actions(driver);
+		actions.scrollByAmount(x, y).perform();
 	}
 
 	// For Keys

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="3" total="4" passed="1" failed="0" skipped="0">
+<testng-results ignored="6" total="7" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2025-03-07T03:02:56 GMT+08:00" name="Default suite" finished-at="2025-03-07T03:03:12 GMT+08:00" duration-ms="16068">
+  <suite started-at="2025-03-08T07:19:16 GMT+08:00" name="Default suite" finished-at="2025-03-08T07:19:41 GMT+08:00" duration-ms="25252">
     <groups>
     </groups>
-    <test started-at="2025-03-07T03:02:56 GMT+08:00" name="Default test" finished-at="2025-03-07T03:03:12 GMT+08:00" duration-ms="16068">
-      <class name="testcase.Recruitment.VacanciesTest">
-        <test-method is-config="true" signature="setUp()[pri:0, instance:testcase.Recruitment.VacanciesTest@2de23121]" started-at="2025-03-07T03:02:56 GMT+08:00" name="setUp" finished-at="2025-03-07T03:03:02 GMT+08:00" duration-ms="6569" status="PASS">
+    <test started-at="2025-03-08T07:19:16 GMT+08:00" name="Default test" finished-at="2025-03-08T07:19:41 GMT+08:00" duration-ms="25252">
+      <class name="testcase.UserDropDownTest">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:testcase.UserDropDownTest@609cd4d8]" started-at="2025-03-08T07:19:16 GMT+08:00" name="setUp" finished-at="2025-03-08T07:19:20 GMT+08:00" duration-ms="4379" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="TC0_Recruitment_Candidates_isStatusFiltered(java.lang.String,java.lang.String)[pri:0, instance:testcase.Recruitment.VacanciesTest@2de23121]" started-at="2025-03-07T03:03:02 GMT+08:00" name="TC0_Recruitment_Candidates_isStatusFiltered" description=" Verify Recruitment Vacancies if Status are filtered" data-provider="validCredential" finished-at="2025-03-07T03:03:11 GMT+08:00" duration-ms="8993" status="PASS">
+        <test-method signature="TC001_ValidatePW(java.lang.String,java.lang.String)[pri:0, instance:testcase.UserDropDownTest@609cd4d8]" started-at="2025-03-08T07:19:20 GMT+08:00" name="TC001_ValidatePW" data-provider="validCredential" finished-at="2025-03-08T07:19:41 GMT+08:00" duration-ms="20615" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -26,12 +26,12 @@
           </params>
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- TC0_Recruitment_Candidates_isStatusFiltered -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:testcase.Recruitment.VacanciesTest@2de23121]" started-at="2025-03-07T03:03:11 GMT+08:00" name="tearDown" finished-at="2025-03-07T03:03:12 GMT+08:00" duration-ms="365" status="PASS">
+        </test-method> <!-- TC001_ValidatePW -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:testcase.UserDropDownTest@609cd4d8]" started-at="2025-03-08T07:19:41 GMT+08:00" name="tearDown" finished-at="2025-03-08T07:19:41 GMT+08:00" duration-ms="204" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-      </class> <!-- testcase.Recruitment.VacanciesTest -->
+      </class> <!-- testcase.UserDropDownTest -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

@@ -35,6 +35,11 @@ public class Vacancies extends BasePage {
 
 	@FindBy(xpath = "//button[normalize-space()='Search']")
 	WebElement vacancies_searchBtn;
+	
+	@FindBy(xpath = "//button[normalize-space()='Reset']")
+	WebElement vacancies_resetBtn;
+	
+	
 
 	public void clickVacanciesSubtab() {
 		clickWaitElement(vacanciesSubtab);
@@ -43,6 +48,10 @@ public class Vacancies extends BasePage {
 	// Job Title
 	public String getJobTitleTxt() {
 		return vacancies_jobTitle.getText();
+	}
+	
+	public void clickReset() {
+		clickWaitElement (vacancies_resetBtn);  
 	}
 
 	public void searchJobTitle(String jobTitle) {

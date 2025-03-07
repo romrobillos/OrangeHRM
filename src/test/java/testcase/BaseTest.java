@@ -49,7 +49,7 @@ public class BaseTest {
 	}
 
 	@DataProvider(name = "validCredential")
-	public Object[][] ProblemAndError() {
+	public Object[][] credentials() {
 		return new Object[][] { { "Admin", "admin123" } };
 	}
 }

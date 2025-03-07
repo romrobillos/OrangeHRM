@@ -79,7 +79,7 @@ public class Candidates extends BasePage {
 	}
 
 	public void clickReset() {
-		candidates_reset.click();
+		clickWaitElement (candidates_reset);  
 	}
 
 	public String getHiringManagerTxt() {
