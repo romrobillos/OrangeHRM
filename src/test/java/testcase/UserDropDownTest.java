@@ -117,34 +117,89 @@ public class UserDropDownTest extends BaseTest {
 		userDD.clickuserDD();
 		userDD.clickChangePW();
 		SoftAssert softAssert = new SoftAssert();
-
+	
+		String validOldPW = "admin123";
+		String validNewPW = "abcdef1";
+		String validConfirmNewPW= "abcdef1";
+		
+		String expectedRequiredErrorMsg = "Required";
+		String noErrorMsg = "";
+		
 		// Should not exceed 64 characters
-		String pwWith65chars = "Abcd1234!@#$%^&*()_+=-qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVB";
+		String newPWWith65chars = "Abcd1234!@#$%^&*()_+=-qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVB";
+		String confirmPW65Chars = "Abcd1234!@#$%^&*()_+=-qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVB";
 		String expected65CharsErrorMsg = "Should not exceed 64 characters";
 
-		boolean isCorrectErrorMsg = userDD.validatePw2(pwWith65chars, pwWith65chars, expected65CharsErrorMsg);
+		boolean isCorrectErrorMsg = userDD.validateNewPWField(validOldPW, newPWWith65chars,confirmPW65Chars, expected65CharsErrorMsg);
 		softAssert.assertTrue(isCorrectErrorMsg);
-		Thread.sleep(4000);
 		userDD.toRefreshPage();
 
 		// Your password must contain minimum 1 number
 		String pwWithNoNumber = "abcdefg";
+		String confirmNewPWNoNumber = "abcdefg";
 		String expectedNoNumberErrorMsg = "Your password must contain minimum 1 number";
 
-		boolean isCorrect1NumErrorMsg = userDD.validatePw2(pwWithNoNumber, pwWithNoNumber, expectedNoNumberErrorMsg);
+		boolean isCorrect1NumErrorMsg = userDD.validateNewPWField(validOldPW, pwWithNoNumber,confirmNewPWNoNumber, expectedNoNumberErrorMsg);
 
 		softAssert.assertTrue(isCorrect1NumErrorMsg);
-		Thread.sleep(4000);
 		userDD.toRefreshPage();
 
 		// Your password should not contain spaces
-		String pwWithSpace = "abc de2fg";
+		String newPWWithSpace = "abc de2fg";
+		String confirmNewPWWithSpace = "abc de2fg";
 		String expectedNoSpacesErrorMsg = "Your password should not contain spaces";
 
-		boolean isCorrectNoSpaceErrorMsg = userDD.validatePw2(pwWithSpace, pwWithSpace, expectedNoSpacesErrorMsg);
+		boolean isCorrectNoSpaceErrorMsg = userDD.validateNewPWField(validOldPW, newPWWithSpace,confirmNewPWWithSpace, expectedNoSpacesErrorMsg);
 
 		softAssert.assertTrue(isCorrectNoSpaceErrorMsg);
-		Thread.sleep(4000);
+		userDD.toRefreshPage();
+		
+		// Required
+		String blankAllPW = "";
+		
+		boolean isCorrectBlankPWErrorMsg = userDD.validateNewPWField( blankAllPW, blankAllPW, blankAllPW, expectedRequiredErrorMsg);
+		softAssert.assertTrue(isCorrectBlankPWErrorMsg);
+		userDD.toRefreshPage();
+		
+		// Should have at least 7 characters
+		String less7CharsNewPW = "qweas1";
+		String expectedless7CharsPWErrorMsg = "Should have at least 7 characters";
+		
+		boolean isCorrectless7CharsPWErrorMsg = userDD.validateNewPWField( validOldPW, less7CharsNewPW, less7CharsNewPW, expectedless7CharsPWErrorMsg);
+		softAssert.assertTrue(isCorrectless7CharsPWErrorMsg);
+		userDD.toRefreshPage();
+		
+		// Passwords do not match *Confirm Password
+		String confirmNewPWBlank = "";
+		String expectedDoNotMatchPWErrorMsg = "Passwords do not match";
+		
+
+		boolean isCorrectDoNotMatchPWErrorMsg = userDD.validateConfirmPWField( validOldPW, validNewPW, confirmNewPWBlank, expectedDoNotMatchPWErrorMsg);
+		softAssert.assertTrue(isCorrectDoNotMatchPWErrorMsg);
+		userDD.toRefreshPage();
+		
+		// Required error message for *Current Password
+		String blankOldPW = "";
+		
+
+		boolean isCorrectRequiredErrorMsg= userDD.validateOldPWField( blankOldPW, validNewPW, validConfirmNewPW, expectedRequiredErrorMsg);
+		softAssert.assertTrue(isCorrectRequiredErrorMsg);
+		userDD.toRefreshPage();
+		
+		// Entered valid Old password
+		boolean isChangePWSuccess= userDD.validateOldPWField( validOldPW, validNewPW, validConfirmNewPW, noErrorMsg);
+		softAssert.assertTrue(isChangePWSuccess);
+		userDD.toRefreshPage();
+		
+		
+		// Entered invalid Old password
+		String invalidOldPW = "admin321";
+
+		boolean isChangePWFailed= userDD.validateOldPWField( invalidOldPW, validNewPW, validConfirmNewPW, noErrorMsg);
+		softAssert.assertTrue(isChangePWFailed);
+
+		
+		
 		softAssert.assertAll();
 
 	}

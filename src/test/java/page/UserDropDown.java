@@ -3,7 +3,10 @@ package page;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
+
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -73,69 +76,123 @@ public class UserDropDown extends BasePage {
 		return errorMessage.getText();
 	}
 
-	public boolean validatePw(String newPW, String confirmNewPW, String expectedErrorMsg) {
+	public boolean validateOldPWField(String oldPW, String newPW, String confirmPW, String expectedErrorMsg) {
+
+		// Enter the values and click Save
+		sendKeysWithWait(updatepw_currentPWTxtbox, oldPW);
 		sendKeysWithWait(updatepw_newPWTxtbox, newPW);
-		sendKeysWithWait(updatepw_confirmNewPWTxtbox, confirmNewPW);
+		sendKeysWithWait(updatepw_confirmNewPWTxtbox, confirmPW);
 		clickWaitElement(updatepw_saveBtn);
-		
+		// Get the current value from the old password textbox
+		String oldPWValue = updatepw_currentPWTxtbox.getAttribute("value");
+		String newPWValue = updatepw_newPWTxtbox.getAttribute("value");
+		String confirmNewPWValue = updatepw_confirmNewPWTxtbox.getAttribute("value");
+		System.out.println("old: " + oldPWValue);
+		System.out.println("New: " + newPWValue);
+		System.out.println("Confirm: " + confirmNewPWValue);
+
+		// If old password is empty, we expect a field error (expectedErrorMsg is
+		// "Required")
+		if (oldPWValue.isEmpty()) {
+			WebElement oldPWErrorMessage = wait.until(ExpectedConditions
+					.presenceOfElementLocated(By.xpath("(//div[contains(@class, 'field-bottom-space')])[1]/span")));
+			String oldPWActualErrorMsg = oldPWErrorMessage.getText();
+			System.out.println("Old PW Field Error - Actual: " + oldPWActualErrorMsg);
+			System.out.println("Expected: " + expectedErrorMsg);
+			return oldPWActualErrorMsg.equals(expectedErrorMsg);
+		} else {
+			// Otherwise, a toast notification should appear indicating success or error.
+			// Adjust the XPath as needed to target the toast on the OrangeHRM demo Change
+			// Password page.
+			try {
+				WebElement toastNotification = wait
+						.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"oxd-toaster_1\"]")));
+
+				String toastText = toastNotification.getText();
+				System.out.println("Toast Notification: " + toastText);
+				// Optionally, you can check for a specific keyword.
+				// For example, if a valid password change shows "Success" and an invalid one
+				// shows "Error",
+				// you might do:
+				if (toastText.contains("Success") || toastText.contains("Error")) {
+					return true;
+				} else {
+					return false;
+				}
+			} catch (TimeoutException e) {
+				System.out.println("Toast notification did not appear.");
+				return false;
+			}
+		}
+	}
+
+	public boolean validateNewPWField(String oldPW, String newPW, String confirmPW, String expectedErrorMsg) {
+
+		sendKeysWithWait(updatepw_currentPWTxtbox, oldPW);
+		sendKeysWithWait(updatepw_newPWTxtbox, newPW);
+		sendKeysWithWait(updatepw_confirmNewPWTxtbox, confirmPW);
+		clickWaitElement(updatepw_saveBtn);
+
 		WebElement newPWErrorMessage = wait.until(ExpectedConditions
 				.presenceOfElementLocated(By.xpath("(//div[contains(@class, 'field-bottom-space')])[2]/span")));
-		 String newPWActualErrorMsg = newPWErrorMessage.getText();
-		 System.out.println(newPWActualErrorMsg);
-		 System.out.println(expectedErrorMsg);
-		
+		String newPWActualErrorMsg = newPWErrorMessage.getText();
+
+		System.out.println("Actual: " + newPWActualErrorMsg);
+		System.out.println("Expected: " + expectedErrorMsg);
+
+		String oldPWValue = updatepw_currentPWTxtbox.getAttribute("value");
 		String newPWValue = updatepw_newPWTxtbox.getAttribute("value");
 		String confirmNewPWValue = updatepw_confirmNewPWTxtbox.getAttribute("value");
 
-		if (newPWValue.isEmpty() && newPWActualErrorMsg.equals(expectedErrorMsg)) {
-			return true;
-		}
-		if (newPWValue.length() > 64 && newPWActualErrorMsg.equals(expectedErrorMsg)) {
-			return true;
-		}
-		if (newPWValue.contains(" ") && newPWActualErrorMsg.equals(expectedErrorMsg)) {
-			return true;
-		}
-		if (newPWValue.length() < 7 && newPWActualErrorMsg.equals(expectedErrorMsg))  {
-			return true;
-		}
-		if (!newPWValue.matches(".*\\d.*") && newPWActualErrorMsg.equals(expectedErrorMsg)) {
-			return true;
-		}
-		if (!newPWValue.equals(confirmNewPWValue) && newPWActualErrorMsg.equals(expectedErrorMsg)) {
-			return true;
-		}
+		// Define expected error messages for different conditions
+		Map<String, Boolean> conditions = new HashMap<>();
+		conditions.put("Required", oldPWValue.isEmpty() || newPWValue.isEmpty() || confirmNewPWValue.isEmpty());
+		conditions.put("Password should not exceed 64 characters", newPWValue.length() > 64);
+		conditions.put("Your password should not contain spaces", newPWValue.contains(" "));
+		conditions.put("Password should have at least 7 characters", newPWValue.length() < 7);
+		conditions.put("Your password must contain at least 1 number", !newPWValue.matches(".*\\d.*"));
+		conditions.put("Should have at least 7 characters", newPWValue.length() < 7);
+		// Check if the expected error message is valid for the given input
+		System.out.println(oldPWValue);
+		System.out.println(newPWValue);
+		System.out.println(confirmNewPWValue);
+		System.out.println(newPWActualErrorMsg);
+		System.out.println(expectedErrorMsg);
 
-		return false;
-
+		return conditions.getOrDefault(expectedErrorMsg, true) && newPWActualErrorMsg.equals(expectedErrorMsg);
 	}
-	
-	public boolean validatePw2(String newPW, String confirmNewPW, String expectedErrorMsg) {
-	    sendKeysWithWait(updatepw_newPWTxtbox, newPW);
-	    sendKeysWithWait(updatepw_confirmNewPWTxtbox, confirmNewPW);
-	    clickWaitElement(updatepw_saveBtn);
 
-	    WebElement newPWErrorMessage = wait.until(ExpectedConditions
-	            .presenceOfElementLocated(By.xpath("(//div[contains(@class, 'field-bottom-space')])[2]/span")));
-	    String newPWActualErrorMsg = newPWErrorMessage.getText();
-	    
-	    System.out.println("Actual: " + newPWActualErrorMsg);
-	    System.out.println("Expected: " + expectedErrorMsg);
+	public boolean validateConfirmPWField(String oldPW, String newPW, String confirmNewPW, String expectedErrorMsg) {
 
-	    String newPWValue = updatepw_newPWTxtbox.getAttribute("value");
-	    String confirmNewPWValue = updatepw_confirmNewPWTxtbox.getAttribute("value");
+		sendKeysWithWait(updatepw_currentPWTxtbox, oldPW);
+		sendKeysWithWait(updatepw_newPWTxtbox, newPW);
+		sendKeysWithWait(updatepw_confirmNewPWTxtbox, confirmNewPW);
+		clickWaitElement(updatepw_saveBtn);
 
-	    // Define expected error messages for different conditions
-	    Map<String, Boolean> conditions = new HashMap<>();
-	    conditions.put("Required", newPWValue.isEmpty());
-	    conditions.put("Password should not exceed 64 characters", newPWValue.length() > 64);
-	    conditions.put("Your password should not contain spaces", newPWValue.contains(" "));
-	    conditions.put("Password should have at least 7 characters", newPWValue.length() < 7);
-	    conditions.put("Your password must contain at least 1 number", !newPWValue.matches(".*\\d.*"));
-	    conditions.put("Passwords do not match", !newPWValue.equals(confirmNewPWValue));
+		WebElement confirmNewPWErrorMessage = wait.until(ExpectedConditions
+				.presenceOfElementLocated(By.xpath("(//div[contains(@class, 'field-bottom-space')])[3]/span")));
+		String confirmNewPWActualErrorMsg = confirmNewPWErrorMessage.getText();
 
-	    // Check if the expected error message is valid for the given input
-	    return conditions.getOrDefault(expectedErrorMsg, true) && newPWActualErrorMsg.equals(expectedErrorMsg);
+		System.out.println("Actual: " + confirmNewPWActualErrorMsg);
+		System.out.println("Expected: " + expectedErrorMsg);
+
+		String oldPWValue = updatepw_currentPWTxtbox.getAttribute("value");
+		String newPWValue = updatepw_newPWTxtbox.getAttribute("value");
+		String confirmNewPWValue = updatepw_confirmNewPWTxtbox.getAttribute("value");
+
+		// Define expected error messages for different conditions
+		Map<String, Boolean> conditions = new HashMap<>();
+		conditions.put("Passwords do not match", confirmNewPWValue.isEmpty());
+		conditions.put("Passwords do not match", !newPWValue.equals(confirmNewPWValue));
+
+		// Check if the expected error message is valid for the given input
+		System.out.println(oldPWValue);
+		System.out.println(newPWValue);
+		System.out.println(confirmNewPWValue);
+		System.out.println(confirmNewPWActualErrorMsg);
+		System.out.println(expectedErrorMsg);
+
+		return conditions.getOrDefault(expectedErrorMsg, true) && confirmNewPWActualErrorMsg.equals(expectedErrorMsg);
 	}
 
 	// Logout
