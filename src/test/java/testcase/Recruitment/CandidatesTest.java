@@ -29,7 +29,7 @@ public class CandidatesTest extends BaseTest {
 
 	}
 
-	@Test(dataProvider = "validCredential", description = "Verify Recruitment Candidates if Candidate Name is Filtered")
+	@Test(dataProvider = "validCredential", description = "Verify Recruitment Candidates if Candidate Name is Filtered from Auto Suggest")
 	public void TC0_Recruitment_Candidates_isCandidateFiltered(String username, String password) {
 		page.getInstance(LoginPage.class).toLogin(username, password);
 		SideBar sb = page.getInstance(SideBar.class);

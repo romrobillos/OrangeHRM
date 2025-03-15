@@ -17,6 +17,10 @@ public class SideBar extends BasePage {
 
 	@FindBy(xpath = "//span[@class='oxd-text oxd-text--span oxd-main-menu-item--name'][normalize-space()='Recruitment']")
 	WebElement recruitment;
+	
+	@FindBy(xpath = "//span[@class='oxd-text oxd-text--span oxd-main-menu-item--name'][normalize-space()='PIM']")
+	WebElement pim;
+	
 
 	public SideBar(WebDriver driver) {
 		super(driver);
@@ -37,5 +41,9 @@ public class SideBar extends BasePage {
 
 	public void clickRecruitment() {
 		clickWaitElement(recruitment);
+	}
+	
+	public void clickPim() {
+		clickWaitElement(pim);
 	}
 }

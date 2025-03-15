@@ -3,13 +3,13 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="testcase.UserDropDownTest">
+      <class name="testcase.PIM.EmployeeListTest">
         <methods>
           <include name="tearDown"/>
           <include name="setUp"/>
-          <include name="TC001_ValidatePW" invocation-numbers="0"/>
+          <include name="TC0_PIM_EmployeeList_isEmployeeNameFiltered" invocation-numbers="0"/>
         </methods>
-      </class> <!-- testcase.UserDropDownTest -->
+      </class> <!-- testcase.PIM.EmployeeListTest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
