@@ -77,7 +77,7 @@ public class Candidates extends BasePage {
 	}
 
 	public void clickReset() {
-		clickWaitElement (candidates_reset);  
+		clickWaitElement(candidates_reset);
 	}
 
 	public String getHiringManagerTxt() {
@@ -324,26 +324,24 @@ public class Candidates extends BasePage {
 		clickSearch();
 	}
 
-	public void searchCandidateByNameThruAutoSuggest(String fullName) {
-		String firstName = fullName.split(" ")[0];
+	public void searchAndSelectCandidateByNameThruAutoSuggest(String fullName) {
+		String firstName = fullName.split(" ")[0]; // Extract first name
 		sendKeysWithWait(candidates_candidateName, firstName);
-		selectNameFromSuggestion1(fullName);
-		clickSearch();
-	}
 
-	public void selectNameFromSuggestion1(String name) {
-
-		List<WebElement> suggestions = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
-				By.xpath("//div[@role='listbox']/div/span[normalize-space()='" + name + "']")));
+		// Wait for and fetch suggestions
+		List<WebElement> suggestions = driver.findElements(
+				By.xpath("//div[@role='listbox']/div/span[contains(normalize-space(text()), '" + fullName + "')]"));
 
 		System.out.println("Total Suggestions Found: " + suggestions.size());
 
 		if (!suggestions.isEmpty()) {
 			System.out.println("Selecting: " + suggestions.get(0).getText());
-			suggestions.get(0).click(); // Click the first suggestion
+			suggestions.get(0).click(); // Click first matching suggestion
 		} else {
-			System.out.println("No matching suggestion found for: " + name);
+			System.out.println("No matching suggestion found for: " + fullName);
 		}
+
+		clickSearch(); // Perform search after selecting
 	}
 
 	public boolean isManualSearchGotFilteredOrInvalid(String name) {

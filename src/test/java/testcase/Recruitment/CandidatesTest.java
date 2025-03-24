@@ -26,7 +26,7 @@ public class CandidatesTest extends BaseTest {
 
 		boolean isItFiltered = c.isVacancyFiltered(expectedVacancy);
 		Assert.assertTrue(isItFiltered);
-
+		
 	}
 
 	@Test(dataProvider = "validCredential", description = "Verify Recruitment Candidates if Candidate Name is Filtered from Auto Suggest")
@@ -38,7 +38,7 @@ public class CandidatesTest extends BaseTest {
 		c.clickCandidatesSubTab();
 
 		String expectedCandidateName = "Gautham Raj R";
-		c.searchCandidateByNameThruAutoSuggest(expectedCandidateName);
+		c.searchAndSelectCandidateByNameThruAutoSuggest(expectedCandidateName);
 
 		c.scrollBy(0, 500);
 
