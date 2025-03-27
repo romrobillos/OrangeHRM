@@ -7,7 +7,7 @@
         <methods>
           <include name="tearDown"/>
           <include name="setUp"/>
-          <include name="TC0_PIM_EmployeeList_toAddEmployee" invocation-numbers="0"/>
+          <include name="TC0_PIM_EmployeeList_verifyAddPhoto" invocation-numbers="0"/>
         </methods>
       </class> <!-- testcase.PIM.AddEmployeeTest -->
     </classes>

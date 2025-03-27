@@ -105,12 +105,12 @@ public class DashboardTest extends BaseTest {
 	}
 
 	@Test(dataProvider = "validCredential", description = "Verify employeesOnLeaveToday_Settings_Toggle")
-	public void TC016_employeesOnLeaveToday_Settings_Toggle(String username, String password)
-			throws InterruptedException {
+	public void TC016_employeesOnLeaveToday_Settings_Toggle(String username, String password) {
 		page.getInstance(LoginPage.class).toLogin(username, password);
 		page.getInstance(SideBar.class).clickDashboard();
 		Dashboard db = page.getInstance(Dashboard.class);
 		db.clickDb_employeesOnLeaveToday_Settings();
+		
 		WebElement toggle = db.getDb_employeesOnLeaveToday_Settings_Popup_Toggle();
 
 		boolean beforeToggle = toggle.getAttribute("class").contains("oxd-switch-input--active");
@@ -146,7 +146,6 @@ public class DashboardTest extends BaseTest {
 		sb.clickDashboard();
 		Dashboard db = page.getInstance(Dashboard.class);
 		db.clickDb_employeesOnLeaveToday_Settings();
-
 
 		db.clickDb_employeesOnLeaveToday_Settings_Popup_Cancel();
 		boolean isPopupClosed = wait

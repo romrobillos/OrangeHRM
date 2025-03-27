@@ -1,5 +1,10 @@
 package page;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
 import java.time.Duration;
 
 import org.openqa.selenium.JavascriptExecutor;
@@ -26,6 +31,24 @@ public class BasePage {
 
 	public void toRefreshPage() {
 		driver.navigate().refresh();
+	}
+	
+	// Upload photo
+	public void toUpload(String filepath) throws AWTException, InterruptedException {
+		StringSelection filePathSelection = new StringSelection (filepath);
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(filePathSelection, null);
+		
+		Thread.sleep(2000);
+		Robot rb = new Robot();
+		
+		rb.keyPress(KeyEvent.VK_CONTROL);
+		rb.keyPress(KeyEvent.VK_V);
+		rb.keyRelease(KeyEvent.VK_V);
+		rb.keyRelease(KeyEvent.VK_CONTROL);
+		Thread.sleep(3000);
+		rb.keyPress(KeyEvent.VK_ENTER);
+		rb.keyRelease(KeyEvent.VK_ENTER);
+		Thread.sleep(2000);
 	}
 
 	// Scroll
