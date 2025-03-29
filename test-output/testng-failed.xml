@@ -7,7 +7,7 @@
         <methods>
           <include name="tearDown"/>
           <include name="setUp"/>
-          <include name="TC0_PIM_Reports_isReportNameFiltered" invocation-numbers="0"/>
+          <include name="TC0_PIM_EmployeeList_isEmployeeReportToggleWorking" invocation-numbers="0"/>
         </methods>
       </class> <!-- testcase.PIM.ReportsTest -->
     </classes>

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
+<testng-results ignored="2" total="3" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2025-03-29T13:27:29 GMT+08:00" name="Default suite" finished-at="2025-03-29T13:27:43 GMT+08:00" duration-ms="14532">
+  <suite started-at="2025-03-30T03:36:22 GMT+08:00" name="Default suite" finished-at="2025-03-30T03:36:33 GMT+08:00" duration-ms="11578">
     <groups>
     </groups>
-    <test started-at="2025-03-29T13:27:29 GMT+08:00" name="Default test" finished-at="2025-03-29T13:27:43 GMT+08:00" duration-ms="14532">
+    <test started-at="2025-03-30T03:36:22 GMT+08:00" name="Default test" finished-at="2025-03-30T03:36:33 GMT+08:00" duration-ms="11578">
       <class name="testcase.PIM.ReportsTest">
-        <test-method is-config="true" signature="setUp()[pri:0, instance:testcase.PIM.ReportsTest@43c1b556]" started-at="2025-03-29T13:27:29 GMT+08:00" name="setUp" finished-at="2025-03-29T13:27:34 GMT+08:00" duration-ms="5381" status="PASS">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:testcase.PIM.ReportsTest@22fcf7ab]" started-at="2025-03-30T03:36:22 GMT+08:00" name="setUp" finished-at="2025-03-30T03:36:27 GMT+08:00" duration-ms="5385" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="TC0_PIM_Reports_isReportNameFiltered(java.lang.String,java.lang.String)[pri:0, instance:testcase.PIM.ReportsTest@43c1b556]" started-at="2025-03-29T13:27:34 GMT+08:00" name="TC0_PIM_Reports_isReportNameFiltered" description="Verify PIM_Reports if Report Name is Filtered from Auto Suggest" data-provider="validCredential" finished-at="2025-03-29T13:27:41 GMT+08:00" duration-ms="7335" status="PASS">
+        <test-method signature="TC0_PIM_EmployeeList_isEmployeeReportToggleWorking(java.lang.String,java.lang.String)[pri:0, instance:testcase.PIM.ReportsTest@22fcf7ab]" started-at="2025-03-30T03:36:27 GMT+08:00" name="TC0_PIM_EmployeeList_isEmployeeReportToggleWorking" description=" Verify PIM_Reports Employee Reports Toggle Button" data-provider="validCredential" finished-at="2025-03-30T03:36:33 GMT+08:00" duration-ms="5738" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -26,8 +26,8 @@
           </params>
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- TC0_PIM_Reports_isReportNameFiltered -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:testcase.PIM.ReportsTest@43c1b556]" started-at="2025-03-29T13:27:41 GMT+08:00" name="tearDown" finished-at="2025-03-29T13:27:43 GMT+08:00" duration-ms="1750" status="PASS">
+        </test-method> <!-- TC0_PIM_EmployeeList_isEmployeeReportToggleWorking -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:testcase.PIM.ReportsTest@22fcf7ab]" started-at="2025-03-30T03:36:33 GMT+08:00" name="tearDown" finished-at="2025-03-30T03:36:33 GMT+08:00" duration-ms="400" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->

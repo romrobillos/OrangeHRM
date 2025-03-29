@@ -3,6 +3,9 @@ package page.PIM;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotInteractableException;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -16,27 +19,48 @@ public class Reports extends BasePage {
 	public Reports(WebDriver driver) {
 		super(driver);
 	}
-	
-	@FindBy (xpath = "//a[normalize-space()='Reports']")
+
+	@FindBy(xpath = "//a[normalize-space()='Reports']")
 	WebElement reports;
+
+	@FindBy(xpath = "//div[@class='--toggle']//button[@type='button']")
+	WebElement employeeReportsToggleBtn;
 	
-	@FindBy (xpath = "//input[@placeholder='Type for hints...']")
+	@FindBy(xpath = "//input[@placeholder='Type for hints...']")
 	WebElement reportName;
-	
-	@FindBy (xpath = "//button[normalize-space()='Search']")
+
+	@FindBy(xpath = "//button[normalize-space()='Search']")
 	WebElement searchBtn;
+
+	@FindBy(xpath = "//button[normalize-space()='Reset']")
+	WebElement resetBtn;
+
+	public WebElement getEmployeeReportsToggleBtn() {
+		return waitForElement(employeeReportsToggleBtn);
+	}
 	
+	public void clickEmployeeReportsToggleBtn() {
+		clickWaitElement(employeeReportsToggleBtn);
+	}
 	
 	public void clickReports() {
 		clickWaitElement(reports);
 	}
-	
+
+	public void clickResetBtn() {
+		clickWaitElement(resetBtn);
+	}
+
+	public WebElement getReportName() {
+		return waitForElement(reportName);
+	}
+
 	public void searchAndSelectReportNameThruAutoSuggest1(String reportName) {
 		sendKeysWithWait(this.reportName, reportName);
 
 		// Wait for suggestions to appear
-		List<WebElement> suggestions = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By
-				.xpath("//div[@role='listbox']/div/span[contains(normalize-space(text()), '" + reportName + "')]")));
+		List<WebElement> suggestions = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+				By.xpath("//div[@role='listbox']/div/span[contains(normalize-space(text()), '" + reportName + "')]")));
 
 		System.out.println("Total Suggestions Found: " + suggestions.size());
 
@@ -100,6 +124,31 @@ public class Reports extends BasePage {
 				break;
 		}
 		return flag;
+	}
+	
+	public boolean isReportNameToggleWorking() {
+	    try {
+	        WebElement toggle = wait.until(ExpectedConditions.presenceOfElementLocated(
+	                By.xpath("(//i[contains(@class,'oxd-icon')])[7]"))); // Find any caret icon
+
+	        boolean beforeToggle = toggle.getAttribute("class").contains("bi-caret-up-fill");
+	        boolean isReportVisibleBefore = reportName.isDisplayed();
+
+	        clickWaitElement(toggle);
+
+	        // Wait for the class to change
+	        boolean afterToggle = wait.until(ExpectedConditions.attributeToBe(
+	                toggle, "class", beforeToggle ? "oxd-icon bi-caret-down-fill" : "oxd-icon bi-caret-up-fill"));
+
+	        boolean isReportVisibleAfter = afterToggle ? reportName.isDisplayed() :
+	                wait.until(ExpectedConditions.invisibilityOf(reportName));
+
+	        return (beforeToggle && isReportVisibleBefore) != (afterToggle && isReportVisibleAfter);
+
+	    } catch (TimeoutException | NoSuchElementException | ElementNotInteractableException e) { 
+	        System.out.println("Toggle button or report name issue: " + e.getMessage());
+	        return false;
+	    }
 	}
 
 }
