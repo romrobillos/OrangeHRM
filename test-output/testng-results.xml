@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="2" total="3" passed="1" failed="0" skipped="0">
+<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2025-03-27T23:25:21 GMT+08:00" name="Default suite" finished-at="2025-03-27T23:25:47 GMT+08:00" duration-ms="25289">
+  <suite started-at="2025-03-29T13:27:29 GMT+08:00" name="Default suite" finished-at="2025-03-29T13:27:43 GMT+08:00" duration-ms="14532">
     <groups>
     </groups>
-    <test started-at="2025-03-27T23:25:21 GMT+08:00" name="Default test" finished-at="2025-03-27T23:25:47 GMT+08:00" duration-ms="25289">
-      <class name="testcase.PIM.AddEmployeeTest">
-        <test-method is-config="true" signature="setUp()[pri:0, instance:testcase.PIM.AddEmployeeTest@22fcf7ab]" started-at="2025-03-27T23:25:21 GMT+08:00" name="setUp" finished-at="2025-03-27T23:25:28 GMT+08:00" duration-ms="6764" status="PASS">
+    <test started-at="2025-03-29T13:27:29 GMT+08:00" name="Default test" finished-at="2025-03-29T13:27:43 GMT+08:00" duration-ms="14532">
+      <class name="testcase.PIM.ReportsTest">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:testcase.PIM.ReportsTest@43c1b556]" started-at="2025-03-29T13:27:29 GMT+08:00" name="setUp" finished-at="2025-03-29T13:27:34 GMT+08:00" duration-ms="5381" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="TC0_PIM_EmployeeList_verifyAddPhoto(java.lang.String,java.lang.String)[pri:0, instance:testcase.PIM.AddEmployeeTest@22fcf7ab]" started-at="2025-03-27T23:25:28 GMT+08:00" name="TC0_PIM_EmployeeList_verifyAddPhoto" description=" Verify PIM EmployeeList_AddEmployee if can upload photo" data-provider="validCredential" finished-at="2025-03-27T23:25:46 GMT+08:00" duration-ms="18263" status="PASS">
+        <test-method signature="TC0_PIM_Reports_isReportNameFiltered(java.lang.String,java.lang.String)[pri:0, instance:testcase.PIM.ReportsTest@43c1b556]" started-at="2025-03-29T13:27:34 GMT+08:00" name="TC0_PIM_Reports_isReportNameFiltered" description="Verify PIM_Reports if Report Name is Filtered from Auto Suggest" data-provider="validCredential" finished-at="2025-03-29T13:27:41 GMT+08:00" duration-ms="7335" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -26,12 +26,12 @@
           </params>
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- TC0_PIM_EmployeeList_verifyAddPhoto -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:testcase.PIM.AddEmployeeTest@22fcf7ab]" started-at="2025-03-27T23:25:46 GMT+08:00" name="tearDown" finished-at="2025-03-27T23:25:47 GMT+08:00" duration-ms="193" status="PASS">
+        </test-method> <!-- TC0_PIM_Reports_isReportNameFiltered -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:testcase.PIM.ReportsTest@43c1b556]" started-at="2025-03-29T13:27:41 GMT+08:00" name="tearDown" finished-at="2025-03-29T13:27:43 GMT+08:00" duration-ms="1750" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-      </class> <!-- testcase.PIM.AddEmployeeTest -->
+      </class> <!-- testcase.PIM.ReportsTest -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

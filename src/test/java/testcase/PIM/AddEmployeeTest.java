@@ -71,7 +71,6 @@ public class AddEmployeeTest extends BaseTest {
 		
 		ae.clickUploadPhotoBtn( );
 		ae.toUpload(expectedPhoto);
-		Thread.sleep(5000);
 		
 		boolean isItUploaded = ae.isPhotoUploaded();
 		Assert.assertTrue(isItUploaded);
