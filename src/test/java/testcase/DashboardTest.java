@@ -104,25 +104,25 @@ public class DashboardTest extends BaseTest {
 		Assert.assertTrue(db.getDb_employeesOnLeaveToday_Settings_Popup().isDisplayed());
 	}
 
-//	@Test(dataProvider = "validCredential", description = "Verify employeesOnLeaveToday_Settings_Toggle")
-//	public void TC016_employeesOnLeaveToday_Settings_Toggle(String username, String password) {
-//		page.getInstance(LoginPage.class).toLogin(username, password);
-//		page.getInstance(SideBar.class).clickDashboard();
-//		Dashboard db = page.getInstance(Dashboard.class);
-//		db.clickDb_employeesOnLeaveToday_Settings();
-//		
-//		WebElement toggle = db.getDb_employeesOnLeaveToday_Settings_Popup_Toggle();
-//
-//		boolean beforeToggle = toggle.getAttribute("class").contains("oxd-switch-input--active");
-//
-//		db.clickDb_employeesOnLeaveToday_Settings_Popup_Toggle();
-//
-//		db.waitForCssValueChange(toggle, "class", beforeToggle ? "" : "oxd-switch-input--active");
-//
-//		boolean afterToggle = toggle.getAttribute("class").contains("oxd-switch-input--active");
-//
-//		Assert.assertNotEquals(beforeToggle, afterToggle);
-//	}
+	@Test(dataProvider = "validCredential", description = "Verify employeesOnLeaveToday_Settings_Toggle")
+	public void TC016_employeesOnLeaveToday_Settings_Toggle(String username, String password) {
+		page.getInstance(LoginPage.class).toLogin(username, password);
+		page.getInstance(SideBar.class).clickDashboard();
+		Dashboard db = page.getInstance(Dashboard.class);
+		db.clickDb_employeesOnLeaveToday_Settings();
+		
+		WebElement toggle = db.getDb_employeesOnLeaveToday_Settings_Popup_Toggle();
+
+		boolean beforeToggle = toggle.getAttribute("class").contains("oxd-switch-input--active");
+
+		db.clickDb_employeesOnLeaveToday_Settings_Popup_Toggle();
+
+		db.waitForCssValueChange(toggle, "class", beforeToggle ? "" : "oxd-switch-input--active");
+
+		boolean afterToggle = toggle.getAttribute("class").contains("oxd-switch-input--active");
+
+		Assert.assertNotEquals(beforeToggle, afterToggle);
+	}
 
 	@Test(dataProvider = "validCredential", description = "Verify employeesOnLeaveToday_Settings_Save Button")
 	public void TC017_employeesOnLeaveToday_Settings_Save(String username, String password)

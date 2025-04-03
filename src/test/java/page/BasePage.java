@@ -32,15 +32,15 @@ public class BasePage {
 	public void toRefreshPage() {
 		driver.navigate().refresh();
 	}
-	
+
 	// Upload photo
 	public void toUpload(String filepath) throws AWTException, InterruptedException {
-		StringSelection filePathSelection = new StringSelection (filepath);
+		StringSelection filePathSelection = new StringSelection(filepath);
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(filePathSelection, null);
-		
+
 		Thread.sleep(2000);
 		Robot rb = new Robot();
-		
+
 		rb.keyPress(KeyEvent.VK_CONTROL);
 		rb.keyPress(KeyEvent.VK_V);
 		rb.keyRelease(KeyEvent.VK_V);
@@ -78,6 +78,11 @@ public class BasePage {
 	public void clickWaitElement(WebElement element) {
 		waitForElement(element);
 		element.click();
+	}
+
+	public void clickWithJavaScriptExecutor(WebElement element) {
+		WebElement visibleElement = waitForElement(element);
+		((JavascriptExecutor) driver).executeScript("arguments[0].click();", visibleElement);
 	}
 
 	public void waitForCssValueChange(WebElement element, String cssProperty, String expectedValue) {
