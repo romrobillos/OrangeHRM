@@ -6,8 +6,8 @@
       <class name="testcase.PIM.ReportsTest">
         <methods>
           <include name="tearDown"/>
+          <include name="TC0_PIM_Reports_Add_SelectionCriteria" invocation-numbers="0"/>
           <include name="setUp"/>
-          <include name="TC0_PIM_EmployeeList_toAddReport" invocation-numbers="0"/>
         </methods>
       </class> <!-- testcase.PIM.ReportsTest -->
     </classes>
