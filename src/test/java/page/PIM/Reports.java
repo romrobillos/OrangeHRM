@@ -171,10 +171,13 @@ public class Reports extends BasePage {
 	@FindBy(xpath = "(//div[@class='oxd-form-row']//div[@class='oxd-select-wrapper']/div[1]/div[1])[2]")
 	WebElement include;
 
-	@FindBy(xpath = "(//div[@class='oxd-form-row']//div[@class='oxd-select-wrapper']/div[1]/div[1])[3]")
+	@FindBy(xpath = "(//div[@class='oxd-input-group oxd-input-field-bottom-space'])[4]//div//div[@class='oxd-select-text-input'][normalize-space()='-- Select --']")
+	WebElement criteria1;
+
+	@FindBy(xpath = "//body[1]/div[1]/div[1]/div[2]/div[2]/div[1]/div[1]/form[1]/div[3]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]")
 	WebElement displayFieldGroup;
 
-	@FindBy(xpath = "(//div[@class='oxd-form-row']//div[@class='oxd-select-wrapper']/div[1]/div[1])[4]")
+	@FindBy(xpath = "//body[1]/div[1]/div[1]/div[2]/div[2]/div[1]/div[1]/form[1]/div[3]/div[1]/div[2]/div[1]/div[2]/div[1]/div[1]/div[1]")
 	WebElement displayField;
 
 	@FindBy(xpath = "(//div[@class='oxd-form-row']//div[1]//div[2]//div[2]//button[1]//i[1])[1]")
@@ -191,12 +194,16 @@ public class Reports extends BasePage {
 	}
 
 	// Selection Criteria
+	
+	public void clickSelectionCriteria_plusIcon() {
+		clickWaitElement(selectionCriteria_plusIcon);
+	}
 
 	public String getSelectionCriteriaTxt() {
 		return selectionCriteria.getText();
 	}
 
-	public void searchSelectionCriteria(String selectionCriteria) {
+	public void selectSelectionCriteria(String selectionCriteria) {
 		clickWaitElement(this.selectionCriteria);
 
 		int maxTries = 100;
@@ -218,7 +225,7 @@ public class Reports extends BasePage {
 		}
 	}
 
-	public void searchInputSelectionCriteria(String selectionCriteria, String inputSelectionCriteria) {
+	public void selectMatchedCriteria(String selectionCriteria, String selectionOnEachCriteria) {
 		WebElement inputSelectionCriteriaElement = wait
 				.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//p[normalize-space()='"
 						+ selectionCriteria + "']/following::div[normalize-space()='-- Select --'][4]")));
@@ -230,47 +237,52 @@ public class Reports extends BasePage {
 		for (int i = 0; i < maxTries; i++) {
 			String highlightedText = inputSelectionCriteriaElement.getText();
 
-			if (highlightedText.equals(inputSelectionCriteria)) {
+			if (highlightedText.equals(selectionOnEachCriteria)) {
 				inputSelectionCriteriaElement.sendKeys(Keys.ENTER);
-				found = true; // Found the element
+				found = true;
 				break;
 			}
 			inputSelectionCriteriaElement.sendKeys(Keys.ARROW_DOWN);
 		}
 
 		if (!found) {
-			throw new RuntimeException("Not found: " + inputSelectionCriteria);
+			throw new RuntimeException("Not found: " + selectionOnEachCriteria);
 		}
 	}
 
 	public void addSelectionCriteria(List<String> criteriaList, Map<String, String> inputCriteriaMap) {
 		for (String criteria : criteriaList) {
-			searchSelectionCriteria(criteria);
+			selectSelectionCriteria(criteria);
 			clickSelectionCriteria_plusIcon();
 
 			String input = inputCriteriaMap.get(criteria);
 			if (input != null) {
-				searchInputSelectionCriteria(criteria, input);
+				selectMatchedCriteria(criteria, input);
 			}
 		}
 	}
-	public boolean isSelectionCriteriaDisplayed(List<String> criteriaList, Map<String, String> inputCriteriaMap) {
-		  for (String criteria : criteriaList) {
-		        String expectedInput = inputCriteriaMap.get(criteria);
-		        if (expectedInput == null) continue;
 
-		        String xpath = "//p[normalize-space()='" + criteria + "']/following::div[normalize-space()='" + expectedInput + "'][1]";
-		        try {
-		            WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
-		            if (!element.isDisplayed()) {
-		                return false;
-		            }
-		        } catch (TimeoutException e) {
-		            return false;
-		        }
-		    }
-		    return true; // All criteria and inputs are displayed
+	public boolean isSelectionCriteriaMatchedAndDisplayed(List<String> criteriaList,
+			Map<String, String> inputCriteriaMap) {
+		for (String criteria : criteriaList) {
+			String expectedInput = inputCriteriaMap.get(criteria);
+			System.out.println(expectedInput);
+			if (expectedInput == null)
+				return false;
+
+			String xpath = "//p[normalize-space()='" + criteria + "']/following::div[normalize-space()='"
+					+ expectedInput + "'][1]";
+			try {
+				WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
+				if (!element.isDisplayed()) {
+					return false;
+				}
+			} catch (TimeoutException e) {
+				return false;
+			}
 		}
+		return true;
+	}
 
 	public String getIncludeTxt() {
 		return include.getText();
@@ -287,7 +299,7 @@ public class Reports extends BasePage {
 
 			if (highlightedText.equals(include)) {
 				this.include.sendKeys(Keys.ENTER);
-				found = true; // Found the element
+				found = true;
 				break;
 			}
 			this.include.sendKeys(Keys.ARROW_DOWN);
@@ -298,22 +310,45 @@ public class Reports extends BasePage {
 		}
 	}
 
+	public boolean isAddedSelectionCriteriaCorrect(String expectedSelectionCriteria, String expectedInput) {
+
+		List<WebElement> selectionCriteria = wait.until(ExpectedConditions
+				.presenceOfAllElementsLocatedBy(By.xpath("//p[normalize-space()='" + expectedSelectionCriteria
+						+ "']/following::div[normalize-space()='" + expectedInput + "'][4]")));
+
+		if (!selectionCriteria.isEmpty()) {
+			return selectionCriteria.get(0).isDisplayed();
+		} else {
+			return false;
+		}
+	}
+
+	// Display Fields
+	
+	public void clickDisplayFields_plusIcon() {
+		clickWaitElement(displayField_plusIcon);
+	}
+	
 	public String getDisplayFieldGroupTxt() {
 		return displayFieldGroup.getText();
+	}
+
+	public String getDisplayFieldTxt() {
+		return displayField.getText();
 	}
 
 	public void searchDisplayFieldGroup(String displayFieldGroup) {
 		clickWaitElement(this.displayFieldGroup);
 
 		int maxTries = 100;
-		boolean found = false; // Set to false initially
+		boolean found = false;
 
 		for (int i = 0; i < maxTries; i++) {
 			String highlightedText = getDisplayFieldGroupTxt();
 
 			if (highlightedText.equals(displayFieldGroup)) {
 				this.displayFieldGroup.sendKeys(Keys.ENTER);
-				found = true; // Found the element
+				found = true;
 				break;
 			}
 			this.displayFieldGroup.sendKeys(Keys.ARROW_DOWN);
@@ -324,78 +359,92 @@ public class Reports extends BasePage {
 		}
 	}
 
-	public String getDisplayFieldTxt() {
-		return displayField.getText();
+
+	public void searchDisplayField(String fieldName) {
+	    clickWaitElement(this.displayField);
+
+	    int maxTries = 100;
+	    boolean found = false;
+
+	    for (int i = 0; i < maxTries; i++) {
+	        String highlightedText = getDisplayFieldTxt();
+
+	        if (highlightedText.equals(fieldName)) {
+	            this.displayField.sendKeys(Keys.ENTER);
+	            found = true;
+	            break;
+	        }
+	        this.displayField.sendKeys(Keys.ARROW_DOWN);
+	    }
+
+	    if (!found) {
+	        throw new RuntimeException("Not found: " + fieldName);
+	    }
 	}
 
-	public void searchDisplayField(String displayField) {
-		clickWaitElement(this.displayField);
-
-		int maxTries = 100;
-		boolean found = false;
-
-		for (int i = 0; i < maxTries; i++) {
-			String highlightedText = getDisplayFieldTxt();
-
-			if (highlightedText.equals(displayField)) {
-				this.displayField.sendKeys(Keys.ENTER);
-				found = true; // Found the element
-				break;
-			}
-			this.displayField.sendKeys(Keys.ARROW_DOWN);
-		}
-
-		if (!found) {
-			throw new RuntimeException("Not found: " + displayField);
-		}
+	public void addDisplayFields(List<String> displayFieldGroup, Map<String, String> displayField) {
+	    for (String group : displayFieldGroup) {
+	        searchDisplayFieldGroup(group);
+	        searchDisplayField(displayField.get(group)); // Pass the specific field for that group
+	        clickDisplayFields_plusIcon();
+	    }
 	}
 
-	public void clickSelectionCriteria_plusIcon() {
-		clickWaitElement(selectionCriteria_plusIcon);
+//	public boolean isAddedDisplayFieldsCorrect(Object object, Object object2) {
+//		// Wait for and get all Display Field Group elements
+//		List<WebElement> fieldGroupElements = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+//				By.xpath("//p[@class='oxd-text oxd-text--p orangehrm-report-field-name']")));
+//
+//		// Wait for and get all Display Field elements
+//		List<WebElement> fieldElements = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+//				By.xpath("//span[@class='oxd-chip oxd-chip--default oxd-multiselect-chips-selected']")));
+//
+//		// Extract text from elements
+//		List<String> actualFieldGroups = fieldGroupElements.stream().map(WebElement::getText)
+//				.collect(Collectors.toList());
+//
+//		List<String> actualFields = fieldElements.stream().map(WebElement::getText).collect(Collectors.toList());
+//
+//		// Check if elements are displayed
+//		boolean areFieldGroupsDisplayed = fieldGroupElements.stream().allMatch(WebElement::isDisplayed);
+//		boolean areFieldsDisplayed = fieldElements.stream().allMatch(WebElement::isDisplayed);
+//
+//		// Check if expected strings exist in the actual lists
+//		boolean fieldGroupMatch = actualFieldGroups.contains(object);
+//		boolean fieldMatch = actualFields.contains(object2);
+//
+//		return areFieldGroupsDisplayed && areFieldsDisplayed && fieldGroupMatch && fieldMatch;
+//	}
+	
+	public boolean isAddedDisplayFieldsCorrect(Object expectedFieldGroups, Object expectedFields) {
+	    // Wait and get actual elements
+	    List<WebElement> fieldGroupElements = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+	            By.xpath("//p[@class='oxd-text oxd-text--p orangehrm-report-field-name']")));
+
+	    List<WebElement> fieldElements = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+	            By.xpath("//span[@class='oxd-chip oxd-chip--default oxd-multiselect-chips-selected']")));
+
+	    List<String> actualFieldGroups = fieldGroupElements.stream()
+	            .map(WebElement::getText)
+	            .collect(Collectors.toList());
+
+	    List<String> actualFields = fieldElements.stream()
+	            .map(WebElement::getText)
+	            .collect(Collectors.toList());
+
+	    boolean areFieldGroupsDisplayed = fieldGroupElements.stream().allMatch(WebElement::isDisplayed);
+	    boolean areFieldsDisplayed = fieldElements.stream().allMatch(WebElement::isDisplayed);
+
+	    // Cast and validate each expected item
+	    List<String> expectedGroups = (List<String>) expectedFieldGroups;
+	    Map<String, String> expectedFieldMap = (Map<String, String>) expectedFields;
+
+	    boolean groupMatch = expectedGroups.stream().allMatch(actualFieldGroups::contains);
+	    boolean fieldMatch = expectedFieldMap.values().stream().allMatch(actualFields::contains);
+
+	    return areFieldGroupsDisplayed && areFieldsDisplayed && groupMatch && fieldMatch;
 	}
 
-	public void clickDisplayFields_plusIcon() {
-		clickWaitElement(displayField_plusIcon);
-	}
-
-	public boolean isAddedSelectionCriteriaCorrect(String expectedSelectionCriteria, String expectedInput) {
-		// Wait for and get all Display Field Group elements
-		List<WebElement> selectionCriteria = wait.until(ExpectedConditions
-				.presenceOfAllElementsLocatedBy(By.xpath("//p[normalize-space()='" + expectedSelectionCriteria
-						+ "']/following::div[normalize-space()='" + expectedInput + "'][4]")));
-		// Check if the element is found and displayed
-		if (!selectionCriteria.isEmpty()) {
-			return selectionCriteria.get(0).isDisplayed();
-		} else {
-			return false;
-		}
-	}
-
-	public boolean isAddedDisplayFieldsCorrect(String expectedDisplayFieldGroup, String expectedDisplayField) {
-		// Wait for and get all Display Field Group elements
-		List<WebElement> fieldGroupElements = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
-				By.xpath("//p[@class='oxd-text oxd-text--p orangehrm-report-field-name']")));
-
-		// Wait for and get all Display Field elements
-		List<WebElement> fieldElements = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
-				By.xpath("//span[@class='oxd-chip oxd-chip--default oxd-multiselect-chips-selected']")));
-
-		// Extract text from elements
-		List<String> actualFieldGroups = fieldGroupElements.stream().map(WebElement::getText)
-				.collect(Collectors.toList());
-
-		List<String> actualFields = fieldElements.stream().map(WebElement::getText).collect(Collectors.toList());
-
-		// Check if elements are displayed
-		boolean areFieldGroupsDisplayed = fieldGroupElements.stream().allMatch(WebElement::isDisplayed);
-		boolean areFieldsDisplayed = fieldElements.stream().allMatch(WebElement::isDisplayed);
-
-		// Check if expected strings exist in the actual lists
-		boolean fieldGroupMatch = actualFieldGroups.contains(expectedDisplayFieldGroup);
-		boolean fieldMatch = actualFields.contains(expectedDisplayField);
-
-		return areFieldGroupsDisplayed && areFieldsDisplayed && fieldGroupMatch && fieldMatch;
-	}
 
 	public void clickSaveBtn() {
 		clickWaitElement(saveBtn);

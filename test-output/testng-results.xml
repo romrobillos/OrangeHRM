@@ -2,16 +2,16 @@
 <testng-results ignored="4" total="5" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2025-04-19T11:16:13 GMT+08:00" name="Default suite" finished-at="2025-04-19T11:16:32 GMT+08:00" duration-ms="19473">
+  <suite started-at="2025-05-29T11:41:25 GMT+08:00" name="Default suite" finished-at="2025-05-29T11:41:50 GMT+08:00" duration-ms="24520">
     <groups>
     </groups>
-    <test started-at="2025-04-19T11:16:13 GMT+08:00" name="Default test" finished-at="2025-04-19T11:16:32 GMT+08:00" duration-ms="19473">
+    <test started-at="2025-05-29T11:41:25 GMT+08:00" name="Default test" finished-at="2025-05-29T11:41:50 GMT+08:00" duration-ms="24520">
       <class name="testcase.PIM.ReportsTest">
-        <test-method is-config="true" signature="setUp()[pri:0, instance:testcase.PIM.ReportsTest@63475ace]" started-at="2025-04-19T11:16:13 GMT+08:00" name="setUp" finished-at="2025-04-19T11:16:18 GMT+08:00" duration-ms="4732" status="PASS">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:testcase.PIM.ReportsTest@63475ace]" started-at="2025-05-29T11:41:26 GMT+08:00" name="setUp" finished-at="2025-05-29T11:41:31 GMT+08:00" duration-ms="5327" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="TC0_PIM_Reports_Add_SelectionCriteria(java.lang.String,java.lang.String)[pri:0, instance:testcase.PIM.ReportsTest@63475ace]" started-at="2025-04-19T11:16:18 GMT+08:00" name="TC0_PIM_Reports_Add_SelectionCriteria" description="Verify PIM_Reports if Selection Criteria added correctly" data-provider="validCredential" finished-at="2025-04-19T11:16:30 GMT+08:00" duration-ms="12958" status="PASS">
+        <test-method signature="TC0_PIM_EmployeeList_isReportAdded(java.lang.String,java.lang.String)[pri:0, instance:testcase.PIM.ReportsTest@63475ace]" started-at="2025-05-29T11:41:31 GMT+08:00" name="TC0_PIM_EmployeeList_isReportAdded" description="Verify PIM_Reports Report has been Added" data-provider="validCredential" finished-at="2025-05-29T11:41:50 GMT+08:00" duration-ms="18910" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -26,8 +26,8 @@
           </params>
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- TC0_PIM_Reports_Add_SelectionCriteria -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:testcase.PIM.ReportsTest@63475ace]" started-at="2025-04-19T11:16:30 GMT+08:00" name="tearDown" finished-at="2025-04-19T11:16:32 GMT+08:00" duration-ms="1724" status="PASS">
+        </test-method> <!-- TC0_PIM_EmployeeList_isReportAdded -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:testcase.PIM.ReportsTest@63475ace]" started-at="2025-05-29T11:41:50 GMT+08:00" name="tearDown" finished-at="2025-05-29T11:41:50 GMT+08:00" duration-ms="213" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
